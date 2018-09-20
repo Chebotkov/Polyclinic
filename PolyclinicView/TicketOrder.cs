@@ -1,16 +1,23 @@
-﻿using System;
+﻿using PolyclinicDBManager;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Forms;
+
 
 namespace PolyclinicView
 {
     public interface ITicketOrderView
     {
+        event EventHandler TicketOrderFormLoad;
 
+        void FillForm(IEnumerable specializations, IEnumerable patients);
     }
 
     public partial class TicketOrderForm : Form, ITicketOrderView
     {
+        public event EventHandler TicketOrderFormLoad;
+
         int ReplaceableDoc = -1;
         string ChosenDate;
         SortedDictionary<int, int> PatientsRegion = new SortedDictionary<int, int>();
@@ -24,21 +31,10 @@ namespace PolyclinicView
 
         private void TicketOrderForm_Load(object sender, EventArgs e)
         {
-            /*F = new Filling();
-            F.PatientsListFilling(Patients);
-            F.DoctorsListFilling(Doctors);
-            F.TicketsFilling(Patients, Doctors, OrderedTickets);
-            F.SpecializationsFilling(Specializations);
-
             ClearAll();
-            M.PatintsFillingInTO(Patients, comboBox1, PatientsRegion);
-            M.AddSpecializationsToComboBox(Specializations, comboBox3);*/
+            TicketOrderFormLoad?.Invoke(this, EventArgs.Empty);
         }
 
-        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -179,5 +175,17 @@ namespace PolyclinicView
                 button1.Enabled = false;
             }
         }
+
+        #region Interface implementation
+
+        public void FillForm(IEnumerable specializations, IEnumerable patients)
+        {
+            comboBox1.DataSource = patients;
+            comboBox1.SelectedIndex = -1;
+            comboBox3.DataSource = specializations;
+            comboBox3.SelectedIndex = -1;
+        }
+
+        #endregion
     }
 }

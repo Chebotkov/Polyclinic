@@ -106,6 +106,7 @@
     <Compile Include="Ticket.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="TicketOrderModel.cs" />
     <Compile Include="VisitorStatistics.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>
     </Compile>

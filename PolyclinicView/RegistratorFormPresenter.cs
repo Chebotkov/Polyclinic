@@ -31,7 +31,7 @@ namespace PolyclinicView
 
         private void RegistratorView_TicketOrder_Click(object sender, EventArgs e)
         {
-            TicketOrderPresenter ticketOrderPresenter = new TicketOrderPresenter(registratorView.ITicketOrderViewRef);
+            TicketOrderPresenter ticketOrderPresenter = new TicketOrderPresenter(registratorView.ITicketOrderViewRef, new TicketOrderModel());
         }
 
         private void RegistratorView_RoomsRegister_Click(object sender, EventArgs e)

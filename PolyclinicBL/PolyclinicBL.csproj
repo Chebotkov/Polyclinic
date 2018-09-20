@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Editor.cs" />
     <Compile Include="Entities.cs" />
+    <Compile Include="ITicketOrderFormModel.cs" />
     <Compile Include="MedicalCardManager.cs" />
     <Compile Include="IMainFormModel.cs" />
     <Compile Include="IRegistrationModel.cs" />

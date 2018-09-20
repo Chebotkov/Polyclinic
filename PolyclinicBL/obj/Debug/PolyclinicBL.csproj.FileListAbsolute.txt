@@ -4,3 +4,9 @@ C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicBL\obj\Debug\Polyclinic
 C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicBL\obj\Debug\PolyclinicBL.dll
 C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicBL\obj\Debug\PolyclinicBL.pdb
 C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicBL\obj\Debug\PolyclinicBL.csprojResolveAssemblyReference.cache
+D:\Projects\Polyclinic\PolyclinicBL\bin\Debug\PolyclinicBL.dll
+D:\Projects\Polyclinic\PolyclinicBL\bin\Debug\PolyclinicBL.pdb
+D:\Projects\Polyclinic\PolyclinicBL\obj\Debug\PolyclinicBL.csprojResolveAssemblyReference.cache
+D:\Projects\Polyclinic\PolyclinicBL\obj\Debug\PolyclinicBL.csproj.CoreCompileInputs.cache
+D:\Projects\Polyclinic\PolyclinicBL\obj\Debug\PolyclinicBL.dll
+D:\Projects\Polyclinic\PolyclinicBL\obj\Debug\PolyclinicBL.pdb
