@@ -1,0 +1,6 @@
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicBL\bin\Debug\PolyclinicBL.dll
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicBL\bin\Debug\PolyclinicBL.pdb
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicBL\obj\Debug\PolyclinicBL.csproj.CoreCompileInputs.cache
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicBL\obj\Debug\PolyclinicBL.dll
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicBL\obj\Debug\PolyclinicBL.pdb
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicBL\obj\Debug\PolyclinicBL.csprojResolveAssemblyReference.cache

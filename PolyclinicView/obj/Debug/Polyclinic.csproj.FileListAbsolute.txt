@@ -1,0 +1,12 @@
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicView\bin\Debug\PolyclinicView.exe.config
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicView\bin\Debug\PolyclinicView.exe
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicView\bin\Debug\PolyclinicView.pdb
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicView\bin\Debug\PolyclinicBL.dll
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicView\bin\Debug\PolyclinicBL.pdb
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicView\obj\Debug\PolyclinicView.RegistratorForm.resources
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicView\obj\Debug\PolyclinicView.MainForm.resources
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicView\obj\Debug\PolyclinicView.Properties.Resources.resources
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicView\obj\Debug\Polyclinic.csproj.GenerateResource.Cache
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicView\obj\Debug\Polyclinic.csproj.CoreCompileInputs.cache
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicView\obj\Debug\PolyclinicView.exe
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicView\obj\Debug\PolyclinicView.pdb

@@ -1,0 +1,13 @@
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicDBManager\bin\Debug\PolyclinicDBManager.dll.config
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicDBManager\bin\Debug\PolyclinicDBManager.dll
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicDBManager\bin\Debug\PolyclinicDBManager.pdb
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicDBManager\bin\Debug\EntityFramework.dll
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicDBManager\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicDBManager\bin\Debug\PolyclinicBL.dll
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicDBManager\bin\Debug\PolyclinicBL.pdb
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicDBManager\bin\Debug\EntityFramework.xml
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicDBManager\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicDBManager\obj\Debug\PolyclinicDBManager.csprojResolveAssemblyReference.cache
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicDBManager\obj\Debug\PolyclinicDBManager.csproj.CoreCompileInputs.cache
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicDBManager\obj\Debug\PolyclinicDBManager.dll
+C:\Users\Павел\source\repos\PolyclinicAPP\PolyclinicDBManager\obj\Debug\PolyclinicDBManager.pdb

@@ -1,0 +1,323 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PolyclinicDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PolyclinicDB.dbo.Diagnosis' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Diagnosis">
+    <Key>
+      <PropertyRef Name="Diagnosis" />
+      <PropertyRef Name="Description" />
+    </Key>
+    <Property Name="Diagnosis" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Doctor">
+    <Key>
+      <PropertyRef Name="DocId" />
+    </Key>
+    <Property Name="DocId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Patronymic" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Specialization" Type="int" Nullable="false" />
+    <Property Name="Room" Type="int" Nullable="false" />
+    <Property Name="Region" Type="int" />
+    <Property Name="Shedule" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Interval" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DoctorsTimeTable">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SpecId" Type="int" Nullable="false" />
+    <Property Name="Shedule" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Interval" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PolyclinicDB.dbo.Drug' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Drug">
+    <Key>
+      <PropertyRef Name="DrugName" />
+      <PropertyRef Name="Description" />
+    </Key>
+    <Property Name="DrugName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PolyclinicDB.dbo.Login' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Login">
+    <Key>
+      <PropertyRef Name="PolyclinicUser" />
+      <PropertyRef Name="Login" />
+    </Key>
+    <Property Name="PolyclinicUser" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Login" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Patient">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Patronymic" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Birth" Type="datetime" Nullable="false" />
+    <Property Name="Gender" Type="bit" Nullable="false" />
+    <Property Name="Region" Type="int" Nullable="false" />
+    <Property Name="Address" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="RegistrationDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Region">
+    <Key>
+      <PropertyRef Name="RegionNumber" />
+    </Key>
+    <Property Name="RegionNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RegionName" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PolyclinicDB.dbo.Room' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Room">
+    <Key>
+      <PropertyRef Name="SpecId" />
+      <PropertyRef Name="Room" />
+    </Key>
+    <Property Name="SpecId" Type="int" Nullable="false" />
+    <Property Name="Room" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Specialization">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Specialization" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Street">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RegionNumber" Type="int" Nullable="false" />
+    <Property Name="Street" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Ticket">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PatientsId" Type="int" Nullable="false" />
+    <Property Name="DoctorsId" Type="int" Nullable="false" />
+    <Property Name="VisitingDateAndTime" Type="datetime" Nullable="false" />
+    <Property Name="IsArrived" Type="bit" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'PolyclinicDB.dbo.VisitorStatistics' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="VisitorStatistics">
+    <Key>
+      <PropertyRef Name="DocId" />
+      <PropertyRef Name="Date" />
+    </Key>
+    <Property Name="DocId" Type="int" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="ArrivedPatients" Type="int" />
+    <Property Name="NonArrivedPatients" Type="int" />
+  </EntityType>
+  <Association Name="FK_Doctors_Regions">
+    <End Role="Region" Type="Self.Region" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Doctor" Type="Self.Doctor" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Region">
+        <PropertyRef Name="RegionNumber" />
+      </Principal>
+      <Dependent Role="Doctor">
+        <PropertyRef Name="Region" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Doctors_Specializations">
+    <End Role="Specialization" Type="Self.Specialization" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Doctor" Type="Self.Doctor" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Specialization">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Doctor">
+        <PropertyRef Name="Specialization" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DoctorsTimeTable_Specializations">
+    <End Role="Specialization" Type="Self.Specialization" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="DoctorsTimeTable" Type="Self.DoctorsTimeTable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Specialization">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="DoctorsTimeTable">
+        <PropertyRef Name="SpecId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Patients_Regions">
+    <End Role="Region" Type="Self.Region" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Patient" Type="Self.Patient" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Region">
+        <PropertyRef Name="RegionNumber" />
+      </Principal>
+      <Dependent Role="Patient">
+        <PropertyRef Name="Region" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Rooms_Specializations">
+    <End Role="Specialization" Type="Self.Specialization" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Room" Type="Self.Room" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Specialization">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Room">
+        <PropertyRef Name="SpecId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Streets_Regions">
+    <End Role="Region" Type="Self.Region" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Street" Type="Self.Street" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Region">
+        <PropertyRef Name="RegionNumber" />
+      </Principal>
+      <Dependent Role="Street">
+        <PropertyRef Name="RegionNumber" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Tickets_Doctors">
+    <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+    <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Doctor">
+        <PropertyRef Name="DocId" />
+      </Principal>
+      <Dependent Role="Ticket">
+        <PropertyRef Name="DoctorsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Tickets_Patients">
+    <End Role="Patient" Type="Self.Patient" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Patient">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Ticket">
+        <PropertyRef Name="PatientsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VisitorStatistics_Doctors">
+    <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+    <End Role="VisitorStatistics" Type="Self.VisitorStatistics" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Doctor">
+        <PropertyRef Name="DocId" />
+      </Principal>
+      <Dependent Role="VisitorStatistics">
+        <PropertyRef Name="DocId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="PolyclinicDBModelStoreContainer">
+    <EntitySet Name="Doctor" EntityType="Self.Doctor" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DoctorsTimeTable" EntityType="Self.DoctorsTimeTable" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Patient" EntityType="Self.Patient" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Region" EntityType="Self.Region" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Specialization" EntityType="Self.Specialization" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Street" EntityType="Self.Street" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Ticket" EntityType="Self.Ticket" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Diagnosis" EntityType="Self.Diagnosis" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Diagnosis].[Diagnosis] AS [Diagnosis], 
+    [Diagnosis].[Description] AS [Description]
+    FROM [dbo].[Diagnosis] AS [Diagnosis]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="Drug" EntityType="Self.Drug" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Drug].[DrugName] AS [DrugName], 
+    [Drug].[Description] AS [Description]
+    FROM [dbo].[Drug] AS [Drug]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="Login" EntityType="Self.Login" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Login].[PolyclinicUser] AS [PolyclinicUser], 
+    [Login].[Login] AS [Login]
+    FROM [dbo].[Login] AS [Login]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="Room" EntityType="Self.Room" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Room].[SpecId] AS [SpecId], 
+    [Room].[Room] AS [Room]
+    FROM [dbo].[Room] AS [Room]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="VisitorStatistics" EntityType="Self.VisitorStatistics" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [VisitorStatistics].[DocId] AS [DocId], 
+    [VisitorStatistics].[Date] AS [Date], 
+    [VisitorStatistics].[ArrivedPatients] AS [ArrivedPatients], 
+    [VisitorStatistics].[NonArrivedPatients] AS [NonArrivedPatients]
+    FROM [dbo].[VisitorStatistics] AS [VisitorStatistics]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_Doctors_Regions" Association="Self.FK_Doctors_Regions">
+      <End Role="Region" EntitySet="Region" />
+      <End Role="Doctor" EntitySet="Doctor" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Doctors_Specializations" Association="Self.FK_Doctors_Specializations">
+      <End Role="Specialization" EntitySet="Specialization" />
+      <End Role="Doctor" EntitySet="Doctor" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DoctorsTimeTable_Specializations" Association="Self.FK_DoctorsTimeTable_Specializations">
+      <End Role="Specialization" EntitySet="Specialization" />
+      <End Role="DoctorsTimeTable" EntitySet="DoctorsTimeTable" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Patients_Regions" Association="Self.FK_Patients_Regions">
+      <End Role="Region" EntitySet="Region" />
+      <End Role="Patient" EntitySet="Patient" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Rooms_Specializations" Association="Self.FK_Rooms_Specializations">
+      <End Role="Specialization" EntitySet="Specialization" />
+      <End Role="Room" EntitySet="Room" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Streets_Regions" Association="Self.FK_Streets_Regions">
+      <End Role="Region" EntitySet="Region" />
+      <End Role="Street" EntitySet="Street" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Tickets_Doctors" Association="Self.FK_Tickets_Doctors">
+      <End Role="Doctor" EntitySet="Doctor" />
+      <End Role="Ticket" EntitySet="Ticket" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Tickets_Patients" Association="Self.FK_Tickets_Patients">
+      <End Role="Patient" EntitySet="Patient" />
+      <End Role="Ticket" EntitySet="Ticket" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VisitorStatistics_Doctors" Association="Self.FK_VisitorStatistics_Doctors">
+      <End Role="Doctor" EntitySet="Doctor" />
+      <End Role="VisitorStatistics" EntitySet="VisitorStatistics" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

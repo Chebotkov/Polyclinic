@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="PolyclinicDBModelStoreContainer" CdmEntityContainer="PolyclinicDBContext">
+    <EntitySetMapping Name="Doctor">
+      <EntityTypeMapping TypeName="PolyclinicDBModel.Doctor">
+        <MappingFragment StoreEntitySet="Doctor">
+          <ScalarProperty Name="DocId" ColumnName="DocId" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="Patronymic" ColumnName="Patronymic" />
+          <ScalarProperty Name="Specialization" ColumnName="Specialization" />
+          <ScalarProperty Name="Room" ColumnName="Room" />
+          <ScalarProperty Name="Region" ColumnName="Region" />
+          <ScalarProperty Name="Shedule" ColumnName="Shedule" />
+          <ScalarProperty Name="Interval" ColumnName="Interval" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DoctorsTimeTable">
+      <EntityTypeMapping TypeName="PolyclinicDBModel.DoctorsTimeTable">
+        <MappingFragment StoreEntitySet="DoctorsTimeTable">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="SpecId" ColumnName="SpecId" />
+          <ScalarProperty Name="Shedule" ColumnName="Shedule" />
+          <ScalarProperty Name="Interval" ColumnName="Interval" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Patient">
+      <EntityTypeMapping TypeName="PolyclinicDBModel.Patient">
+        <MappingFragment StoreEntitySet="Patient">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="Patronymic" ColumnName="Patronymic" />
+          <ScalarProperty Name="Birth" ColumnName="Birth" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="Region" ColumnName="Region" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="RegistrationDate" ColumnName="RegistrationDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Region">
+      <EntityTypeMapping TypeName="PolyclinicDBModel.Region">
+        <MappingFragment StoreEntitySet="Region">
+          <ScalarProperty Name="RegionNumber" ColumnName="RegionNumber" />
+          <ScalarProperty Name="RegionName" ColumnName="RegionName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Specialization">
+      <EntityTypeMapping TypeName="PolyclinicDBModel.Specialization">
+        <MappingFragment StoreEntitySet="Specialization">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="SpecializationName" ColumnName="Specialization" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Street">
+      <EntityTypeMapping TypeName="PolyclinicDBModel.Street">
+        <MappingFragment StoreEntitySet="Street">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="RegionNumber" ColumnName="RegionNumber" />
+          <ScalarProperty Name="StreetName" ColumnName="Street" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Ticket">
+      <EntityTypeMapping TypeName="PolyclinicDBModel.Ticket">
+        <MappingFragment StoreEntitySet="Ticket">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="PatientsId" ColumnName="PatientsId" />
+          <ScalarProperty Name="DoctorsId" ColumnName="DoctorsId" />
+          <ScalarProperty Name="VisitingDateAndTime" ColumnName="VisitingDateAndTime" />
+          <ScalarProperty Name="IsArrived" ColumnName="IsArrived" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Diagnosis">
+      <EntityTypeMapping TypeName="PolyclinicDBModel.Diagnosis">
+        <MappingFragment StoreEntitySet="Diagnosis">
+          <ScalarProperty Name="DiagnosisName" ColumnName="Diagnosis" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Drug">
+      <EntityTypeMapping TypeName="PolyclinicDBModel.Drug">
+        <MappingFragment StoreEntitySet="Drug">
+          <ScalarProperty Name="DrugName" ColumnName="DrugName" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Login">
+      <EntityTypeMapping TypeName="PolyclinicDBModel.Login">
+        <MappingFragment StoreEntitySet="Login">
+          <ScalarProperty Name="PolyclinicUser" ColumnName="PolyclinicUser" />
+          <ScalarProperty Name="UsersLogin" ColumnName="Login" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Room">
+      <EntityTypeMapping TypeName="PolyclinicDBModel.Room">
+        <MappingFragment StoreEntitySet="Room">
+          <ScalarProperty Name="SpecId" ColumnName="SpecId" />
+          <ScalarProperty Name="RoomNumber" ColumnName="Room" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VisitorStatistics">
+      <EntityTypeMapping TypeName="PolyclinicDBModel.VisitorStatistics">
+        <MappingFragment StoreEntitySet="VisitorStatistics">
+          <ScalarProperty Name="DocId" ColumnName="DocId" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="ArrivedPatients" ColumnName="ArrivedPatients" />
+          <ScalarProperty Name="NonArrivedPatients" ColumnName="NonArrivedPatients" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
