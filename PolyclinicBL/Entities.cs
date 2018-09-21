@@ -44,4 +44,20 @@ namespace PolyclinicBL
             RegistrationDate = registrationDate;
         }
     }
+
+    public class Ticket
+    {
+        public int PatientsId { get; private set; }
+        public int DoctorsId { get; private set; }
+        public string VisitingDate { get; private set; }
+        public string VisitingTime { get; private set; }
+
+        public Ticket(int patientsId, int doctorsId, string visitingDate,string visitingTime)
+        {
+            PatientsId = patientsId;
+            DoctorsId = doctorsId;
+            VisitingDate = visitingDate;
+            VisitingTime = visitingTime;
+        }
+    }
 }

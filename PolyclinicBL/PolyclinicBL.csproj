@@ -47,7 +47,9 @@
     <Compile Include="MedicalCardManager.cs" />
     <Compile Include="IMainFormModel.cs" />
     <Compile Include="IRegistrationModel.cs" />
+    <Compile Include="PatientsIdAndSpecializationNameEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SheduleWorker.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

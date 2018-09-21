@@ -29,11 +29,25 @@ namespace PolyclinicView
             this.iTicketOrderFormModel = iTicketOrderFormModel;
 
             iTicketOrderView.TicketOrderFormLoad += ITicketOrderView_TicketOrderFormLoad;
+            iTicketOrderView.SpecializationChoise += ITicketOrderView_SpecializationChoise;
+            iTicketOrderView.DoctorsSheduleCheck += ITicketOrderView_DoctorsSheduleCheck;
+        }
+
+        private void ITicketOrderView_DoctorsSheduleCheck(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ITicketOrderView_SpecializationChoise(object sender, EventArgs e)
+        {
+            PatientsIdAndSpecializationNameEventArgs piasne = (PatientsIdAndSpecializationNameEventArgs)e;
+            int patientsRegion = iTicketOrderFormModel.GetPatientsRegion(piasne.PatientsId);
+            iTicketOrderView.FillDoctorsList(iTicketOrderFormModel.GetDoctorsByCriterion(patientsRegion, piasne.SpecializationId));
         }
 
         private void ITicketOrderView_TicketOrderFormLoad(object sender, EventArgs e)
         {
-            iTicketOrderView.FillForm(iTicketOrderFormModel.GetSpecializationsNames(), iTicketOrderFormModel.GetPatientsFullNames());   
+            iTicketOrderView.FillFormWithSP(iTicketOrderFormModel.GetSpecializationsNames(), iTicketOrderFormModel.GetPatientsFullNames());   
         }
     }
 }

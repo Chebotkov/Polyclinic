@@ -73,9 +73,9 @@ namespace PolyclinicView
         {
             ReferenceBook RB = new ReferenceBook();
             RB.Owner = this;
-            RB.Show();
             IReferenceBookViewRef = RB;
             ReferenceBook_Click?.Invoke(this, EventArgs.Empty);
+            RB.Show();
         }
 
         private void TicketOrderBtn_Click(object sender, EventArgs e)
@@ -83,8 +83,8 @@ namespace PolyclinicView
             TicketOrderForm TO = new TicketOrderForm();
             ITicketOrderViewRef = TO;
             TO.Owner = this;
-            TO.Show();
             TicketOrder_Click?.Invoke(this, EventArgs.Empty);
+            TO.Show();
         }
 
 
@@ -107,8 +107,8 @@ namespace PolyclinicView
             PrintTicketForm PT = new PrintTicketForm();
             PT.Owner = this;
             IPrintTicketViewRef = PT;
-            PT.Show();
             PrintTicket_Click?.Invoke(this, EventArgs.Empty);
+            PT.Show();
         }
 
         private void GoToRegister_Click(object sender, EventArgs e)
@@ -116,16 +116,16 @@ namespace PolyclinicView
             RegistersForm RegF = new RegistersForm();
             RegF.Owner = this;
             IRegistersViewRef = RegF;
-            RegF.Show();
             Registers_Click?.Invoke(this, EventArgs.Empty);
+            RegF.Show();
         }
 
         private void RoomsRegisterBtn_Click(object sender, EventArgs e)
         {
             RoomsRegister RR = new RoomsRegister();
-            RR.Show();
             IRoomsRegisterViewRef = RR;
             RoomsRegister_Click?.Invoke(this, EventArgs.Empty);
+            RR.Show();
         }
         #endregion
 

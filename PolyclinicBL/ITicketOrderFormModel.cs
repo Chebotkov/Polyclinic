@@ -9,8 +9,15 @@ namespace PolyclinicBL
 {
     public interface ITicketOrderFormModel
     {
-        IEnumerable GetSpecializationsNames();
-        IEnumerable GetPatientsFullNames();
         IEnumerable GetDoctors();
+        IEnumerable GetDoctorsByCriterion(int patientsRegionId, int SpecializationId);
+        object GetDoctorById(int id);
+        IEnumerable GetPatients();
+        IEnumerable GetPatientsFullNames();
+        int GetPatientsRegion(int patientsId);
+        IEnumerable GetSpecializations();
+        IEnumerable GetSpecializationsNames();
+        int GetTherapistId();
+        List<PolyclinicBL.Ticket> GetOrderedTickets();
     }
 }

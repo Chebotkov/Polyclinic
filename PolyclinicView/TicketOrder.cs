@@ -3,20 +3,26 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Forms;
-
+using PolyclinicBL;
 
 namespace PolyclinicView
 {
     public interface ITicketOrderView
     {
         event EventHandler TicketOrderFormLoad;
+        event EventHandler SpecializationChoise;
+        event EventHandler DoctorsSheduleCheck;
 
-        void FillForm(IEnumerable specializations, IEnumerable patients);
+        void FillFormWithSP(IEnumerable specializations, IEnumerable patients);
+        void FillDoctorsList(IEnumerable doctors);
+        Doctor GetDoctorById(int DocId);
     }
 
     public partial class TicketOrderForm : Form, ITicketOrderView
     {
         public event EventHandler TicketOrderFormLoad;
+        public event EventHandler SpecializationChoise;
+        public event EventHandler DoctorsSheduleCheck;
 
         int ReplaceableDoc = -1;
         string ChosenDate;
@@ -55,21 +61,11 @@ namespace PolyclinicView
             domainUpDown1.Enabled = false;
             button1.Enabled = false;
             comboBox4.Text = "";
-            comboBox4.Items.Clear();
             domainUpDown1.Text = "";
             domainUpDown1.Items.Clear();
-
-            /*foreach (Doctor d in Doctors)
-            {
-                if (comboBox3.Text == "Терапевт" && d.Specialization == "Терапевт" && PatientsRegion[M.GetId(comboBox1)] == d.Region)
-                    comboBox4.Items.Add(d.id + "." + d.LastName + " " + d.Name + " " + d.Patronymic);
-                else
-                {
-                    if (d.Specialization == comboBox3.SelectedItem.ToString() && d.Specialization != "Терапевт")
-                        comboBox4.Items.Add(d.id + "." + d.LastName + " " + d.Name + " " + d.Patronymic);
-                }
-            }*/
-
+            
+            SpecializationChoise?.Invoke(this, new PolyclinicBL.PatientsIdAndSpecializationNameEventArgs(PolyclinicBL.Editor.GetId(comboBox1.SelectedItem.ToString()), PolyclinicBL.Editor.GetId(comboBox3.SelectedItem.ToString())));
+            
             if(comboBox4.Items.Count == 0)
             {
                 MessageBox.Show("Не найдено врачей с данной специализацией", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -85,15 +81,16 @@ namespace PolyclinicView
             domainUpDown1.Text = "";
             domainUpDown1.Items.Clear();
 
-            //M.GetAvailableTime(Doctors, comboBox4, ChosenDate, OrderedTickets, Patients, domainUpDown1);
+            var availaebleTime = SheduleWorker.GetAvailableTime(Editor.GetId(comboBox1.SelectedItem.ToString()), Editor.GetId(comboBox4.SelectedItem.ToString()), );
 
-            if (domainUpDown1.Items.Count <= 0)
+            if (availaebleTime.Count <= 0)
             {
                 domainUpDown1.Enabled = false;
                 MessageBox.Show("Талон не может быть заказан на выбранный день", "Извините", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
+                domainUpDown1.Items.AddRange(availaebleTime);
                 domainUpDown1.Enabled = true;
                 domainUpDown1.SelectedIndex = 0;
             }
@@ -146,25 +143,21 @@ namespace PolyclinicView
         private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
         {
             bool order = true;
-            /*foreach (Doctor d in Doctors)
+
+            Doctor doctor = GetDoctorById(PolyclinicBL.Editor.GetId(comboBox4.SelectedItem.ToString()));
+
+            if (doctor.Shedule == "00:00-00:00" || doctor.Interval == 0)
             {
-                if (d.id == M.GetId(comboBox4))
+                if (DialogResult.OK == MessageBox.Show("Для данного врача не назначено время приёма", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error))
                 {
-                    if (d.AppointmentTime == "00:00-00:00" || d.Interval == 0)
-                    {
-                        if (DialogResult.OK == MessageBox.Show("Для данного врача не назначено время приёма", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error))
-                        {
-                            ReplaceableDoc = Doctors.FindIndex(0, FindById);
-                            NewSpecialization NS = new NewSpecialization(true, false);
-                            NS.Owner = this;
-                            NS.ShowDialog();
-                        }
-                        order = false;
-                        break;
-                    }
-                    else break;
+                    //ReplaceableDoc = Doctors.FindIndex(0, FindById);
+                    NewSpecialization NS = new NewSpecialization(true, false);
+                    NS.Owner = this;
+                    NS.ShowDialog();
                 }
-            }*/
+                order = false;
+            }
+
             if (order)
             {
                 monthCalendar1.DateSelected += monthCalendar1_DateChanged;
@@ -178,12 +171,24 @@ namespace PolyclinicView
 
         #region Interface implementation
 
-        public void FillForm(IEnumerable specializations, IEnumerable patients)
+        public void FillFormWithSP(IEnumerable specializations, IEnumerable patients)
         {
             comboBox1.DataSource = patients;
-            comboBox1.SelectedIndex = -1;
+            comboBox1.Text = "";
             comboBox3.DataSource = specializations;
-            comboBox3.SelectedIndex = -1;
+            comboBox3.Text = "";
+        }
+        
+        public void FillDoctorsList(IEnumerable doctors)
+        {
+            comboBox4.DataSource = doctors;
+            comboBox4.Text = "";
+        }
+
+        public Doctor GetDoctorById(int DocId)
+        {
+            throw new NotImplementedException();
+            //DoctorsSheduleCheck?.Invoke(this, EventArgs.Empty);
         }
 
         #endregion
