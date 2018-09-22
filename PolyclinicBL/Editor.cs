@@ -13,7 +13,7 @@ namespace PolyclinicBL
         {
             if (address is null)
             {
-                throw new ArgumentNullException("{0} is null", nameof(address));
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(address)));
             }
 
             return GetWordWithoutSpaces(address.Substring(address.IndexOf(".") + 1, address.IndexOf(',') - 3));
@@ -23,7 +23,7 @@ namespace PolyclinicBL
         {
             if (word is null)
             {
-                throw new ArgumentNullException("{0} is null", nameof(word));
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(word)));
             }
 
             int countOfSpacesInFront = 0;
@@ -46,15 +46,34 @@ namespace PolyclinicBL
         {
             if (victim is null)
             {
-                throw new ArgumentNullException("{0} is null", nameof(victim));
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(victim)));
             }
 
             if (!Int32.TryParse(victim.Substring(0, victim.IndexOf(".")), out int result))
             {
-                throw new  ArgumentException ("{0} is not valid.", nameof(victim));
+                throw new  ArgumentException (String.Format("{0} is not valid.", nameof(victim)));
             }
             
             return result;   
+        }
+
+        public static DateTime ParseToDateTime(string date, string time)
+        {
+            if (date is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(date)));
+            }
+
+            if (time is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(time)));
+            }
+
+            DateTime Date = DateTime.Parse(date);
+            DateTime Time = DateTime.Parse(time);
+
+            DateTime newDate = new DateTime(Date.Year, Date.Month, Date.Day, Time.Hour, Time.Minute, Time.Second);
+            return newDate;
         }
     }
 }

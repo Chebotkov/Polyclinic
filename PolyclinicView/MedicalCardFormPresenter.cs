@@ -13,7 +13,7 @@ namespace PolyclinicView
         {
             if (iMedicalCardView is null)
             {
-                throw new ArgumentNullException("{0} is null", nameof(iMedicalCardView));
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(iMedicalCardView)));
             }
 
             this.iMedicalCardView = iMedicalCardView;

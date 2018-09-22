@@ -17,17 +17,17 @@ namespace PolyclinicView
         {
             if (view is null)
             {
-                throw new ArgumentNullException("{0} is null", nameof(view));
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(view)));
             }
 
             if (messageService is null)
             {
-                throw new ArgumentNullException("{0} is null", nameof(messageService));
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(messageService)));
             }
 
             if (mainFormModel is null)
             {
-                throw new ArgumentNullException("{0} is null", nameof(mainFormModel));
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(mainFormModel)));
             }
 
             this.view = view;

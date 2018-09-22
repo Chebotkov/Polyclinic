@@ -154,5 +154,22 @@ namespace PolyclinicDBManager
 
             return orderedTickets;
         }
+
+        public void AddTicketToStorage(int patientsId, int doctorsId, DateTime visitingDate)
+        {
+            using (var context = new PolyclinicDBContext())
+            {
+                IQueryable query = context.Ticket;
+
+                Ticket ticket = new Ticket();
+                ticket.PatientsId = patientsId;
+                ticket.DoctorsId = doctorsId;
+                ticket.VisitingDateAndTime = visitingDate;
+                ticket.IsArrived = false;
+
+                context.Ticket.Add(ticket);
+                context.SaveChanges();
+            }
+        }
     }
 }

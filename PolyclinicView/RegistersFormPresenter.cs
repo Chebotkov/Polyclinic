@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PolyclinicDBManager;
 
 namespace PolyclinicView
 {
@@ -14,7 +15,7 @@ namespace PolyclinicView
         {
             if (iRegistersView is null)
             {
-                throw new ArgumentNullException("{0} is null", nameof(iRegistersView));
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(iRegistersView)));
             }
 
             this.iRegistersView = iRegistersView;
@@ -25,7 +26,7 @@ namespace PolyclinicView
 
         private void IRegistersView_NewSpecialization_Click(object sender, EventArgs e)
         {
-            NewSpecializationPresenter newSpecializationPresenter = new NewSpecializationPresenter(iRegistersView.INewSpecializationRef);
+            NewSpecializationPresenter newSpecializationPresenter = new NewSpecializationPresenter(iRegistersView.INewSpecializationRef, new NewSpecializationModel());
         }
 
         private void IRegistersView_NewDoctor_Click(object sender, EventArgs e)

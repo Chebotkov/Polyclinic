@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,48 +13,42 @@ namespace PolyclinicView
 {
     public interface INewSpecialization
     {
+        event EventHandler NewSpecializationLoad;
 
+        void SetSpecializations(IEnumerable specializations);
     }
 
     public partial class NewSpecialization : Form, INewSpecialization
     {
-        /*Database1DataSetTableAdapters.DoctorsTableAdapter doctorsTableAdapter = new Database1DataSetTableAdapters.DoctorsTableAdapter();
-        static Database1DataSetTableAdapters.DoctorsTimeTableTableAdapter doctorsTimeTableTable = new Database1DataSetTableAdapters.DoctorsTimeTableTableAdapter();
-        static Database1DataSetTableAdapters.SpecializationsTableAdapter SpecializationsTableAdapter = new Database1DataSetTableAdapters.SpecializationsTableAdapter();
+        public event EventHandler NewSpecializationLoad;
 
-        public List<Doctor> Doctors = new List<Doctor>();
-        public List<Specialization> Specializations = new List<Specialization>();
-
-        Methods M = new Methods();
-        Filling F = new Filling();*/
-        bool isOpenedFromTO = false;
-        bool IsOpenedFromRF = false;
+        private bool isOpenedFromTO = false;
+        private bool IsOpenedFromRF = false;
 
         public NewSpecialization()
         {
             InitializeComponent();
         }
 
-        public NewSpecialization(bool b, bool c)
+        public NewSpecialization(bool isOpenedFromTO, bool IsOpenedFromRF)
         {
             InitializeComponent();
-            isOpenedFromTO = b;
-            IsOpenedFromRF = c;
+            this.isOpenedFromTO = isOpenedFromTO;
+            this.IsOpenedFromRF = IsOpenedFromRF;
         }
 
         private void NewSpecialization_Load(object sender, EventArgs e)
         {
             /*F.DoctorsListFilling(Doctors);
             F.SpecializationsFilling(Specializations);
+            */
 
-            foreach (Specialization s in Specializations)
-            {
-                comboBox1.Items.Add(s.SpecializationName);
-                comboBox3.Items.Add(s.SpecializationName);
-            }*/
+            NewSpecializationLoad?.Invoke(this, EventArgs.Empty);
+
             SetEnable(true);
             radioButton1.Select();
         }
+
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
@@ -269,7 +264,12 @@ namespace PolyclinicView
                 }
             }*/
             MessageBox.Show("Время работы врача успешно установлено", "Готово!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            if (isOpenedFromTO) Close();
+            if (isOpenedFromTO)
+            {
+                TicketOrderForm ticketOrderForm = this.Owner as TicketOrderForm;
+                ticketOrderForm.RefreshList(comboBox4.SelectedItem.ToString(), Convert.ToInt32(comboBox5.Text));
+                Close();
+            }
             radioButton1.Select();
         }
 
@@ -280,6 +280,12 @@ namespace PolyclinicView
                 RegistersForm RF = this.Owner as RegistersForm;
                 RF.RefreshComboboxes('s');
             }
+        }
+
+        public void SetSpecializations(IEnumerable specializations)
+        {
+            comboBox1.DataSource = specializations;
+            comboBox3.DataSource = specializations;
         }
     }
 }

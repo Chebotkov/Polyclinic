@@ -14,7 +14,7 @@ namespace PolyclinicView
         {
             if (iPrintTicketView is null)
             {
-                throw new ArgumentNullException("{0} is null", nameof(iPrintTicketView));
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(iPrintTicketView)));
             }
 
             this.iPrintTicketView = iPrintTicketView;

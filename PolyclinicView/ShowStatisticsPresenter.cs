@@ -14,7 +14,7 @@ namespace PolyclinicView
         {
             if (iShowStatistic is null)
             {
-                throw new ArgumentNullException("{0} is null", nameof(iShowStatistic));
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(iShowStatistic)));
             }
 
             this.iShowStatistic = iShowStatistic;

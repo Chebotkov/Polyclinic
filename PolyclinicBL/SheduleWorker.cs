@@ -10,10 +10,26 @@ namespace PolyclinicBL
     {
         public static List<string> GetAvailableTime(int patientsId, int doctorsId, int doctorsInterval, string doctorsShedule, string ChosenDate, List<Ticket> OrderedTickets)
         {
-            List<string> AvaileableTime = new List<string>();
+            if (ChosenDate is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(ChosenDate)));
+            }
+
+            if (doctorsShedule is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(doctorsShedule)));
+            }
+
+            if (OrderedTickets is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(OrderedTickets)));
+            }
+
+            List<string> AvailableTime = new List<string>();
             int interval = doctorsInterval;
             string AT = doctorsShedule;
             string TodaysDate = DateTime.Today.ToShortDateString();
+            string currentTime;
 
             GetTime(AT, out int Begin, out int End);
 
@@ -31,9 +47,10 @@ namespace PolyclinicBL
                 if (ChosenDate == TodaysDate && (Convert.ToInt32(TodaysDate.Substring(0, 2)) > H || (Convert.ToInt32(TodaysDate.Substring(0, 2)) == H && Convert.ToInt32(TodaysDate.Substring(3, 2)) > M)))
                     continue;
 
+                currentTime = $"{H.ToString("00")}:{M.ToString("00")}";
                 foreach (Ticket ticket in OrderedTickets)
                 {
-                    if (ticket.VisitingTime == $"{H.ToString("00")}:{M.ToString("00")}" && ticket.VisitingDate == ChosenDate && (doctorsId == Convert.ToInt32(ticket.DoctorsId) || patientsId == ticket.PatientsId))
+                    if (ticket.VisitingTime == currentTime  && ticket.VisitingDate == ChosenDate && (doctorsId == Convert.ToInt32(ticket.DoctorsId) || patientsId == ticket.PatientsId))
                     {
                         exists = true;
                         break;
@@ -41,10 +58,10 @@ namespace PolyclinicBL
 
                 }
 
-                if (!exists) AvaileableTime.Add($"{H.ToString("00")}:{M.ToString("00")}");
+                if (!exists) AvailableTime.Add(currentTime);
             }
 
-            return AvaileableTime;
+            return AvailableTime;
         }
 
         public static void GetTime(string AT, out int Begin, out int End)

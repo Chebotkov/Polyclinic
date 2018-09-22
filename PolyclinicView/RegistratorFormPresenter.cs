@@ -16,7 +16,7 @@ namespace PolyclinicView
         {
             if (registratorView is null)
             {
-                throw new ArgumentNullException("{0} is null", nameof(registratorView));
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(registratorView)));
             }
 
             this.registratorView = registratorView;

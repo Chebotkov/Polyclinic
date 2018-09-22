@@ -14,7 +14,7 @@ namespace PolyclinicView
         {
             if (iRoomsRegister is null)
             {
-                throw new ArgumentNullException("{0} is null", nameof(iRoomsRegister));
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(iRoomsRegister)));
             }
 
             this.iRoomsRegister = iRoomsRegister;

@@ -19,5 +19,12 @@ namespace PolyclinicBL
         IEnumerable GetSpecializationsNames();
         int GetTherapistId();
         List<PolyclinicBL.Ticket> GetOrderedTickets();
+        void AddTicketToStorage(int patientsId, int doctorsId, DateTime visitingDate);
+    }
+
+    public interface INewSpecializationModel
+    {
+        IEnumerable GetSpecializations();
+        IEnumerable GetSpecializationsNames();
     }
 }

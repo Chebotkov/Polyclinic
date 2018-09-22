@@ -14,7 +14,7 @@ namespace PolyclinicView
         {
             if (iListRecordingView is null)
             {
-                throw new ArgumentNullException("{0} is null", nameof(iListRecordingView));
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(iListRecordingView)));
             }
 
             this.iListRecordingView = iListRecordingView;

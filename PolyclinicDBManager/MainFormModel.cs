@@ -17,7 +17,7 @@ namespace PolyclinicDBManager
         {
             if (enteredLogin is null)
             {
-                throw new ArgumentNullException("{0} is null", nameof(enteredLogin));
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(enteredLogin)));
             }
             
             using (PolyclinicDBContext polyclinicDBContext = new PolyclinicDBContext())

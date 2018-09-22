@@ -14,7 +14,7 @@ namespace PolyclinicView
         {
             if (referenceBookView is null)
             {
-                throw new ArgumentNullException("{0} is null", nameof(referenceBookView));
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(referenceBookView)));
             }
 
             this.referenceBookView = referenceBookView;

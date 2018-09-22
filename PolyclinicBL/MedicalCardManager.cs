@@ -19,7 +19,12 @@ namespace PolyclinicBL
         public string ProjectName { get; set; } = "PolyclinicAPP";
 
         public void CreateMedicalCard(Patient patient)
-        {   
+        {
+            if (patient is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(patient)));
+            }
+
             using (StreamWriter write = new StreamWriter(GetApplicationsPath() + @"\Files\MedicalCards\" + patient.id.ToString() + ".txt", false, System.Text.Encoding.Default))
             {
                 write.WriteLine(String.Format("ФИО: {0} {1} {2}", patient.LastName, patient.FirstName, patient.Patronymic));

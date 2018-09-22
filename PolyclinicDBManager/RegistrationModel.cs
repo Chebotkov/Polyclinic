@@ -57,6 +57,11 @@ namespace PolyclinicDBManager
 
         public void CheckStreets(string streetName, int regionNumber)
         {
+            if (streetName is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(streetName)));
+            }
+
             bool exists = false;
             using (var context = new PolyclinicDBContext())
             {

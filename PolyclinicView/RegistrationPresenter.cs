@@ -18,17 +18,17 @@ namespace PolyclinicView
         {
             if (iRegistrationView is null)
             {
-                throw new ArgumentNullException("{0} is null", nameof(iRegistrationView));
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(iRegistrationView)));
             }
 
             if (iRegistrationModel is null)
             {
-                throw new ArgumentNullException("{0} is null", nameof(iRegistrationModel));
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(iRegistrationModel)));
             }
 
             if (iMedicalCardManager is null)
             {
-                throw new ArgumentNullException("{0} is null", nameof(iMedicalCardManager));
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(iMedicalCardManager)));
             }
 
             this.iRegistrationView = iRegistrationView;

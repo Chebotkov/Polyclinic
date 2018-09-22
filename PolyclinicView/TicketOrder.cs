@@ -10,38 +10,61 @@ namespace PolyclinicView
     public interface ITicketOrderView
     {
         event EventHandler TicketOrderFormLoad;
-        event EventHandler SpecializationChoise;
-        event EventHandler DoctorsSheduleCheck;
+        event EventHandler<TicketEventArgs> TicketOrder;
+        event EventHandler<PatientsIdAndSpecializationNameEventArgs> SpecializationChoise;
+        event EventHandler<DoctorEventArgs> DoctorsSheduleCheck;
+        event EventHandler NewSpecializationOpen;
 
         void FillFormWithSP(IEnumerable specializations, IEnumerable patients);
         void FillDoctorsList(IEnumerable doctors);
-        Doctor GetDoctorById(int DocId);
+        void SetChosenDoctor(object doctor);
+        void SetOrderedTickets(object tickets);
+
+        Doctor ChosenDoctor { get; }
+        List<PolyclinicBL.Ticket> OrderedTickets { get; }
+        INewSpecialization INewSpecializationRef { get; }
     }
 
     public partial class TicketOrderForm : Form, ITicketOrderView
     {
+        public event EventHandler<TicketEventArgs> TicketOrder;
         public event EventHandler TicketOrderFormLoad;
-        public event EventHandler SpecializationChoise;
-        public event EventHandler DoctorsSheduleCheck;
+        public event EventHandler<PatientsIdAndSpecializationNameEventArgs> SpecializationChoise;
+        public event EventHandler<DoctorEventArgs> DoctorsSheduleCheck;
+        public event EventHandler NewSpecializationOpen;
 
-        int ReplaceableDoc = -1;
-        string ChosenDate;
-        SortedDictionary<int, int> PatientsRegion = new SortedDictionary<int, int>();
-        bool save = true;
+        public Doctor ChosenDoctor { get; private set; }
+        public List<PolyclinicBL.Ticket> OrderedTickets { get; private set; }
+        public INewSpecialization INewSpecializationRef { get; private set; }
+        string chosenDate;
 
         public TicketOrderForm()
         {
             InitializeComponent();
-            monthCalendar1.MinDate = DateTime.Today;
         }
 
+        #region Actions
         private void TicketOrderForm_Load(object sender, EventArgs e)
         {
-            ClearAll();
             TicketOrderFormLoad?.Invoke(this, EventArgs.Empty);
+            
+            monthCalendar1.MinDate = DateTime.Today;
+            button1.Enabled = false;
+            monthCalendar1.Enabled = false;
+            comboBox3.Enabled = false;
+            comboBox4.Enabled = false;
+            domainUpDown1.Enabled = false;
+            comboBox1.Text = "";
+            comboBox3.Text = "";
+            comboBox4.Text = "";
+            errorProvider1.Clear();
         }
 
-
+        /// <summary>
+        /// Triggered when patient was chosen.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             comboBox3.Enabled = true;
@@ -55,16 +78,22 @@ namespace PolyclinicView
             domainUpDown1.Items.Clear();
         }
 
+        /// <summary>
+        /// Triggered when specialization was chosen.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
+
+            SpecializationChoise?.Invoke(this, new PolyclinicBL.PatientsIdAndSpecializationNameEventArgs(PolyclinicBL.Editor.GetId(comboBox1.SelectedItem.ToString()), PolyclinicBL.Editor.GetId(comboBox3.SelectedItem.ToString())));
+
             monthCalendar1.Enabled = false;
             domainUpDown1.Enabled = false;
             button1.Enabled = false;
             comboBox4.Text = "";
             domainUpDown1.Text = "";
             domainUpDown1.Items.Clear();
-            
-            SpecializationChoise?.Invoke(this, new PolyclinicBL.PatientsIdAndSpecializationNameEventArgs(PolyclinicBL.Editor.GetId(comboBox1.SelectedItem.ToString()), PolyclinicBL.Editor.GetId(comboBox3.SelectedItem.ToString())));
             
             if(comboBox4.Items.Count == 0)
             {
@@ -74,64 +103,66 @@ namespace PolyclinicView
             else comboBox4.Enabled = true;
         }
 
+        /// <summary>
+        /// Triggered when date was chosen.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
         private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
         {
-            ChosenDate = e.Start.ToShortDateString();
+            chosenDate = e.Start.ToShortDateString();
 
             domainUpDown1.Text = "";
             domainUpDown1.Items.Clear();
 
-            var availaebleTime = SheduleWorker.GetAvailableTime(Editor.GetId(comboBox1.SelectedItem.ToString()), Editor.GetId(comboBox4.SelectedItem.ToString()), );
+            var AvailableTime = SheduleWorker.GetAvailableTime(Editor.GetId(comboBox1.SelectedItem.ToString()), Editor.GetId(comboBox4.SelectedItem.ToString()), ChosenDoctor.Interval, ChosenDoctor.Shedule, chosenDate, OrderedTickets);
 
-            if (availaebleTime.Count <= 0)
+            if (AvailableTime.Count <= 0)
             {
                 domainUpDown1.Enabled = false;
                 MessageBox.Show("Талон не может быть заказан на выбранный день", "Извините", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                domainUpDown1.Items.AddRange(availaebleTime);
+                domainUpDown1.Items.AddRange(AvailableTime);
                 domainUpDown1.Enabled = true;
                 domainUpDown1.SelectedIndex = 0;
             }
         }
 
+        /// <summary>
+        /// Triggered when ticket was ordered.
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
         private void button1_Click(object sender, EventArgs e)
         {
-            if (String.IsNullOrEmpty(ChosenDate) || domainUpDown1.SelectedIndex == -1)
+            bool save = true;
+            if (String.IsNullOrEmpty(chosenDate) || domainUpDown1.SelectedIndex == -1)
             {
                 MessageBox.Show("Назначьте дату/время!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 save = false;
             }
+
             if (save)
             {
-                //ticketTableAdapter.Insert(M.GetId(comboBox1), M.GetId(comboBox4), ChosenDate, domainUpDown1.Text, M.GetId(comboBox1), false);
-                ClearAll();
+                TicketOrder?.Invoke(this, new TicketEventArgs(Editor.GetId(comboBox1.SelectedItem.ToString()), Editor.GetId(comboBox4.SelectedItem.ToString()), chosenDate, domainUpDown1.Text));
                 MessageBox.Show("Талон Заказан.", "Готово", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Close();
             }
         }
 
-
-        private void ClearAll()
+        /// <summary>
+        /// Changes doctors schedule. Called from "NewSpecialization" form.
+        /// </summary>
+        /// <param name="schedule">Doctors schedule.</param>
+        /// <param name="interval">Interval between doctors visiting.</param>
+        public void RefreshList(string schedule, int interval)
         {
-            button1.Enabled = false ;
-            monthCalendar1.Enabled = false;
-            comboBox3.Enabled = false;
-            comboBox4.Enabled = false;
-            domainUpDown1.Enabled = false;
-            comboBox1.Text = "";
-            comboBox3.Text = "";
-            comboBox4.Text = "";
-            comboBox4.Items.Clear();
-            errorProvider1.Clear();
-        }
-
-        public void RefreshList(string AT, int Interval)
-        {
-            ClearAll();
-            //Doctors[ReplaceableDoc].AppointmentTime = AT;
-            //Doctors[ReplaceableDoc].Interval = Interval;
+            throw new NotImplementedException();
+            ChosenDoctor.Shedule = schedule;
+            ChosenDoctor.Interval = interval;
+            //ADD Update of doctors schedule to the DB
         }
 
 
@@ -140,19 +171,25 @@ namespace PolyclinicView
             button1.Enabled = true;
         }
 
+        /// <summary>
+        /// Triggered when doctor was chosen. 
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">EventArgs</param>
         private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
         {
             bool order = true;
 
-            Doctor doctor = GetDoctorById(PolyclinicBL.Editor.GetId(comboBox4.SelectedItem.ToString()));
+            DoctorsSheduleCheck?.Invoke(this, new DoctorEventArgs(Editor.GetId(comboBox4.SelectedItem.ToString())));
 
-            if (doctor.Shedule == "00:00-00:00" || doctor.Interval == 0)
+            if (ChosenDoctor.Shedule == "00:00-00:00" || ChosenDoctor.Interval == 0)
             {
                 if (DialogResult.OK == MessageBox.Show("Для данного врача не назначено время приёма", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error))
                 {
-                    //ReplaceableDoc = Doctors.FindIndex(0, FindById);
                     NewSpecialization NS = new NewSpecialization(true, false);
                     NS.Owner = this;
+                    INewSpecializationRef = NS;
+                    NewSpecializationOpen?.Invoke(this, EventArgs.Empty);
                     NS.ShowDialog();
                 }
                 order = false;
@@ -168,6 +205,7 @@ namespace PolyclinicView
                 button1.Enabled = false;
             }
         }
+        #endregion
 
         #region Interface implementation
 
@@ -185,10 +223,34 @@ namespace PolyclinicView
             comboBox4.Text = "";
         }
 
-        public Doctor GetDoctorById(int DocId)
+        public void SetChosenDoctor(object doctor)
         {
-            throw new NotImplementedException();
-            //DoctorsSheduleCheck?.Invoke(this, EventArgs.Empty);
+            if (doctor is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(doctor)));
+            }
+            
+            ChosenDoctor = doctor as Doctor;
+
+            if (ChosenDoctor == null)
+            {
+                throw new InvalidCastException(String.Format("Can't cast {0} to {1}", nameof(doctor), typeof(Doctor)));
+            }
+        }
+
+        public void SetOrderedTickets(object tickets)
+        {
+            if(tickets is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(tickets)));
+            }
+
+            OrderedTickets = tickets as List<PolyclinicBL.Ticket>;
+
+            if (OrderedTickets == null)
+            {
+                throw new InvalidCastException(String.Format("Can't cast {0} to {1}", nameof(tickets), typeof(Doctor)));
+            }
         }
 
         #endregion

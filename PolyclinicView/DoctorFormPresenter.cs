@@ -14,7 +14,7 @@ namespace PolyclinicView
         {
             if (doctorView is null)
             {
-                throw new ArgumentNullException("{0} is null", nameof(doctorView));
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(doctorView)));
             }
 
             this.doctorView = doctorView;
