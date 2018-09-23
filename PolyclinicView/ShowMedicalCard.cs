@@ -4,7 +4,12 @@ using System.Windows.Forms;
 
 namespace PolyclinicView
 {
-    public partial class ShowMedicalCard : Form
+    public interface IShowMedicalCard
+    {
+
+    }
+        
+    public partial class ShowMedicalCard : Form, IShowMedicalCard
     {
         //Methods M = new Methods();
         public ShowMedicalCard(int id)

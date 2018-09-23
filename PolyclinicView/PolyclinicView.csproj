@@ -145,6 +145,7 @@
     <Compile Include="ShowMedicalCard.designer.cs">
       <DependentUpon>ShowMedicalCard.cs</DependentUpon>
     </Compile>
+    <Compile Include="ShowMedicalCardPresenter.cs" />
     <Compile Include="ShowStatistics.cs">
       <SubType>Form</SubType>
     </Compile>

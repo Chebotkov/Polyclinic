@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PolyclinicBL;
+using PolyclinicDBManager;
 
 namespace PolyclinicView
 {
@@ -37,7 +39,7 @@ namespace PolyclinicView
 
         private void DoctorView_Statistics_Click(object sender, EventArgs e)
         {
-            ShowStatisticsPresenter showStatisticsPresenter = new ShowStatisticsPresenter(doctorView.IShowStatisticRef);
+            ShowStatisticsPresenter showStatisticsPresenter = new ShowStatisticsPresenter(doctorView.IShowStatisticRef, new ShowStatisticsModel());
         }
 
         private void DoctorView_ReferenceBook_Click(object sender, EventArgs e)

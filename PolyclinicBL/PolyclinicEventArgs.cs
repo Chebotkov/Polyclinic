@@ -107,4 +107,16 @@ namespace PolyclinicBL
             RegionName = RegionName;
         }
     }
+
+    public class DateChangedEventArgs : EventArgs
+    {
+        public DateTime Date { get; private set; }
+        public int DocId { get; private set; }
+
+        public DateChangedEventArgs(int docId, DateTime date)
+        {
+            DocId = docId;
+            Date = date;
+        }
+    }
 }

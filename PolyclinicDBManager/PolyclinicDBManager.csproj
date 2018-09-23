@@ -100,6 +100,7 @@
     <Compile Include="Room.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ShowStatisticsModel.cs" />
     <Compile Include="Specialization.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>
     </Compile>

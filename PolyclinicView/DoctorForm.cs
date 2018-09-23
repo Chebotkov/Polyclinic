@@ -61,9 +61,9 @@ namespace PolyclinicView
         private void OpenPatientsCardBtn_Click(object sender, EventArgs e)
         {
             MedicalCardForm MC = new MedicalCardForm();
-            MC.Show();
             IMedicalCardViewRef = MC;
             OpenPatientsCard_Click?.Invoke(this, EventArgs.Empty);
+            MC.Show();
         }
 
         private void ExitBtn_Click(object sender, EventArgs e)
@@ -74,25 +74,25 @@ namespace PolyclinicView
         private void ReferenceBookBtn_Click(object sender, EventArgs e)
         {
             ReferenceBook RB = new ReferenceBook();
-            RB.Show();
             IReferenceBookViewRef = RB;
             ReferenceBook_Click?.Invoke(this, EventArgs.Empty);
+            RB.Show();
         }              
 
         private void RecordedPatientsBtn_Click(object sender, EventArgs e)
         {
             ListRecordingForm LRF = new ListRecordingForm();
-            LRF.Show();
             IListRecordingViewRef = LRF;
             RecordedPatients_Click?.Invoke(this, EventArgs.Empty);
+            LRF.Show();
         }
 
         private void StatisticsBtn_Click(object sender, EventArgs e)
         {
             ShowStatistics SS = new ShowStatistics();
-            SS.Show();
             IShowStatisticRef = SS;
             Statistics_Click?.Invoke(this, EventArgs.Empty);
+            SS.Show();
         }
         #endregion
 

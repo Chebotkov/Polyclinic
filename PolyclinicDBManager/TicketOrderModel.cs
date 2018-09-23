@@ -42,14 +42,7 @@ namespace PolyclinicDBManager
 
         public object GetDoctorById(int id)
         {
-            Doctor doctor;
-            using (var context = new PolyclinicDBContext())
-            {
-                var query = context.Doctor.Where(d => d.DocId == id);
-                doctor = query.ToList()[0];
-            }
-
-            return doctor;
+            return iCRUDMethods.GetDoctorById(id);
         }
 
         public IEnumerable GetDoctorsByCriterion(int patientsRegionId, int SpecializationId)

@@ -39,4 +39,11 @@ namespace PolyclinicBL
         void AddNewRegion(int regionId, string regionName);
         void AddNewStreet(int regionsId, string street);
     }
+
+    public interface IShowStatisticsModel
+    {
+        IEnumerable GetDoctors();
+        IEnumerable GetDoctorsStatistic(int docId);
+        IEnumerable GetRecordedPatients(int docId, DateTime date);
+    }
 }

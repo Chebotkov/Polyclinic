@@ -14,6 +14,7 @@ namespace PolyclinicDBManager
         IEnumerable GetDoctors();
         IEnumerable GetPatientsFullNames();
         IEnumerable GetSpecializationsNames();
+        Doctor GetDoctorById(int id);
     }
 
     public class CRUDMethods : ICRUDMethods
@@ -115,5 +116,18 @@ namespace PolyclinicDBManager
 
             return doctors;
         }
+
+        public Doctor GetDoctorById(int id)
+        {
+            Doctor doctor;
+            using (var context = new PolyclinicDBContext())
+            {
+                var query = context.Doctor.Where(d => d.DocId == id);
+                doctor = query.ToList()[0];
+            }
+
+            return doctor;
+        }
+
     }
 }
