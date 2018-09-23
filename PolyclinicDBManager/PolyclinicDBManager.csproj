@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CRUDMethods.cs" />
     <Compile Include="MainFormModel.cs" />
     <Compile Include="Diagnosis.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>
@@ -94,6 +95,7 @@
     <Compile Include="Region.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="RegistersModel.cs" />
     <Compile Include="RegistrationModel.cs" />
     <Compile Include="Room.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>

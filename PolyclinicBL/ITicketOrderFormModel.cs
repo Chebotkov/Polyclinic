@@ -12,10 +12,8 @@ namespace PolyclinicBL
         IEnumerable GetDoctors();
         IEnumerable GetDoctorsByCriterion(int patientsRegionId, int SpecializationId);
         object GetDoctorById(int id);
-        IEnumerable GetPatients();
         IEnumerable GetPatientsFullNames();
         int GetPatientsRegion(int patientsId);
-        IEnumerable GetSpecializations();
         IEnumerable GetSpecializationsNames();
         int GetTherapistId();
         List<PolyclinicBL.Ticket> GetOrderedTickets();
@@ -24,7 +22,21 @@ namespace PolyclinicBL
 
     public interface INewSpecializationModel
     {
-        IEnumerable GetSpecializations();
+        void AddNewSpecialization(string specializationName);
+        void AddNewSchedule(int specializationId, string schedule, int interval);
+        void AddNewDoctorsSchedule(int doctorsId, string schedule, int interval);
+        IEnumerable GetDoctors();
         IEnumerable GetSpecializationsNames();
+    }
+
+    public interface IRegistersModel
+    {
+        IEnumerable GetDoctors();
+        IEnumerable GetPatients();
+        IEnumerable GetRegions();
+        IEnumerable GetSpecializations();
+        IEnumerable GetStreetsByRegionsId(int regionsId);
+        void AddNewRegion(int regionId, string regionName);
+        void AddNewStreet(int regionsId, string street);
     }
 }

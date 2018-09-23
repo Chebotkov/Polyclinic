@@ -10,30 +10,100 @@ namespace PolyclinicDBManager
 {
     public class NewSpecializationModel : INewSpecializationModel
     {
-        public IEnumerable GetSpecializations()
+        private ICRUDMethods iCRUDMethods = new CRUDMethods();
+
+        public NewSpecializationModel()
         {
-            List<Specialization> specializations;
-            using (var context = new PolyclinicDBContext())
+
+        }
+
+        public NewSpecializationModel(ICRUDMethods crudMethods)
+        {
+            if (crudMethods is null)
             {
-                IQueryable<Specialization> query = context.Specialization.AsNoTracking();
-                specializations = query.ToList();
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(crudMethods)));
             }
 
-            return specializations;
+            iCRUDMethods = crudMethods;
         }
 
         public IEnumerable GetSpecializationsNames()
         {
-            var specializations = GetSpecializations();
+            return iCRUDMethods.GetSpecializationsNames();
+        }
 
-            List<string> specializationsNames = new List<string>();
-
-            foreach (Specialization specialization in specializations)
+        public void AddNewSpecialization(string specializationName)
+        {
+            if (specializationName is null)
             {
-                specializationsNames.Add(specialization.id + "." + specialization.SpecializationName);
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(specializationName)));
             }
 
-            return specializationsNames;
+            using (var context = new PolyclinicDBContext())
+            {
+                IQueryable<Specialization> query = context.Specialization;
+
+                Specialization specialization = new Specialization
+                {
+                    SpecializationName = specializationName
+                };
+                context.Specialization.Add(specialization);
+
+                context.SaveChanges();
+            }
+        }
+
+        public void AddNewSchedule(int specializationId, string schedule, int interval)
+        {
+            if (schedule is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(schedule)));
+            }
+
+            using (var context = new PolyclinicDBContext())
+            {
+                IQueryable<DoctorsTimeTable> query = context.DoctorsTimeTable;
+
+                DoctorsTimeTable doctorsTimeTable = new DoctorsTimeTable()
+                {
+                    SpecId = specializationId,
+                    Shedule = schedule,
+                    Interval = interval
+                };
+                context.DoctorsTimeTable.Add(doctorsTimeTable);
+
+                context.SaveChanges();
+            }
+        }
+
+        public void AddNewDoctorsSchedule(int doctorsId, string schedule, int interval)
+        {
+            if (schedule is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(schedule)));
+            }
+
+            using (var context = new PolyclinicDBContext())
+            {
+                IQueryable<Doctor> query = context.Doctor;
+
+                foreach (Doctor doctor in query.ToList())
+                {
+                    if (doctor.DocId == doctorsId)
+                    {
+                        doctor.Shedule = schedule;
+                        doctor.Interval = interval;
+                        break;
+                    }
+                }
+
+                context.SaveChanges();
+            }
+        }
+
+        public IEnumerable GetDoctors()
+        {
+            return iCRUDMethods.GetDoctors();
         }
     }
 }

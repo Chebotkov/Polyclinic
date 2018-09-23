@@ -51,7 +51,7 @@ namespace PolyclinicView
 
         private void RegistratorView_Registers_Click(object sender, EventArgs e)
         {
-            RegistersFormPresenter registersFormPresenter = new RegistersFormPresenter(registratorView.IRegistersViewRef);
+            RegistersFormPresenter registersFormPresenter = new RegistersFormPresenter(registratorView.IRegistersViewRef, new RegistersModel());
         }
 
         private void RegistratorView_ReferenceBook_Click(object sender, EventArgs e)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PolyclinicBL;
 
 namespace PolyclinicView
 {
@@ -14,26 +16,33 @@ namespace PolyclinicView
     {
         INewDoctorView INewDoctorViewRef { get; set; }
         INewSpecialization INewSpecializationRef { get; set; }
+        event EventHandler<RegionsEventHandler> AddNewRegion;
+        event EventHandler<StreetsEventHandler> AddNewStreet;
         event EventHandler NewDoctor_Click;
         event EventHandler NewSpecialization_Click;
+        event EventHandler GetEntities;
+        event EventHandler<StreetsEventHandler> FillStreets;
+
+        void SetEntities(IEnumerable Patients, IEnumerable Doctors, IEnumerable Specializations, IEnumerable Regions);
+        void SetStreets(IEnumerable Streets);
     }
 
     public partial class RegistersForm : Form, IRegistersView
     {
-        /*Database1DataSetTableAdapters.RegionsTableAdapter regionsTableAdapter = new Database1DataSetTableAdapters.RegionsTableAdapter();
-        Database1DataSetTableAdapters.StreetsTableAdapter StreetsTableAdapter = new Database1DataSetTableAdapters.StreetsTableAdapter();
+        private IEnumerable Patients;
+        private IEnumerable Doctors;
+        private IEnumerable Regions;
+        private IEnumerable Specializations;
+        private IEnumerable Streets;
 
-        public List<Patient> Patients = new List<Patient>();
-        public List<Doctor> Doctors = new List<Doctor>();
-        public List<Region> Regions = new List<Region>();
-        public List<Specialization> Specializations = new List<Specialization>();
-        Filling F;
-        Methods M = new Methods();*/
-        
         public INewDoctorView INewDoctorViewRef { get; set; }
         public INewSpecialization INewSpecializationRef { get; set; }
+        public event EventHandler<RegionsEventHandler> AddNewRegion;
+        public event EventHandler<StreetsEventHandler> AddNewStreet;
         public event EventHandler NewDoctor_Click;
-        public event EventHandler NewSpecialization_Click; 
+        public event EventHandler NewSpecialization_Click;
+        public event EventHandler GetEntities;
+        public event EventHandler<StreetsEventHandler> FillStreets;
 
         public RegistersForm()
         {
@@ -62,17 +71,12 @@ namespace PolyclinicView
             textBox1.Enabled = false;
             RefreshFields();
 
-            //M.AddDoctorsToComboBox(Doctors, comboBox1);
+            comboBox1.DataSource = Doctors;
         }
 
         private void RegistersForm_Load(object sender, EventArgs e)
         {
-            /*F = new Filling();
-            F.PatientsListFilling(Patients);
-            F.DoctorsListFilling(Doctors);
-            F.RegionsFilling(Regions);
-            F.SpecializationsFilling(Specializations);
-            Doctors.Sort();*/
+            GetEntities?.Invoke(this, EventArgs.Empty);
         }
 
         private void radioButton5_CheckedChanged(object sender, EventArgs e)
@@ -95,7 +99,7 @@ namespace PolyclinicView
             textBox1.Enabled = false;
             RefreshFields();
 
-            //M.AddPatientsToComboBox(Patients, comboBox1);
+            comboBox1.DataSource = Patients;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -129,36 +133,35 @@ namespace PolyclinicView
                     MessageBox.Show("Укажите № участка", "Прошу тебя, уважаемый", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     save = false;
                 }
-                
-                /*else if (M.GetRegion(maskedTextBox1.Text) == "666")
+
+                else if (PolyclinicBL.Editor.GetRegion(maskedTextBox1.Text) == "666")
                 {
                     MessageBox.Show("Укажите имя участка", "Прошу тебя, уважаемый", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     save = false;
                 }
 
-                else if (M.IsEnteredRegionCorrect(maskedTextBox1.Text, Regions) == -1)
-                {                    save = false;
-
+                else if (PolyclinicBL.Editor.IsEnteredRegionCorrect(maskedTextBox1.Text, Regions) == -1)
+                {
+                    save = false;
                     MessageBox.Show("Название районов не совпадает. Если вы хотели добавить новый участок, укажите номер, несодержащийся в списке.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {
-                    foreach (Region r in Regions)
+                    FillStreets?.Invoke(this, new StreetsEventHandler(PolyclinicBL.Editor.GetNum(maskedTextBox1.Text)));
+
+                    foreach (string street in Streets)
                     {
-                        foreach (string s in r.Addresses)
+                        if (street.ToLower() == ("ул. " + Editor.GetStreet(maskedTextBox2.Text)).ToLower())
                         {
-                            if (s.ToLower() == ("ул. " + M.GetStreet(maskedTextBox2.Text)).ToLower() && r.RegNum == M.GetNum(maskedTextBox1.Text))
-                            {
-                                MessageBox.Show("Данный адрес уже имеется", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                save = false;
-                                break;
-                            }
+                            MessageBox.Show("Данный адрес уже имеется", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            save = false;
+                            break;
                         }
                     }
                 }
                 if (save)
                 {
-                    int checkReg = M.GetNum(maskedTextBox1.Text);
+                    int checkReg = PolyclinicBL.Editor.GetNum(maskedTextBox1.Text);
                     if (checkReg < 0)
                     {
                         MessageBox.Show("Не введён номер участка, либо указан неверный номер", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -168,31 +171,32 @@ namespace PolyclinicView
 
                 if (save)
                 {
-                    Region reg = new Region();
-                    reg.RegNum = M.GetNum(maskedTextBox1.Text);
-                    reg.RegName = M.GetRegion(maskedTextBox1.Text);
-                    reg.Addresses.Add("ул. " + M.GetStreet(maskedTextBox2.Text));
+                    int RegNum = Editor.GetNum(maskedTextBox1.Text);
+                    string RegName = Editor.GetRegion(maskedTextBox1.Text);
+                    string street = ("ул. " + Editor.GetStreet(maskedTextBox2.Text));
+
                     bool exists = false;
-                    foreach (Region r in Regions)
+                    foreach (var r in Regions)
                     {
-                        if (M.GetNum(maskedTextBox1.Text) == r.RegNum)
+                        if (RegNum == Editor.GetId(r.ToString()))
                         {
+                            AddNewStreet?.Invoke(this, new StreetsEventHandler(RegNum, street));
                             exists = true;
                             break;
                         }
                     }
+
                     if (!exists)
                     {
-                        comboBox1.Items.Add(reg.RegNum + ". " + reg.RegName);
-                        regionsTableAdapter.Insert(reg.RegNum, reg.RegName);
+                        comboBox1.Items.Add(RegNum + ". " + RegName);
+                        AddNewRegion?.Invoke(this, new RegionsEventHandler(RegNum, RegName));
                     }
-                    Regions.Add(reg);
-                    StreetsTableAdapter.Insert(reg.RegNum, "ул. " + M.GetStreet(maskedTextBox2.Text));
-                    textBox2.Text += "Участок №" + reg.RegNum + ", ул. " + M.GetStreet(maskedTextBox2.Text) + Environment.NewLine;
+                    
+                    textBox2.Text += "Участок №" + RegNum + ", ул. " + street + Environment.NewLine;
                     maskedTextBox2.Clear();
                     maskedTextBox1.Clear();
                     MessageBox.Show("Участок с адресом успешно добавлены!", "Готово", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }*/
+                }
             }
             if (radioButton3.Checked)
             {
@@ -228,8 +232,7 @@ namespace PolyclinicView
             textBox1.Enabled = true;
             RefreshFields();
 
-            /*foreach (Region r in Regions)
-                comboBox1.Items.Add(r.RegNum + ". " + r.RegName);*/
+            comboBox1.DataSource = Regions;
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
@@ -253,7 +256,7 @@ namespace PolyclinicView
             textBox1.Enabled = true;
             RefreshFields();
 
-            //M.AddSpecializationsToComboBox(Specializations, comboBox1);
+            comboBox1.DataSource = Specializations;
         }
 
         private void RefreshFields()
@@ -321,7 +324,7 @@ namespace PolyclinicView
             }*/
 
         }
-        
+
         public void RefreshComboboxes(char c)
         {
             comboBox1.Items.Clear();
@@ -359,6 +362,25 @@ namespace PolyclinicView
                         break;
                     }
             }*/
+        }
+
+        public void SetEntities(IEnumerable Patients, IEnumerable Doctors, IEnumerable Specializations, IEnumerable Regions)
+        {
+            //Empty references
+            this.Patients = Patients;
+            this.Doctors = Doctors;
+            this.Specializations = Specializations;
+            this.Regions = Regions;
+        }
+
+        public void SetStreets(IEnumerable streets)
+        {
+            if (streets is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(streets)));
+            }
+
+            Streets = streets;
         }
     }
 }

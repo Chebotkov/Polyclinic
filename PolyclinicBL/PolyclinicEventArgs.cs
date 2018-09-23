@@ -41,4 +41,70 @@ namespace PolyclinicBL
             ChosenTime = chosenTime;
         }
     }
+
+    public class SpecializationEventArgs : EventArgs
+    {
+        public string SpecializationName { get; private set; }
+
+        public SpecializationEventArgs(string specializationName)
+        {
+            SpecializationName = specializationName;
+        }
+    }
+
+    public class ScheduleEventArgs : EventArgs
+    {
+        public int SpecializationId { get; private set; }
+        public string Schedule { get; private set; }
+        public int Interval { get; private set; }
+
+        public ScheduleEventArgs(int specializationId, string schedule, int interval)
+        {
+            SpecializationId = specializationId;
+            Schedule = schedule;
+            Interval = interval;
+        }
+    }
+
+    public class DoctorsTimeEventArgs : EventArgs
+    {
+        public int DoctorsId { get; private set; }
+        public string Schedule { get; private set; }
+        public int Interval { get; private set; }
+        public DoctorsTimeEventArgs(int doctorsId, string schedule, int interval)
+        {
+            DoctorsId = doctorsId;
+            Schedule = schedule;
+            Interval = interval;
+        }
+    }
+
+    public class StreetsEventHandler : EventArgs
+    {
+        public int RegionsId { get; private set; }
+        public string StreetName { get; private set; }
+
+        public StreetsEventHandler(int regionsId)
+        {
+            RegionsId = regionsId;
+        }
+
+        public StreetsEventHandler (int regionsId, string streetName)
+        {
+            RegionsId = regionsId;
+            StreetName = streetName;
+        }
+    }
+
+    public class RegionsEventHandler : EventArgs
+    {
+        public int RegionNumber { get; private set; }
+        public string RegionName { get; private set; } 
+
+        public RegionsEventHandler(int regionNumber, string regionName)
+        {
+            RegionNumber = regionNumber;
+            RegionName = RegionName;
+        }
+    }
 }

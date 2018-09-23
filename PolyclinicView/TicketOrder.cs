@@ -159,10 +159,8 @@ namespace PolyclinicView
         /// <param name="interval">Interval between doctors visiting.</param>
         public void RefreshList(string schedule, int interval)
         {
-            throw new NotImplementedException();
             ChosenDoctor.Shedule = schedule;
             ChosenDoctor.Interval = interval;
-            //ADD Update of doctors schedule to the DB
         }
 
 

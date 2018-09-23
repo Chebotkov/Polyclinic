@@ -8,19 +8,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PolyclinicBL;
 
 namespace PolyclinicView
 {
     public interface INewSpecialization
     {
         event EventHandler NewSpecializationLoad;
+        event EventHandler DoctorsFill;
+        event EventHandler<SpecializationEventArgs> AddNewSpecialization;
+        event EventHandler<ScheduleEventArgs> AddNewSchedule;
+        event EventHandler<DoctorsTimeEventArgs> AddNewDoctorsSchedule;
 
         void SetSpecializations(IEnumerable specializations);
+        void SetDoctors(IEnumerable doctors);
     }
 
     public partial class NewSpecialization : Form, INewSpecialization
     {
         public event EventHandler NewSpecializationLoad;
+        public event EventHandler DoctorsFill;
+        public event EventHandler<SpecializationEventArgs> AddNewSpecialization;
+        public event EventHandler<ScheduleEventArgs> AddNewSchedule;
+        public event EventHandler<DoctorsTimeEventArgs> AddNewDoctorsSchedule;
+
+        private IEnumerable Doctors;
+        private IEnumerable Specializations;
 
         private bool isOpenedFromTO = false;
         private bool IsOpenedFromRF = false;
@@ -39,12 +52,10 @@ namespace PolyclinicView
 
         private void NewSpecialization_Load(object sender, EventArgs e)
         {
-            /*F.DoctorsListFilling(Doctors);
-            F.SpecializationsFilling(Specializations);
-            */
-
             NewSpecializationLoad?.Invoke(this, EventArgs.Empty);
 
+            comboBox1.DataSource = Specializations;
+            comboBox3.DataSource = Specializations;
             SetEnable(true);
             radioButton1.Select();
         }
@@ -54,7 +65,7 @@ namespace PolyclinicView
         {
             SetEnable(true);
         }
-        
+
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
             SetEnable(false);
@@ -73,11 +84,11 @@ namespace PolyclinicView
                 MessageBox.Show("Введите наименование специальности", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 save = false;
             }
-            /*else
+            else
             {
-                foreach (Specialization s in Specializations)
+                foreach (var specialization in Specializations)
                 {
-                    if (s.SpecializationName == textBox1.Text)
+                    if (PolyclinicBL.Editor.GetSpecialization(specialization.ToString()) == textBox1.Text)
                     {
                         MessageBox.Show("Данная специальность уже имеется", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         save = false;
@@ -87,13 +98,15 @@ namespace PolyclinicView
             }
             if (save)
             {
-                comboBox1.Items.Add(textBox1.Text);
-                comboBox3.Items.Add(textBox1.Text);
-                SpecializationsTableAdapter.Insert(textBox1.Text);
-                F.SpecializationsFilling(Specializations);
+                AddNewSpecialization?.Invoke(this, new SpecializationEventArgs(textBox1.Text));
+                NewSpecializationLoad?.Invoke(this, EventArgs.Empty);
+
+                comboBox1.DataSource = Specializations;
+                comboBox3.DataSource = Specializations;
+
                 textBox1.Clear();
                 MessageBox.Show("Специальность успешно добавлена!", "Готово", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }*/
+            }
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -116,32 +129,14 @@ namespace PolyclinicView
                 MessageBox.Show("Введите интервал работы!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 save = false;
             }
-            /*if (save)
+            if (save)
             {
-                {
-                    int id=0;
-                    foreach(Specialization s in Specializations)
-                    {
-                        if(s.SpecializationName == comboBox1.SelectedItem.ToString())
-                        {
-                            id = s.SpecId;
-                            break;
-                        }
-                    }
-
-                    Schedule sc = new Schedule()
-                    {
-                        SpecId = id,
-                        AppointmentTime = maskedTextBox1.Text,
-                        Interval = Convert.ToInt32(maskedTextBox2.Text)
-                    };
-                    doctorsTimeTableTable.Insert(id, sc.AppointmentTime, sc.Interval);
-                    F.SpecializationsFilling(Specializations);
-                    MessageBox.Show("Данные успешно добавлены", "Готово", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    radioButton1.Select(); //
-                    radioButton2.Select(); // Clear
-                }
-            }*/
+                AddNewSchedule?.Invoke(this, new ScheduleEventArgs(Editor.GetId(comboBox1.SelectedItem.ToString()), maskedTextBox1.Text, Int32.Parse(maskedTextBox2.Text)));
+                
+                MessageBox.Show("Данные успешно добавлены", "Готово", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                radioButton1.Select(); //
+                radioButton2.Select(); // Clear
+            }
         }
 
         private void radioButton3_CheckedChanged(object sender, EventArgs e)
@@ -205,22 +200,14 @@ namespace PolyclinicView
             comboBox2.Items.Clear();
             comboBox4.Items.Clear();
             comboBox5.Items.Clear();
-
-            //M.SetInteravalsAndAppointmentTime(Specializations, comboBox3, comboBox4, comboBox5);
-
+            
             if (comboBox4.Items.Count == 0)
             {
-                MessageBox.Show("Для этой специальности не указан режим рыботы", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Для этой специальности не указан режим работы", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 comboBox2.Enabled = false;
             }
 
-            /*foreach (Doctor d in Doctors)
-            {
-                if(d.Specialization == comboBox3.SelectedItem.ToString())
-                {
-                    comboBox2.Items.Add(d.id + ". " + d.LastName + " " + d.Name + " " + d.Patronymic);
-                }
-            }*/
+            DoctorsFill?.Invoke(this, EventArgs.Empty);
 
             if (comboBox3.Items.Count == 0)
             {
@@ -248,44 +235,51 @@ namespace PolyclinicView
 
         private void button3_Click(object sender, EventArgs e)
         {
-            /*foreach(Doctor d in Doctors)
-            {
-                if(d.id == M.GetId(comboBox2))
-                {
-                    d.AppointmentTime = comboBox4.SelectedItem.ToString();
-                    d.Interval = Convert.ToInt32(comboBox5.Text);
-                    doctorsTableAdapter.UpdateQuery(d.Interval, d.AppointmentTime , d.id);
-                    if(isOpenedFromTO)
-                    {
-                        TicketOrderForm ns = this.Owner as TicketOrderForm;
-                        ns.RefreshList(d.AppointmentTime, d.Interval);
-                    }
-                    break;
-                }
-            }*/
+            string schedule = comboBox4.SelectedItem.ToString();
+            int interval = Convert.ToInt32(comboBox5.Text);
+
+            AddNewDoctorsSchedule?.Invoke(this, new DoctorsTimeEventArgs(Editor.GetId(comboBox2.SelectedItem.ToString()), schedule, interval));
+                    
             MessageBox.Show("Время работы врача успешно установлено", "Готово!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             if (isOpenedFromTO)
             {
                 TicketOrderForm ticketOrderForm = this.Owner as TicketOrderForm;
-                ticketOrderForm.RefreshList(comboBox4.SelectedItem.ToString(), Convert.ToInt32(comboBox5.Text));
+                ticketOrderForm.RefreshList(schedule, interval);
                 Close();
             }
+
             radioButton1.Select();
         }
 
         private void NewSpecialization_FormClosed(object sender, FormClosedEventArgs e)
         {
-            if(IsOpenedFromRF)
+            if (IsOpenedFromRF)
             {
                 RegistersForm RF = this.Owner as RegistersForm;
                 RF.RefreshComboboxes('s');
             }
         }
 
+        #region Interface implementation
         public void SetSpecializations(IEnumerable specializations)
         {
-            comboBox1.DataSource = specializations;
-            comboBox3.DataSource = specializations;
+            if(specializations is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(specializations)));
+            }
+
+            Specializations = specializations;
         }
+
+        public void SetDoctors(IEnumerable doctors)
+        {
+            if(doctors is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(doctors)));
+            }
+
+            Doctors = doctors;
+        }
+        #endregion
     }
 }

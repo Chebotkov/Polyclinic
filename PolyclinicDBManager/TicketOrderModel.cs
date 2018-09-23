@@ -11,6 +11,23 @@ namespace PolyclinicDBManager
 {
     public class TicketOrderModel : ITicketOrderFormModel
     {
+        private ICRUDMethods iCRUDMethods = new CRUDMethods();
+
+        public TicketOrderModel()
+        {
+
+        }
+
+        public TicketOrderModel(ICRUDMethods crudMethods)
+        {
+            if (crudMethods is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(crudMethods)));
+            }
+
+            iCRUDMethods = crudMethods;
+        }
+
         public IEnumerable GetDoctors()
         {
             List<Doctor> doctors;
@@ -69,69 +86,20 @@ namespace PolyclinicDBManager
             return id;
         }
 
-        public IEnumerable GetSpecializations()
-        {
-            List<Specialization> specializations;
-            using (var context = new PolyclinicDBContext())
-            {
-                IQueryable<Specialization> query = context.Specialization.AsNoTracking();
-                specializations = query.ToList();
-            }
-
-            return specializations;
-        }
-
-        public IEnumerable GetPatients()
-        {
-            List<Patient> patients;
-            using (var context = new PolyclinicDBContext())
-            {
-                IQueryable<Patient> query = context.Patient.AsNoTracking();
-                patients = query.ToList();
-            }
-
-            return patients;
-        }
 
         public IEnumerable GetSpecializationsNames()
         {
-            var specializations = GetSpecializations();
-
-            List<string> specializationsNames = new List<string>();
-
-            foreach (Specialization specialization in specializations)
-            {
-                specializationsNames.Add(specialization.id + "." + specialization.SpecializationName);
-            }
-
-            return specializationsNames;
+            return iCRUDMethods.GetSpecializationsNames();
         }
 
         public IEnumerable GetPatientsFullNames()
         {
-            var patients = GetPatients();
-
-            List<string> patientsFullNames = new List<string>();
-
-            foreach (Patient patient in patients)
-            {
-                patientsFullNames.Add(String.Format("{0}.{1} {2} {3}", patient.id, patient.LastName, patient.FirstName, patient.Patronymic));
-            }
-
-            return patientsFullNames;
+            return iCRUDMethods.GetPatientsFullNames();
         }
 
         public int GetPatientsRegion(int patientsId)
         {
-            int patientsRegion = 0;
-
-            using (var context = new PolyclinicDBContext())
-            {
-                var patient = context.Patient.Where(p => p.id == patientsId);
-                patientsRegion = patient.ToList()[0].Region;
-            }
-            
-            return patientsRegion;
+            return iCRUDMethods.GetPatientsRegion(patientsId);
         }
 
         public List<PolyclinicBL.Ticket> GetOrderedTickets()
