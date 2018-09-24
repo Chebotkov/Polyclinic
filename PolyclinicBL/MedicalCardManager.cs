@@ -12,11 +12,24 @@ namespace PolyclinicBL
     public interface IMedicalCardManager
     {
         void CreateMedicalCard(Patient patient);
+        TextReader ReadMedicalCard(int patientsId);
     }
 
     public class MedicalCardManager : IMedicalCardManager
     {
-        public string ProjectName { get; set; } = "PolyclinicAPP";
+        public string ProjectName { get; private set; } = "PolyclinicAPP";
+
+        public MedicalCardManager() { }
+        
+        public MedicalCardManager(string projectName)
+        {
+            if (projectName is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(projectName)));
+            }
+
+            ProjectName = projectName;
+        }
 
         public void CreateMedicalCard(Patient patient)
         {
@@ -25,7 +38,7 @@ namespace PolyclinicBL
                 throw new ArgumentNullException(String.Format("{0} is null", nameof(patient)));
             }
 
-            using (StreamWriter write = new StreamWriter(GetApplicationsPath() + @"\Files\MedicalCards\" + patient.id.ToString() + ".txt", false, System.Text.Encoding.Default))
+            using (StreamWriter write = new StreamWriter(GetMedicalCardPath(patient.id), false, System.Text.Encoding.Default))
             {
                 write.WriteLine(String.Format("ФИО: {0} {1} {2}", patient.LastName, patient.FirstName, patient.Patronymic));
                 write.WriteLine("Дата рождения: " + patient.Birth.ToShortDateString() + Environment.NewLine + "Пол: " + (patient.Gender == true ? "Мужской" : "Женский") + Environment.NewLine + "Адрес: " + patient.Address + Environment.NewLine + "Дата регистрации: " + ((DateTime)patient.RegistrationDate).ToShortDateString() + Environment.NewLine);
@@ -46,6 +59,16 @@ namespace PolyclinicBL
             }
 
             return currentPath;
+        }
+
+        public string GetMedicalCardPath(int patientsId)
+        {
+            return String.Format(GetApplicationsPath() + @"\Files\MedicalCards\" + patientsId.ToString() + ".txt");
+        }
+
+        public TextReader ReadMedicalCard(int patientsId)
+        {
+            return new StreamReader(GetMedicalCardPath(patientsId), System.Text.Encoding.Default); 
         }
     }
 }

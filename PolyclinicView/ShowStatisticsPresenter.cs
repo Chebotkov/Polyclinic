@@ -39,7 +39,7 @@ namespace PolyclinicView
         
         private void IShowStatistic_MedicalCardOpen(object sender, EventArgs e)
         {
-            ShowMedicalCardPresenter showMedicalCardPresenter = new ShowMedicalCardPresenter(iShowStatistic.iShowMedicalCard);
+            ShowMedicalCardPresenter showMedicalCardPresenter = new ShowMedicalCardPresenter(iShowStatistic.iShowMedicalCard, new MedicalCardManager());
         }
 
         private void IShowStatistic_ShowDoctorsStatistic(object sender, DoctorEventArgs e)

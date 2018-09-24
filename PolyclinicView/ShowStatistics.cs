@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using PolyclinicBL;
+﻿using PolyclinicBL;
 using PolyclinicDBManager;
+using System;
+using System.Collections;
+using System.Windows.Forms;
 
 namespace PolyclinicView
 {
@@ -36,6 +29,7 @@ namespace PolyclinicView
 
         public IShowMedicalCard iShowMedicalCard { get; private set; }
         private IEnumerable Statistics;
+        private DateTime chosenDate = DateTime.Today;
 
         public ShowStatistics()
         {
@@ -56,15 +50,16 @@ namespace PolyclinicView
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            label7.Text = "Явившиеся пациенты: 0";
-            label6.Text = "Неявившиеся пациенты: 0";
-            ShowDoctorsStatistic?.Invoke(this, new DoctorEventArgs(Editor.GetId(comboBox1.SelectedItem.ToString())));
-
-            listBox1.Items.Clear();
+            listBox1.DataSource = null;
             listBox1.Enabled = false;
             monthCalendar1.Enabled = true;
             button1.Hide();
             monthCalendar1.DateSelected += new DateRangeEventHandler(monthCalendar1_DateChanged);
+            label7.Text = "Явившиеся пациенты: 0";
+            label6.Text = "Неявившиеся пациенты: 0";
+
+            ShowDoctorsStatistic?.Invoke(this, new DoctorEventArgs(Editor.GetId(comboBox1.SelectedItem.ToString())));
+
 
             label8.Text = "Статистика посещений на сегодня: ";
 
@@ -86,16 +81,14 @@ namespace PolyclinicView
             label5.Text = "Неявившиеся пациенты: " + NonArrived;
         }
 
-        private int GetId(ComboBox comboBox)
-        {
-            return Convert.ToInt32(comboBox.SelectedItem.ToString().Substring(0, comboBox.SelectedItem.ToString().IndexOf(".")));
-        }
-
         private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
         {
+            chosenDate = e.Start.Date;
             button1.Hide();
-            listBox1.Items.Clear();
+            listBox1.DataSource = null;
             listBox1.Enabled = true;
+
+            DateChange?.Invoke(this, new DateChangedEventArgs(Editor.GetId(comboBox1.SelectedItem.ToString()), chosenDate));
             label8.Text = "Статистика посещений на: " + e.Start.ToShortDateString();
 
             label7.Text = "Явившиеся пациенты: 0";
@@ -109,8 +102,6 @@ namespace PolyclinicView
                     break;
                 }
             }
-
-            DateChange?.Invoke(this, new DateChangedEventArgs(Editor.GetId(comboBox1.SelectedItem.ToString()), e.Start.Date));
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -122,7 +113,7 @@ namespace PolyclinicView
         {
             if(listBox1.SelectedIndex != -1)
             {
-                ShowMedicalCard SMC = new ShowMedicalCard(Convert.ToInt32(listBox1.SelectedItem.ToString().Substring(0, listBox1.SelectedItem.ToString().IndexOf('.'))));
+                ShowMedicalCard SMC = new ShowMedicalCard(Editor.GetId(listBox1.SelectedItem.ToString()));
                 iShowMedicalCard = SMC;
                 MedicalCardOpen?.Invoke(this, EventArgs.Empty);
                 SMC.ShowDialog();
