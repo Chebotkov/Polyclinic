@@ -189,9 +189,9 @@ namespace PolyclinicView
         {
             ReferenceBook RB = new ReferenceBook(true);
             RB.Owner = this;
-            RB.ShowDialog();
             IReferenceBookViewRef = RB;
             ReferenceBook_Click?.Invoke(this, EventArgs.Empty);
+            RB.ShowDialog();
         }
 
         public void RefreshDrugsAndDiagnosis()

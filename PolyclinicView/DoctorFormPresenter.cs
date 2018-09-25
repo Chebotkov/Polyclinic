@@ -44,7 +44,7 @@ namespace PolyclinicView
 
         private void DoctorView_ReferenceBook_Click(object sender, EventArgs e)
         {
-            ReferenceBookPresenter referenceBookPresenter = new ReferenceBookPresenter(doctorView.IReferenceBookViewRef);
+            ReferenceBookPresenter referenceBookPresenter = new ReferenceBookPresenter(doctorView.IReferenceBookViewRef, new ReferenceBookModel());
         }
     }
 }

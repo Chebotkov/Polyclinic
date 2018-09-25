@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PolyclinicBL;
+using PolyclinicDBManager;
 
 namespace PolyclinicView
 {
@@ -22,7 +24,7 @@ namespace PolyclinicView
 
         private void IMedicalCardView_ReferenceBook_Click(object sender, EventArgs e)
         {
-            ReferenceBookPresenter referenceBookPresenter = new ReferenceBookPresenter(iMedicalCardView.IReferenceBookViewRef);
+            ReferenceBookPresenter referenceBookPresenter = new ReferenceBookPresenter(iMedicalCardView.IReferenceBookViewRef, new ReferenceBookModel());
         }
     }
 }

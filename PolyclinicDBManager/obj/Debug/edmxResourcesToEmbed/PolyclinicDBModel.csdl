@@ -88,7 +88,6 @@
   <EntityType Name="Diagnosis">
     <Key>
       <PropertyRef Name="DiagnosisName" />
-      <PropertyRef Name="Description" />
     </Key>
     <Property Name="DiagnosisName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
@@ -96,7 +95,6 @@
   <EntityType Name="Drug">
     <Key>
       <PropertyRef Name="DrugName" />
-      <PropertyRef Name="Description" />
     </Key>
     <Property Name="DrugName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />

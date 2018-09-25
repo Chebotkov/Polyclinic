@@ -16,7 +16,7 @@ namespace PolyclinicDBManager
     public partial class PolyclinicDBContext : DbContext
     {
         public PolyclinicDBContext()
-            : base("PolyclinicDBContext")
+            : base("name=PolyclinicDBContext")
         {
         }
     

@@ -60,4 +60,28 @@ namespace PolyclinicBL
             VisitingTime = visitingTime;
         }
     }
+
+    public class Drug
+    {
+        public string Medicines { get; private set; }
+        public string Description { get; private set; }
+
+        public Drug(string Medicines, string Description)
+        {
+            this.Medicines = Medicines;
+            this.Description = Description;
+        }
+    }
+
+    public class Diagnoses
+    {
+        public string Diagnosis { get; private set; }
+        public string Description { get; private set; }
+
+        public Diagnoses(string Diagnosis, string Description)
+        {
+            this.Diagnosis = Diagnosis;
+            this.Description = Description;
+        }
+    }
 }

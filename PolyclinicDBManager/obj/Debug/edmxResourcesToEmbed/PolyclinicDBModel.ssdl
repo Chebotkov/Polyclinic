@@ -1,11 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="PolyclinicDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-  <!--Errors Found During Generation:
-warning 6002: The table/view 'PolyclinicDB.dbo.Diagnosis' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="Diagnosis">
     <Key>
       <PropertyRef Name="Diagnosis" />
-      <PropertyRef Name="Description" />
     </Key>
     <Property Name="Diagnosis" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
@@ -33,12 +30,9 @@ warning 6002: The table/view 'PolyclinicDB.dbo.Diagnosis' does not have a primar
     <Property Name="Shedule" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="Interval" Type="int" Nullable="false" />
   </EntityType>
-  <!--Errors Found During Generation:
-warning 6002: The table/view 'PolyclinicDB.dbo.Drug' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="Drug">
     <Key>
       <PropertyRef Name="DrugName" />
-      <PropertyRef Name="Description" />
     </Key>
     <Property Name="DrugName" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
@@ -244,25 +238,15 @@ warning 6002: The table/view 'PolyclinicDB.dbo.VisitorStatistics' does not have 
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="PolyclinicDBModelStoreContainer">
+    <EntitySet Name="Diagnosis" EntityType="Self.Diagnosis" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Doctor" EntityType="Self.Doctor" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DoctorsTimeTable" EntityType="Self.DoctorsTimeTable" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Drug" EntityType="Self.Drug" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Patient" EntityType="Self.Patient" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Region" EntityType="Self.Region" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Specialization" EntityType="Self.Specialization" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Street" EntityType="Self.Street" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Ticket" EntityType="Self.Ticket" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Diagnosis" EntityType="Self.Diagnosis" store:Type="Tables" store:Schema="dbo">
-      <DefiningQuery>SELECT 
-    [Diagnosis].[Diagnosis] AS [Diagnosis], 
-    [Diagnosis].[Description] AS [Description]
-    FROM [dbo].[Diagnosis] AS [Diagnosis]</DefiningQuery>
-    </EntitySet>
-    <EntitySet Name="Drug" EntityType="Self.Drug" store:Type="Tables" store:Schema="dbo">
-      <DefiningQuery>SELECT 
-    [Drug].[DrugName] AS [DrugName], 
-    [Drug].[Description] AS [Description]
-    FROM [dbo].[Drug] AS [Drug]</DefiningQuery>
-    </EntitySet>
     <EntitySet Name="Login" EntityType="Self.Login" store:Type="Tables" store:Schema="dbo">
       <DefiningQuery>SELECT 
     [Login].[PolyclinicUser] AS [PolyclinicUser], 

@@ -51,8 +51,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CRUDMethods.cs" />
-    <Compile Include="ListRecordingModel.cs" />
-    <Compile Include="MainFormModel.cs" />
+    <Compile Include="Models\ListRecordingModel.cs" />
+    <Compile Include="Models\MainFormModel.cs" />
     <Compile Include="Diagnosis.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>
     </Compile>
@@ -68,7 +68,7 @@
     <Compile Include="Login.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="NewSpecializationModel.cs" />
+    <Compile Include="Models\NewSpecializationModel.cs" />
     <Compile Include="Patient.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>
     </Compile>
@@ -93,15 +93,16 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Models\ReferenceBookModel.cs" />
     <Compile Include="Region.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="RegistersModel.cs" />
-    <Compile Include="RegistrationModel.cs" />
+    <Compile Include="Models\RegistersModel.cs" />
+    <Compile Include="Models\RegistrationModel.cs" />
     <Compile Include="Room.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="ShowStatisticsModel.cs" />
+    <Compile Include="Models\ShowStatisticsModel.cs" />
     <Compile Include="Specialization.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>
     </Compile>
@@ -111,7 +112,7 @@
     <Compile Include="Ticket.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="TicketOrderModel.cs" />
+    <Compile Include="Models\TicketOrderModel.cs" />
     <Compile Include="VisitorStatistics.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>
     </Compile>

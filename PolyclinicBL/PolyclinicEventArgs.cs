@@ -131,4 +131,16 @@ namespace PolyclinicBL
             Date = date;
         }
     }
+
+    public class DrugOrDiagnosisEventArgs : EventArgs
+    {
+        public string Name { get; private set; }
+        public string Description { get; private set; }
+
+        public DrugOrDiagnosisEventArgs(string Name, string Description)
+        {
+            this.Name = Name;
+            this.Description = Description;
+        }
+    }
 }

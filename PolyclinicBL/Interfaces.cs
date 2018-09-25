@@ -7,6 +7,18 @@ using System.Threading.Tasks;
 
 namespace PolyclinicBL
 {
+    public interface IMainFormModel
+    {
+        Entities LoginChecker(string enteredLogin);
+    }
+
+    public interface IRegistrationModel
+    {
+        IEnumerable GetRegions();
+        int AddPatient(Patient patient);
+        void CheckStreets(string streetName, int regionNumber);
+    }
+
     public interface ITicketOrderFormModel
     {
         IEnumerable GetDoctors();
@@ -51,5 +63,15 @@ namespace PolyclinicBL
     {
         IEnumerable GetDoctors();
         IEnumerable GetPatientsByCriterion(int docId, string date);
+    }
+
+    public interface IReferenceBookModel
+    {
+        void DrugAdd(string drugName, string description);
+        void DiagnosisAdd(string diagnosisName, string description);
+        void DrugDescriptionChanged(string drugName, string description);
+        void DiagnosisDescriptionChanged(string diagnosisName, string description);
+        IEnumerable<PolyclinicBL.Diagnoses> GetDiagnoses();
+        IEnumerable<PolyclinicBL.Drug> GetDrugs();
     }
 }

@@ -104,8 +104,7 @@ namespace PolyclinicDBManager
                 IQueryable<Ticket> query = context.Ticket.AsNoTracking();
                 var tickets = query.ToList();
                 PolyclinicBL.Ticket ticket;
-
-
+                
                 foreach (Ticket t in tickets)
                 {
                     ticket = new PolyclinicBL.Ticket(t.PatientsId, t.DoctorsId, t.VisitingDateAndTime.ToShortDateString(), t.VisitingDateAndTime.ToShortTimeString());
