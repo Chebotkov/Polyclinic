@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using PolyclinicBL;
 
 namespace PolyclinicView
@@ -14,6 +15,7 @@ namespace PolyclinicView
 
         public ShowMedicalCardPresenter(IShowMedicalCard iShowMedicalCard, IMedicalCardManager medicalCardManager)
         {
+           
             if (iShowMedicalCard is null)
             {
                 throw new ArgumentNullException(String.Format("{0} is null", nameof(iShowMedicalCard)));

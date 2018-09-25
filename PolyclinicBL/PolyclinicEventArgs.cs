@@ -119,4 +119,16 @@ namespace PolyclinicBL
             Date = date;
         }
     }
+
+    public class DateSelectedEventArgs : EventArgs
+    {
+        public int DocId { get; private set; }
+        public string Date { get; private set; }
+
+        public DateSelectedEventArgs(int docid, string date)
+        {
+            DocId = docid;
+            Date = date;
+        }
+    }
 }

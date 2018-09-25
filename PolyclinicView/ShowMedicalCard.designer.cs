@@ -53,6 +53,7 @@
             this.Name = "ShowMedicalCard";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Карта Пациента";
+            this.Load += new System.EventHandler(this.ShowMedicalCard_Load);
             this.ClientSizeChanged += new System.EventHandler(this.ShowMedicalCard_ClientSizeChanged);
             this.ResumeLayout(false);
             this.PerformLayout();

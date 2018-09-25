@@ -17,7 +17,7 @@ namespace PolyclinicBL
 
     public class MedicalCardManager : IMedicalCardManager
     {
-        public string ProjectName { get; private set; } = "PolyclinicAPP";
+        public string ProjectName { get; private set; } = "Polyclinic";
 
         public MedicalCardManager() { }
         

@@ -46,4 +46,10 @@ namespace PolyclinicBL
         IEnumerable GetDoctorsStatistic(int docId);
         IEnumerable GetRecordedPatients(int docId, DateTime date);
     }
+
+    public interface IListRecordingModel
+    {
+        IEnumerable GetDoctors();
+        IEnumerable GetPatientsByCriterion(int docId, string date);
+    }
 }

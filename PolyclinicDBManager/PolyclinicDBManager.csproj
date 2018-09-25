@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CRUDMethods.cs" />
+    <Compile Include="ListRecordingModel.cs" />
     <Compile Include="MainFormModel.cs" />
     <Compile Include="Diagnosis.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>

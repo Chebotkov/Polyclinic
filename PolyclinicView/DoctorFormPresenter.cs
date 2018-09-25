@@ -34,7 +34,7 @@ namespace PolyclinicView
 
         private void DoctorView_RecordedPatients_Click(object sender, EventArgs e)
         {
-            ListRecordingFormPresenter listRecordingFormPresenter = new ListRecordingFormPresenter(doctorView.IListRecordingViewRef);
+            ListRecordingFormPresenter listRecordingFormPresenter = new ListRecordingFormPresenter(doctorView.IListRecordingViewRef, new ListRecordingModel());
         }
 
         private void DoctorView_Statistics_Click(object sender, EventArgs e)
