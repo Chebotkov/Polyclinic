@@ -113,5 +113,6 @@ namespace PolyclinicView
             toolStripStatusLabel2.Text = $"({h.ToString("00")}:{m.ToString("00")}:{s.ToString("00")})";
         }
         #endregion
+        
     }
 }

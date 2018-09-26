@@ -30,7 +30,7 @@ namespace PolyclinicView
 
         private void DoctorView_OpenPatientsCard_Click(object sender, EventArgs e)
         {
-            MedicalCardFormPresenter medicalCardFormPresenter = new MedicalCardFormPresenter(doctorView.IMedicalCardViewRef, new PolyclinicDBManager.Models.MedicalCardModel());
+            MedicalCardFormPresenter medicalCardFormPresenter = new MedicalCardFormPresenter(doctorView.IMedicalCardViewRef, new PolyclinicDBManager.Models.MedicalCardModel(), new MedicalCardManager());
         }
 
         private void DoctorView_RecordedPatients_Click(object sender, EventArgs e)

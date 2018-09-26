@@ -139,5 +139,18 @@ namespace PolyclinicBL
             }
             return 0;
         }
+
+
+        public static byte[] GetByteRepresentation(string[] str, int LastLineIndex)
+        {
+            string records = String.Join("\n", str, LastLineIndex, str.Length - LastLineIndex);
+
+            return Encoding.Default.GetBytes(records);
+        }
+
+        public static string GetTime(string information)
+        {
+            return information.Substring(information.Length - 6);
+        }
     }
 }

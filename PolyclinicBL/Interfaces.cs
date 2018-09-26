@@ -80,6 +80,9 @@ namespace PolyclinicBL
         IEnumerable GetDoctors();
         IEnumerable<PolyclinicBL.Diagnoses> GetDiagnoses();
         IEnumerable<PolyclinicBL.Drug> GetDrugs();
+        IEnumerable GetTickets(int doctorsId, string visitingDate);
+        object GetDoctorById(int doctorsId);
+        void UpdateArrivalStatistics(int patientId, int doctorId, bool isPatientArrived, DateTime date);
     }
 
 }

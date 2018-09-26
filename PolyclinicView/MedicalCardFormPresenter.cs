@@ -26,11 +26,41 @@ namespace PolyclinicView
                 throw new ArgumentNullException(String.Format("{0} is null", nameof(medicalCardModel)));
             }
 
+            if (medicalCardManager is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(medicalCardManager)));
+            }
+
             this.medicalCardModel = medicalCardModel;
             this.iMedicalCardView = iMedicalCardView;
+            this.medicalCardManager = medicalCardManager;
             iMedicalCardView.ReferenceBook_Click += IMedicalCardView_ReferenceBook_Click;
             iMedicalCardView.MedicalCardFormLoad += IMedicalCardView_MedicalCardFormLoad;
             iMedicalCardView.ReadMedicalCard += IMedicalCardView_ReadMedicalCard;
+            iMedicalCardView.DoctorSelect += IMedicalCardView_DoctorSelect;
+            iMedicalCardView.WriteToMedicalCard += IMedicalCardView_WriteToMedicalCard;
+            iMedicalCardView.SaveChanges += IMedicalCardView_SaveChanges;
+            iMedicalCardView.Report += IMedicalCardView_Report;
+        }
+
+        private void IMedicalCardView_Report(object sender, PatientsArrivalEventArgs e)
+        {
+            medicalCardModel.UpdateArrivalStatistics(e.PatientId, e.DoctorId, e.IsPatientArrived, Editor.ParseToDateTime(e.Date, e.Time));
+        }
+
+        private void IMedicalCardView_SaveChanges(object sender, DoctorEventArgs e)
+        {
+            iMedicalCardView.SetDoctor(medicalCardModel.GetDoctorById(e.DoctorsId));
+        }
+
+        private void IMedicalCardView_WriteToMedicalCard(object sender, MedicalCardEventAgs e)
+        {
+            medicalCardManager.WriteToMedicalCard(e.PatientsId, e.MedicalCardRecords);
+        }
+
+        private void IMedicalCardView_DoctorSelect(object sender, TicketEventArgs e)
+        {
+            iMedicalCardView.SetPatients(medicalCardModel.GetTickets(e.DoctorsId, e.ChosenDate));
         }
 
         private void IMedicalCardView_ReadMedicalCard(object sender, DoctorEventArgs e)

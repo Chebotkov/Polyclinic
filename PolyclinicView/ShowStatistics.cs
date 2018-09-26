@@ -73,8 +73,8 @@ namespace PolyclinicView
                     label6.Text = "Неявившиеся пациенты: " + statistic.NonArrivedPatients;
                 }
 
-                Arrived += statistic.ArrivedPatients.Value;
-                NonArrived += statistic.NonArrivedPatients.Value;
+                Arrived += statistic.ArrivedPatients;
+                NonArrived += statistic.NonArrivedPatients;
             }
 
             label4.Text = "Явившиеся пациенты: " + Arrived;

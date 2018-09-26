@@ -1,39 +1,42 @@
-﻿using System;
+﻿using PolyclinicBL;
+using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using PolyclinicBL;
 
 namespace PolyclinicView
 {
     public interface IMedicalCardView
     {
         IReferenceBookView IReferenceBookViewRef { get; set; }
+        event EventHandler<DoctorEventArgs> SaveChanges;
+        event EventHandler<PatientsArrivalEventArgs> Report;
         event EventHandler ReferenceBook_Click;
         event EventHandler MedicalCardFormLoad;
         event EventHandler<DoctorEventArgs> ReadMedicalCard;
         event EventHandler<TicketEventArgs> DoctorSelect;
+        event EventHandler<MedicalCardEventAgs> WriteToMedicalCard;
         void RefreshDrugsAndDiagnosis(IEnumerable Drugs, IEnumerable Diagnoses);
         void SetData(IEnumerable Doctors, IEnumerable Drugs, IEnumerable Diagnoses);
         void SetPatientsCard(TextReader reader);
+        void SetPatients(IEnumerable patients);
+        void SetDoctor(object doctor);
     }
 
     public partial class MedicalCardForm : Form, IMedicalCardView
     {
         public IReferenceBookView IReferenceBookViewRef { get; set; }
+        public event EventHandler<DoctorEventArgs> SaveChanges;
+        public event EventHandler<PatientsArrivalEventArgs> Report;
         public event EventHandler ReferenceBook_Click;
         public event EventHandler MedicalCardFormLoad;
         public event EventHandler<DoctorEventArgs> ReadMedicalCard;
         public event EventHandler<TicketEventArgs> DoctorSelect;
+        public event EventHandler<MedicalCardEventAgs> WriteToMedicalCard;
 
         private int LastLineIndex = 0;
+        private PolyclinicDBManager.Doctor doctor;
         private string TextBoxContent;
 
         public MedicalCardForm()
@@ -60,11 +63,10 @@ namespace PolyclinicView
             {
                 SetTrueFalse(false, 1);
                 SetTrueFalse(false, 2);
-                /*foreach(Doctor D in Doctors)
-                {
-                    if(D.id == M.GetId(comboBox2))
-                        textBox1.Text += Environment.NewLine + DateTime.Now.ToString() + Environment.NewLine + "Врач: " + comboBox2.Text + "." + " Специальность: " + D.Specialization + Environment.NewLine;
-                }*/
+
+                SaveChanges?.Invoke(this, new DoctorEventArgs(Editor.GetId(comboBox2.SelectedItem.ToString())));
+                textBox1.Text += Environment.NewLine + DateTime.Now.ToString() + Environment.NewLine + String.Format("Врач: {0} {1} {2}. Специальность: {3}", doctor.FirstName, doctor.LastName, doctor.Patronymic, doctor.Specialization) + Environment.NewLine;
+
                 textBox1.SelectionStart = textBox1.TextLength;
                 textBox1.ScrollToCaret();
                 textBox1.Focus();
@@ -80,7 +82,7 @@ namespace PolyclinicView
                 SetTrueFalse(true, 1);
                 SetTrueFalse(true, 2);
 
-                //M.WriteToMedicalCard(pathToCard, textBox1, LastLineIndex);
+                WriteToMedicalCard?.Invoke(this, new MedicalCardEventAgs(Editor.GetId(comboBox1.SelectedItem.ToString()), Editor.GetByteRepresentation(textBox1.Lines, LastLineIndex)));
 
                 TextBoxContent = textBox1.Text;
                 LastLineIndex = textBox1.Lines.Length;
@@ -112,39 +114,49 @@ namespace PolyclinicView
                 DialogResult dr = MessageBox.Show("Сохранить изменения?", "Сохранить?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dr == DialogResult.Yes)
                 {
-                    //M.WriteToMedicalCard(pathToCard, textBox1, LastLineIndex);
+                    WriteToMedicalCard?.Invoke(this, new MedicalCardEventAgs(Editor.GetId(comboBox1.SelectedItem.ToString()), Editor.GetByteRepresentation(textBox1.Lines, LastLineIndex)));
                 }
             }
         }
-        
+
         private void button4_Click(object sender, EventArgs e)
         {
-            //if (M.IncrementOfAttendance(Doctors, OrderedTickets, comboBox2)) Close();
+            DialogResult dialogresult = MessageBox.Show("Пациент прибыл на приём?", "Подтвердите", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+
+            bool isArrived = false;
+            if (DialogResult.Yes == dialogresult)
+            {
+                isArrived = true;
+            }
+
+            if (DialogResult.Cancel != dialogresult)
+            {
+                int patientId = Editor.GetId(comboBox1.SelectedItem.ToString());
+                int doctorId = Editor.GetId(comboBox2.SelectedItem.ToString());
+                string date = DateTime.Today.ToShortDateString();
+                string time = Editor.GetTime(comboBox1.SelectedItem.ToString());
+
+                Report?.Invoke(this, new PatientsArrivalEventArgs(patientId, doctorId, isArrived, date, time));
+            }
         }
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            textBox1.Clear();
-            comboBox1.Enabled = false;
-            comboBox1.Text = "";
-
-            DoctorSelect?.Invoke(this, new TicketEventArgs());
-            foreach (Ticket t in OrderedTickets)
+            if (comboBox2.SelectedIndex != -1)
             {
-                if (M.GetId(comboBox2) == Convert.ToInt32(t.DoctorsFullName) && t.DateOfRecord == DateTime.Today.ToShortDateString() && !t.IsArrived)
-                {
-                    foreach (Patient p in Patients)
-                    {
-                        if (p.id == t.PatientsId) comboBox1.Items.Add(p.id + "." + p.LastName + " " + p.Name + " " + p.PatronymicName + " " + t.VisitingTime);
-                    }
-                }
-            }
-            if (comboBox1.Items.Count == 0)
-            {
-                MessageBox.Show("У вас нет записанных на сегодня пациентов", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                textBox1.Clear();
                 comboBox1.Enabled = false;
+                comboBox1.Text = "";
+
+                DoctorSelect?.Invoke(this, new TicketEventArgs(0, Editor.GetId(comboBox2.SelectedItem.ToString()), DateTime.Today.ToShortDateString(), ""));
+
+                if (comboBox1.Items.Count == 0)
+                {
+                    MessageBox.Show("У вас нет записанных на сегодня пациентов", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    comboBox1.Enabled = false;
+                }
+                else comboBox1.Enabled = true;
             }
-            else comboBox1.Enabled = true;
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -234,19 +246,45 @@ namespace PolyclinicView
         {
             //nullReference exc.
             comboBox2.DataSource = Doctors;
+            comboBox2.SelectedIndex = -1;
 
             RefreshDrugsAndDiagnosis(Drugs, Diagnoses);
         }
 
+        public void SetPatients(IEnumerable patients)
+        {
+            if (patients is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(patients)));
+            }
+
+            comboBox1.DataSource = patients;
+        }
+
         public void SetPatientsCard(TextReader reader)
         {
-            StreamReader streamReader = reader as StreamReader; 
+            StreamReader streamReader = reader as StreamReader;
             string line;
             while ((line = streamReader.ReadLine()) != null)
             {
                 textBox1.Text += line + Environment.NewLine;
             }
             reader.Close();
+        }
+
+        public void SetDoctor(object doctor)
+        {
+            if (doctor is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(doctor)));
+            }
+
+            this.doctor = doctor as PolyclinicDBManager.Doctor;
+
+            if (this.doctor is null)
+            {
+                throw new InvalidCastException(String.Format("{0} is not {1}", nameof(doctor), typeof(PolyclinicDBManager.Doctor)));
+            }
         }
     }
 }

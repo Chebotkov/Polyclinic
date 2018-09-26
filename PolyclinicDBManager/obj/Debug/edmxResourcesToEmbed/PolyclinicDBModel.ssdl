@@ -112,8 +112,8 @@ warning 6002: The table/view 'PolyclinicDB.dbo.VisitorStatistics' does not have 
     </Key>
     <Property Name="DocId" Type="int" Nullable="false" />
     <Property Name="Date" Type="datetime" Nullable="false" />
-    <Property Name="ArrivedPatients" Type="int" />
-    <Property Name="NonArrivedPatients" Type="int" />
+    <Property Name="ArrivedPatients" Type="int" Nullable="false" />
+    <Property Name="NonArrivedPatients" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="FK_Doctors_Regions">
     <End Role="Region" Type="Self.Region" Multiplicity="0..1">
@@ -225,18 +225,6 @@ warning 6002: The table/view 'PolyclinicDB.dbo.VisitorStatistics' does not have 
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_VisitorStatistics_Doctors">
-    <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
-    <End Role="VisitorStatistics" Type="Self.VisitorStatistics" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Doctor">
-        <PropertyRef Name="DocId" />
-      </Principal>
-      <Dependent Role="VisitorStatistics">
-        <PropertyRef Name="DocId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <EntityContainer Name="PolyclinicDBModelStoreContainer">
     <EntitySet Name="Diagnosis" EntityType="Self.Diagnosis" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Doctor" EntityType="Self.Doctor" Schema="dbo" store:Type="Tables" />
@@ -298,10 +286,6 @@ warning 6002: The table/view 'PolyclinicDB.dbo.VisitorStatistics' does not have 
     <AssociationSet Name="FK_Tickets_Patients" Association="Self.FK_Tickets_Patients">
       <End Role="Patient" EntitySet="Patient" />
       <End Role="Ticket" EntitySet="Ticket" />
-    </AssociationSet>
-    <AssociationSet Name="FK_VisitorStatistics_Doctors" Association="Self.FK_VisitorStatistics_Doctors">
-      <End Role="Doctor" EntitySet="Doctor" />
-      <End Role="VisitorStatistics" EntitySet="VisitorStatistics" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

@@ -143,4 +143,34 @@ namespace PolyclinicBL
             this.Description = Description;
         }
     }
+
+    public class MedicalCardEventAgs : EventArgs
+    {
+        public byte[] MedicalCardRecords { get; private set; }
+        public int PatientsId { get; private set; }
+
+        public MedicalCardEventAgs(int patientsId, byte[] medicalCardRecords)
+        {
+            PatientsId = patientsId;
+            MedicalCardRecords = medicalCardRecords;
+        }
+    }
+
+    public class PatientsArrivalEventArgs : EventArgs
+    {
+        public int PatientId { get; private set; }
+        public bool IsPatientArrived { get; private set; }
+        public int DoctorId { get; private set; }
+        public string Date { get; private set; }
+        public string Time { get; private set; }
+
+        public PatientsArrivalEventArgs(int patientId, int doctorId, bool isPatientArrived, string date, string time)
+        {
+            PatientId = patientId;
+            IsPatientArrived = isPatientArrived;
+            DoctorId = doctorId;
+            Date = date;
+            Time = time;
+        }
+    }
 }

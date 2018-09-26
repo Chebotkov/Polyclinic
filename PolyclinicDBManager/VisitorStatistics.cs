@@ -16,8 +16,8 @@ namespace PolyclinicDBManager
     {
         public int DocId { get; set; }
         public System.DateTime Date { get; set; }
-        public Nullable<int> ArrivedPatients { get; set; }
-        public Nullable<int> NonArrivedPatients { get; set; }
+        public int ArrivedPatients { get; set; }
+        public int NonArrivedPatients { get; set; }
     
         public virtual Doctor Doctor { get; set; }
     }

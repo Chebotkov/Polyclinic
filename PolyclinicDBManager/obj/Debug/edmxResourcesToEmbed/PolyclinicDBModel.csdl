@@ -123,8 +123,8 @@
     </Key>
     <Property Name="DocId" Type="Int32" Nullable="false" />
     <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="ArrivedPatients" Type="Int32" />
-    <Property Name="NonArrivedPatients" Type="Int32" />
+    <Property Name="ArrivedPatients" Type="Int32" Nullable="false" />
+    <Property Name="NonArrivedPatients" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Doctor" Relationship="Self.FK_VisitorStatistics_Doctors" FromRole="VisitorStatistics" ToRole="Doctor" />
   </EntityType>
   <Association Name="FK_Doctors_Regions">

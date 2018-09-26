@@ -13,11 +13,15 @@ namespace PolyclinicBL
     {
         void CreateMedicalCard(Patient patient);
         TextReader ReadMedicalCard(int patientsId);
+        void WriteToMedicalCard(int patientsId, byte[] medicalCardRecords);
     }
 
     public class MedicalCardManager : IMedicalCardManager
     {
         public string ProjectName { get; private set; } = "Polyclinic";
+        public string PathToCards { get; private set; } = @"\Files\MedicalCards\";
+        public string Extension { get; private set; } = ".txt";
+
 
         public MedicalCardManager() { }
         
@@ -29,6 +33,26 @@ namespace PolyclinicBL
             }
 
             ProjectName = projectName;
+        }
+
+        public MedicalCardManager(string projectName, string PathToCards) : this(projectName)
+        {
+            if (PathToCards is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(PathToCards)));
+            }
+
+            this.PathToCards = PathToCards;
+        }
+
+        public MedicalCardManager(string projectName, string pathToCards, string extension) : this (projectName, pathToCards)
+        {
+            if (extension is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(extension)));
+            }
+
+            Extension = extension;
         }
 
         public void CreateMedicalCard(Patient patient)
@@ -63,12 +87,19 @@ namespace PolyclinicBL
 
         public string GetMedicalCardPath(int patientsId)
         {
-            return String.Format(GetApplicationsPath() + @"\Files\MedicalCards\" + patientsId.ToString() + ".txt");
+            return String.Format(GetApplicationsPath() + PathToCards + patientsId.ToString() + Extension);
         }
 
         public TextReader ReadMedicalCard(int patientsId)
         {
             return new StreamReader(GetMedicalCardPath(patientsId), System.Text.Encoding.Default); 
+        }
+        
+        public void WriteToMedicalCard(int patientsId, byte[] medicalCardRecords)
+        {
+            StreamWriter writer = new StreamWriter(GetMedicalCardPath(patientsId), true, System.Text.Encoding.Default);
+            writer.Write(Encoding.Default.GetChars(medicalCardRecords));
+            writer.Close();
         }
     }
 }
