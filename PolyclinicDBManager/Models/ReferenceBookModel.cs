@@ -10,42 +10,31 @@ namespace PolyclinicDBManager
 {
     public class ReferenceBookModel : IReferenceBookModel
     {
-        public IEnumerable<PolyclinicBL.Drug> GetDrugs()
+        private ICRUDMethods iCRUDMethods = new CRUDMethods();
+
+        public ReferenceBookModel()
         {
-            List<PolyclinicBL.Drug> Drugs = new List<PolyclinicBL.Drug>();
-            using (var context = new PolyclinicDBContext())
+
+        }
+
+        public ReferenceBookModel(ICRUDMethods crudMethods)
+        {
+            if (crudMethods is null)
             {
-                IQueryable<Drug> query = context.Drug.AsNoTracking();
-                var DrugList = query.ToList();
-
-                foreach (Drug drug in DrugList)
-                {
-                    PolyclinicBL.Drug pdrug = new PolyclinicBL.Drug(drug.DrugName, drug.Description);
-
-                    Drugs.Add(pdrug);
-                }
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(crudMethods)));
             }
 
-            return Drugs;
+            iCRUDMethods = crudMethods;
+        }
+
+        public IEnumerable<PolyclinicBL.Drug> GetDrugs()
+        {
+            return iCRUDMethods.GetDrugs();
         }
 
         public IEnumerable<PolyclinicBL.Diagnoses> GetDiagnoses()
         {
-            List<PolyclinicBL.Diagnoses> Diagnoses = new List<PolyclinicBL.Diagnoses>();
-            using (var context = new PolyclinicDBContext())
-            {
-                IQueryable<Diagnosis> query = context.Diagnosis.AsNoTracking();
-                var DiagnosisList = query.ToList();
-
-                foreach (Diagnosis diagnosis in DiagnosisList)
-                {
-                    PolyclinicBL.Diagnoses pdiagnoses = new PolyclinicBL.Diagnoses(diagnosis.DiagnosisName, diagnosis.Description);
-
-                    Diagnoses.Add(pdiagnoses);
-                }
-            }
-
-            return Diagnoses;
+            return iCRUDMethods.GetDiagnoses();
         }
         
         public void DrugAdd(string drugName, string description)

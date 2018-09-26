@@ -9,3 +9,4 @@ D:\Projects\Polyclinic\PolyclinicBL\bin\Debug\PolyclinicBL.pdb
 D:\Projects\Polyclinic\PolyclinicBL\obj\Debug\PolyclinicBL.csproj.CoreCompileInputs.cache
 D:\Projects\Polyclinic\PolyclinicBL\obj\Debug\PolyclinicBL.dll
 D:\Projects\Polyclinic\PolyclinicBL\obj\Debug\PolyclinicBL.pdb
+D:\Projects\Polyclinic\PolyclinicBL\obj\Debug\PolyclinicBL.csprojResolveAssemblyReference.cache

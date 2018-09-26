@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PolyclinicBL;
 using PolyclinicDBManager;
+using PolyclinicBL;
 
 namespace PolyclinicView
 {
@@ -29,7 +30,7 @@ namespace PolyclinicView
 
         private void DoctorView_OpenPatientsCard_Click(object sender, EventArgs e)
         {
-            MedicalCardFormPresenter medicalCardFormPresenter = new MedicalCardFormPresenter(doctorView.IMedicalCardViewRef);
+            MedicalCardFormPresenter medicalCardFormPresenter = new MedicalCardFormPresenter(doctorView.IMedicalCardViewRef, new PolyclinicDBManager.Models.MedicalCardModel());
         }
 
         private void DoctorView_RecordedPatients_Click(object sender, EventArgs e)

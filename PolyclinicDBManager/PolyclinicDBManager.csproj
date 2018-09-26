@@ -68,6 +68,7 @@
     <Compile Include="Login.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\MedicalCardModel.cs" />
     <Compile Include="Models\NewSpecializationModel.cs" />
     <Compile Include="Patient.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>

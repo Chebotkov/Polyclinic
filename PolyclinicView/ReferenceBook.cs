@@ -190,8 +190,8 @@ namespace PolyclinicView
         {
             if (IsOpenedFromMedicalCardForm)
             {
-                //MedicalCardForm MF = this.Owner as MedicalCardForm;
-                //MF.RefreshDrugsAndDiagnosis();
+                MedicalCardForm MF = this.Owner as MedicalCardForm;
+                MF.RefreshDrugsAndDiagnosis(Drugs, Diagnoses);
             }
         }
 

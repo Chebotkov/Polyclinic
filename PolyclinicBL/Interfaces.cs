@@ -74,4 +74,12 @@ namespace PolyclinicBL
         IEnumerable<PolyclinicBL.Diagnoses> GetDiagnoses();
         IEnumerable<PolyclinicBL.Drug> GetDrugs();
     }
+
+    public interface IMedicalCardModel
+    {
+        IEnumerable GetDoctors();
+        IEnumerable<PolyclinicBL.Diagnoses> GetDiagnoses();
+        IEnumerable<PolyclinicBL.Drug> GetDrugs();
+    }
+
 }

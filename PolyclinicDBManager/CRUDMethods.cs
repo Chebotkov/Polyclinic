@@ -15,6 +15,8 @@ namespace PolyclinicDBManager
         IEnumerable GetPatientsFullNames();
         IEnumerable GetSpecializationsNames();
         Doctor GetDoctorById(int id);
+        IEnumerable<PolyclinicBL.Drug> GetDrugs();
+        IEnumerable<PolyclinicBL.Diagnoses> GetDiagnoses();
     }
 
     public class CRUDMethods : ICRUDMethods
@@ -129,5 +131,43 @@ namespace PolyclinicDBManager
             return doctor;
         }
 
+
+        public IEnumerable<PolyclinicBL.Diagnoses> GetDiagnoses()
+        {
+            List<PolyclinicBL.Diagnoses> Diagnoses = new List<PolyclinicBL.Diagnoses>();
+            using (var context = new PolyclinicDBContext())
+            {
+                IQueryable<Diagnosis> query = context.Diagnosis.AsNoTracking();
+                var DiagnosisList = query.ToList();
+
+                foreach (Diagnosis diagnosis in DiagnosisList)
+                {
+                    PolyclinicBL.Diagnoses pdiagnoses = new PolyclinicBL.Diagnoses(diagnosis.DiagnosisName, diagnosis.Description);
+
+                    Diagnoses.Add(pdiagnoses);
+                }
+            }
+
+            return Diagnoses;
+        }
+
+        public IEnumerable<PolyclinicBL.Drug> GetDrugs()
+        {
+            List<PolyclinicBL.Drug> Drugs = new List<PolyclinicBL.Drug>();
+            using (var context = new PolyclinicDBContext())
+            {
+                IQueryable<Drug> query = context.Drug.AsNoTracking();
+                var DrugList = query.ToList();
+
+                foreach (Drug drug in DrugList)
+                {
+                    PolyclinicBL.Drug pdrug = new PolyclinicBL.Drug(drug.DrugName, drug.Description);
+
+                    Drugs.Add(pdrug);
+                }
+            }
+
+            return Drugs;
+        }
     }
 }
