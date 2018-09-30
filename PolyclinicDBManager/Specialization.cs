@@ -19,7 +19,6 @@ namespace PolyclinicDBManager
         {
             this.Doctors = new HashSet<Doctor>();
             this.DoctorsTimeTables = new HashSet<DoctorsTimeTable>();
-            this.Rooms = new HashSet<Room>();
         }
     
         public int id { get; set; }
@@ -29,7 +28,6 @@ namespace PolyclinicDBManager
         public virtual ICollection<Doctor> Doctors { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DoctorsTimeTable> DoctorsTimeTables { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Room> Rooms { get; set; }
+        public virtual Room Rooms { get; set; }
     }
 }

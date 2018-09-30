@@ -18,7 +18,6 @@ namespace PolyclinicDBManager
         public Doctor()
         {
             this.Tickets = new HashSet<Ticket>();
-            this.VisitorStatistics = new HashSet<VisitorStatistics>();
         }
     
         public int DocId { get; set; }
@@ -35,7 +34,6 @@ namespace PolyclinicDBManager
         public virtual Specialization SpecializationName { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Ticket> Tickets { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<VisitorStatistics> VisitorStatistics { get; set; }
+        public virtual VisitorStatistics VisitorStatistics { get; set; }
     }
 }

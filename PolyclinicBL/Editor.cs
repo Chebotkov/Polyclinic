@@ -52,10 +52,10 @@ namespace PolyclinicBL
 
             if (!Int32.TryParse(victim.Substring(0, victim.IndexOf(".")), out int result))
             {
-                throw new  ArgumentException (String.Format("{0} is not valid.", nameof(victim)));
+                throw new ArgumentException(String.Format("{0} is not valid.", nameof(victim)));
             }
-            
-            return result;   
+
+            return result;
         }
 
         public static string GetSpecialization(string victim)
@@ -141,11 +141,23 @@ namespace PolyclinicBL
         }
 
 
-        public static byte[] GetByteRepresentation(string[] str, int LastLineIndex)
+        public static byte[] GetByteRepresentation(string[] strings, int LastLineIndex)
         {
-            string records = String.Join("\n", str, LastLineIndex, str.Length - LastLineIndex);
+            if (strings is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(strings)));
+            }
 
-            return Encoding.Default.GetBytes(records);
+            int countOfStrings = strings.Length - LastLineIndex;
+
+            if (countOfStrings > 0)
+            {
+                string records = String.Join("\n", strings, LastLineIndex, countOfStrings);
+
+                return Encoding.Default.GetBytes(records);
+            }
+
+            else return Encoding.Default.GetBytes(new char[0]);
         }
 
         public static string GetTime(string information)

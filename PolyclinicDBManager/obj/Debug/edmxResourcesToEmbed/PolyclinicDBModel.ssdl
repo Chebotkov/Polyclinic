@@ -37,12 +37,9 @@
     <Property Name="DrugName" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
-  <!--Errors Found During Generation:
-warning 6002: The table/view 'PolyclinicDB.dbo.Login' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="Login">
     <Key>
       <PropertyRef Name="PolyclinicUser" />
-      <PropertyRef Name="Login" />
     </Key>
     <Property Name="PolyclinicUser" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="Login" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -68,12 +65,9 @@ warning 6002: The table/view 'PolyclinicDB.dbo.Login' does not have a primary ke
     <Property Name="RegionNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="RegionName" Type="nvarchar" MaxLength="50" Nullable="false" />
   </EntityType>
-  <!--Errors Found During Generation:
-warning 6002: The table/view 'PolyclinicDB.dbo.Room' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="Room">
     <Key>
       <PropertyRef Name="SpecId" />
-      <PropertyRef Name="Room" />
     </Key>
     <Property Name="SpecId" Type="int" Nullable="false" />
     <Property Name="Room" Type="int" Nullable="false" />
@@ -103,12 +97,9 @@ warning 6002: The table/view 'PolyclinicDB.dbo.Room' does not have a primary key
     <Property Name="VisitingDateAndTime" Type="datetime" Nullable="false" />
     <Property Name="IsArrived" Type="bit" Nullable="false" />
   </EntityType>
-  <!--Errors Found During Generation:
-warning 6002: The table/view 'PolyclinicDB.dbo.VisitorStatistics' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="VisitorStatistics">
     <Key>
       <PropertyRef Name="DocId" />
-      <PropertyRef Name="Date" />
     </Key>
     <Property Name="DocId" Type="int" Nullable="false" />
     <Property Name="Date" Type="datetime" Nullable="false" />
@@ -175,7 +166,7 @@ warning 6002: The table/view 'PolyclinicDB.dbo.VisitorStatistics' does not have 
     <End Role="Specialization" Type="Self.Specialization" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
-    <End Role="Room" Type="Self.Room" Multiplicity="*" />
+    <End Role="Room" Type="Self.Room" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="Specialization">
         <PropertyRef Name="id" />
@@ -225,36 +216,33 @@ warning 6002: The table/view 'PolyclinicDB.dbo.VisitorStatistics' does not have 
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_VisitorStatistics_Doctor">
+    <End Role="Doctor" Type="Self.Doctor" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="VisitorStatistics" Type="Self.VisitorStatistics" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Doctor">
+        <PropertyRef Name="DocId" />
+      </Principal>
+      <Dependent Role="VisitorStatistics">
+        <PropertyRef Name="DocId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="PolyclinicDBModelStoreContainer">
     <EntitySet Name="Diagnosis" EntityType="Self.Diagnosis" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Doctor" EntityType="Self.Doctor" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DoctorsTimeTable" EntityType="Self.DoctorsTimeTable" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Drug" EntityType="Self.Drug" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Login" EntityType="Self.Login" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Patient" EntityType="Self.Patient" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Region" EntityType="Self.Region" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Room" EntityType="Self.Room" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Specialization" EntityType="Self.Specialization" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Street" EntityType="Self.Street" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Ticket" EntityType="Self.Ticket" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Login" EntityType="Self.Login" store:Type="Tables" store:Schema="dbo">
-      <DefiningQuery>SELECT 
-    [Login].[PolyclinicUser] AS [PolyclinicUser], 
-    [Login].[Login] AS [Login]
-    FROM [dbo].[Login] AS [Login]</DefiningQuery>
-    </EntitySet>
-    <EntitySet Name="Room" EntityType="Self.Room" store:Type="Tables" store:Schema="dbo">
-      <DefiningQuery>SELECT 
-    [Room].[SpecId] AS [SpecId], 
-    [Room].[Room] AS [Room]
-    FROM [dbo].[Room] AS [Room]</DefiningQuery>
-    </EntitySet>
-    <EntitySet Name="VisitorStatistics" EntityType="Self.VisitorStatistics" store:Type="Tables" store:Schema="dbo">
-      <DefiningQuery>SELECT 
-    [VisitorStatistics].[DocId] AS [DocId], 
-    [VisitorStatistics].[Date] AS [Date], 
-    [VisitorStatistics].[ArrivedPatients] AS [ArrivedPatients], 
-    [VisitorStatistics].[NonArrivedPatients] AS [NonArrivedPatients]
-    FROM [dbo].[VisitorStatistics] AS [VisitorStatistics]</DefiningQuery>
-    </EntitySet>
+    <EntitySet Name="VisitorStatistics" EntityType="Self.VisitorStatistics" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_Doctors_Regions" Association="Self.FK_Doctors_Regions">
       <End Role="Region" EntitySet="Region" />
       <End Role="Doctor" EntitySet="Doctor" />
@@ -286,6 +274,10 @@ warning 6002: The table/view 'PolyclinicDB.dbo.VisitorStatistics' does not have 
     <AssociationSet Name="FK_Tickets_Patients" Association="Self.FK_Tickets_Patients">
       <End Role="Patient" EntitySet="Patient" />
       <End Role="Ticket" EntitySet="Ticket" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VisitorStatistics_Doctor" Association="Self.FK_VisitorStatistics_Doctor">
+      <End Role="Doctor" EntitySet="Doctor" />
+      <End Role="VisitorStatistics" EntitySet="VisitorStatistics" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

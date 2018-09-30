@@ -33,6 +33,8 @@ namespace PolyclinicView
         
         public IShowMedicalCard showMedicalCard { get; private set; }
 
+        private bool areDoctorsSets = false;
+
         public ListRecordingForm()
         {
             InitializeComponent();
@@ -71,11 +73,16 @@ namespace PolyclinicView
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            button2.Enabled = true;
-            monthCalendar1.Visible = true;
-            label1.Visible = true;
-            listBox1.Text = "";
-            monthCalendar1.DateSelected += new DateRangeEventHandler(monthCalendar1_DateChanged);
+            if (!areDoctorsSets)
+            {
+                button2.Enabled = true;
+                monthCalendar1.Visible = true;
+                label1.Visible = true;
+                listBox1.Text = "";
+                monthCalendar1.DateSelected += new DateRangeEventHandler(monthCalendar1_DateChanged);
+            }
+
+            areDoctorsSets = false;
         }
 
         private void listBox1_Click(object sender, EventArgs e)
@@ -98,7 +105,9 @@ namespace PolyclinicView
                 throw new ArgumentNullException(String.Format("{0} is null", nameof(doctors)));
             }
 
+            areDoctorsSets = true;
             comboBox1.DataSource = doctors;
+            comboBox1.Text = "";
         }
 
         public void SetPatients(IEnumerable patients)

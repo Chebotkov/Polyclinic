@@ -31,11 +31,15 @@ namespace PolyclinicView
         private IEnumerable Statistics;
         private DateTime chosenDate = DateTime.Today;
 
+        private bool areDoctorsSets = false;
+        private bool isStatisticSets = false;
+
         public ShowStatistics()
         {
             InitializeComponent();
         }
 
+        #region Actions
         private void ShowStatistics_Load(object sender, EventArgs e)
         {
             ShowStatisticsLoad?.Invoke(this, EventArgs.Empty);
@@ -50,58 +54,68 @@ namespace PolyclinicView
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            listBox1.DataSource = null;
-            listBox1.Enabled = false;
-            monthCalendar1.Enabled = true;
-            button1.Hide();
-            monthCalendar1.DateSelected += new DateRangeEventHandler(monthCalendar1_DateChanged);
-            label7.Text = "Явившиеся пациенты: 0";
-            label6.Text = "Неявившиеся пациенты: 0";
-
-            ShowDoctorsStatistic?.Invoke(this, new DoctorEventArgs(Editor.GetId(comboBox1.SelectedItem.ToString())));
-
-
-            label8.Text = "Статистика посещений на сегодня: ";
-
-            int Arrived = 0;
-            int NonArrived = 0;
-            foreach (VisitorStatistics statistic in Statistics)
+            if (!areDoctorsSets)
             {
-                if (statistic.Date.ToShortDateString() == DateTime.Today.ToShortDateString())
+                listBox1.DataSource = null;
+                listBox1.Enabled = false;
+                monthCalendar1.Enabled = true;
+                button1.Hide();
+                monthCalendar1.DateSelected += new DateRangeEventHandler(monthCalendar1_DateChanged);
+                label7.Text = "Явившиеся пациенты: 0";
+                label6.Text = "Неявившиеся пациенты: 0";
+
+                ShowDoctorsStatistic?.Invoke(this, new DoctorEventArgs(Editor.GetId(comboBox1.SelectedItem.ToString())));
+
+
+                label8.Text = "Статистика посещений на сегодня: ";
+
+                int Arrived = 0;
+                int NonArrived = 0;
+                foreach (VisitorStatistics statistic in Statistics)
                 {
-                    label7.Text = "Явившиеся пациенты: " + statistic.ArrivedPatients;
-                    label6.Text = "Неявившиеся пациенты: " + statistic.NonArrivedPatients;
+                    if (statistic.Date.ToShortDateString() == DateTime.Today.ToShortDateString())
+                    {
+                        label7.Text = "Явившиеся пациенты: " + statistic.ArrivedPatients;
+                        label6.Text = "Неявившиеся пациенты: " + statistic.NonArrivedPatients;
+                    }
+
+                    Arrived += statistic.ArrivedPatients;
+                    NonArrived += statistic.NonArrivedPatients;
                 }
 
-                Arrived += statistic.ArrivedPatients;
-                NonArrived += statistic.NonArrivedPatients;
+                label4.Text = "Явившиеся пациенты: " + Arrived;
+                label5.Text = "Неявившиеся пациенты: " + NonArrived;
             }
 
-            label4.Text = "Явившиеся пациенты: " + Arrived;
-            label5.Text = "Неявившиеся пациенты: " + NonArrived;
+            areDoctorsSets = false;
         }
 
         private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
         {
-            chosenDate = e.Start.Date;
-            button1.Hide();
-            listBox1.DataSource = null;
-            listBox1.Enabled = true;
-
-            DateChange?.Invoke(this, new DateChangedEventArgs(Editor.GetId(comboBox1.SelectedItem.ToString()), chosenDate));
-            label8.Text = "Статистика посещений на: " + e.Start.ToShortDateString();
-
-            label7.Text = "Явившиеся пациенты: 0";
-            label6.Text = "Неявившиеся пациенты: 0";
-            foreach (VisitorStatistics statistic in Statistics)
+            if (!isStatisticSets)
             {
-                if (statistic.Date.ToShortDateString() == e.Start.ToShortDateString())
+                chosenDate = e.Start.Date;
+                button1.Hide();
+                listBox1.DataSource = null;
+                listBox1.Enabled = true;
+
+                DateChange?.Invoke(this, new DateChangedEventArgs(Editor.GetId(comboBox1.SelectedItem.ToString()), chosenDate));
+                label8.Text = "Статистика посещений на: " + e.Start.ToShortDateString();
+
+                label7.Text = "Явившиеся пациенты: 0";
+                label6.Text = "Неявившиеся пациенты: 0";
+                foreach (VisitorStatistics statistic in Statistics)
                 {
-                    label7.Text = "Явившиеся пациенты: " + statistic.ArrivedPatients;
-                    label6.Text = "Неявившиеся пациенты: " + statistic.NonArrivedPatients;
-                    break;
+                    if (statistic.Date.ToShortDateString() == e.Start.ToShortDateString())
+                    {
+                        label7.Text = "Явившиеся пациенты: " + statistic.ArrivedPatients;
+                        label6.Text = "Неявившиеся пациенты: " + statistic.NonArrivedPatients;
+                        break;
+                    }
                 }
             }
+
+            isStatisticSets = false;
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -119,7 +133,9 @@ namespace PolyclinicView
                 SMC.ShowDialog();
             }
         }
+        #endregion
 
+        #region Interface implementation.
         public void SetDoctors(IEnumerable doctors)
         {
             if (doctors is null)
@@ -127,7 +143,9 @@ namespace PolyclinicView
                 throw new ArgumentNullException(String.Format("{0} is null", nameof(doctors)));
             }
 
+            areDoctorsSets = true;
             comboBox1.DataSource = doctors;
+            comboBox1.Text = "";
         }
 
         public void SetDoctorsStatistic(IEnumerable statistic)
@@ -137,6 +155,7 @@ namespace PolyclinicView
                 throw new ArgumentNullException(String.Format("{0} is null", nameof(statistic)));
             }
 
+            isStatisticSets = true;
             Statistics = statistic;
         }
 
@@ -146,8 +165,10 @@ namespace PolyclinicView
             {
                 throw new ArgumentNullException(String.Format("{0} is null", nameof(patients)));
             }
-
+            
             listBox1.DataSource = patients;
         }
+        #endregion
+
     }
 }

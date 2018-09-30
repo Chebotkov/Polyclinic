@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3B18FFC4-0350-4C54-AF10-CAC961726839}</ProjectGuid>
+    <ProjectGuid>{D155460E-EE4F-45A9-9DDD-256C6A4DD049}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PolyclinicDBManager</RootNamespace>
@@ -41,7 +41,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -51,8 +50,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CRUDMethods.cs" />
-    <Compile Include="Models\ListRecordingModel.cs" />
-    <Compile Include="Models\MainFormModel.cs" />
     <Compile Include="Diagnosis.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>
     </Compile>
@@ -65,9 +62,11 @@
     <Compile Include="Drug.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ListRecordingModel.cs" />
     <Compile Include="Login.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\MainFormModel.cs" />
     <Compile Include="Models\MedicalCardModel.cs" />
     <Compile Include="Models\NewSpecializationModel.cs" />
     <Compile Include="Patient.cs">
@@ -147,9 +146,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PolyclinicBL\PolyclinicBL.csproj">

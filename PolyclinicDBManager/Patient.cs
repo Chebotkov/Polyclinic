@@ -17,7 +17,7 @@ namespace PolyclinicDBManager
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Patient()
         {
-            this.Ticket = new HashSet<Ticket>();
+            this.Tickets = new HashSet<Ticket>();
         }
     
         public int id { get; set; }
@@ -32,6 +32,6 @@ namespace PolyclinicDBManager
     
         public virtual Region RegionName { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Ticket> Ticket { get; set; }
+        public virtual ICollection<Ticket> Tickets { get; set; }
     }
 }

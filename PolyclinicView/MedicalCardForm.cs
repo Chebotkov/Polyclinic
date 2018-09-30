@@ -22,6 +22,7 @@ namespace PolyclinicView
         void SetPatientsCard(TextReader reader);
         void SetPatients(IEnumerable patients);
         void SetDoctor(object doctor);
+        string SpecializationName { get; set; }
     }
 
     public partial class MedicalCardForm : Form, IMedicalCardView
@@ -34,6 +35,7 @@ namespace PolyclinicView
         public event EventHandler<DoctorEventArgs> ReadMedicalCard;
         public event EventHandler<TicketEventArgs> DoctorSelect;
         public event EventHandler<MedicalCardEventAgs> WriteToMedicalCard;
+        public string SpecializationName { get; set; }
 
         private int LastLineIndex = 0;
         private PolyclinicDBManager.Doctor doctor;
@@ -44,6 +46,7 @@ namespace PolyclinicView
             InitializeComponent();
         }
 
+        #region Actions
         private void MedicalCardForm_Load(object sender, EventArgs e)
         {
             MedicalCardFormLoad?.Invoke(this, EventArgs.Empty);
@@ -65,7 +68,7 @@ namespace PolyclinicView
                 SetTrueFalse(false, 2);
 
                 SaveChanges?.Invoke(this, new DoctorEventArgs(Editor.GetId(comboBox2.SelectedItem.ToString())));
-                textBox1.Text += Environment.NewLine + DateTime.Now.ToString() + Environment.NewLine + String.Format("Врач: {0} {1} {2}. Специальность: {3}", doctor.FirstName, doctor.LastName, doctor.Patronymic, doctor.Specialization) + Environment.NewLine;
+                textBox1.Text += Environment.NewLine + Environment.NewLine + DateTime.Now.ToString() + Environment.NewLine + String.Format("Врач: {0} {1} {2}. Специальность: {3}.", doctor.FirstName, doctor.LastName, doctor.Patronymic, SpecializationName) + Environment.NewLine;
 
                 textBox1.SelectionStart = textBox1.TextLength;
                 textBox1.ScrollToCaret();
@@ -169,30 +172,8 @@ namespace PolyclinicView
 
             TextBoxContent = textBox1.Text;
             LastLineIndex = textBox1.Lines.Length;
-        }
 
-        private void SetTrueFalse(bool b, int i)
-        {
-            switch (i)
-            {
-                case 1:
-                    {
-                        comboBox3.Enabled = !b;
-                        comboBox4.Enabled = !b;
-                        textBox1.ReadOnly = b;
-                        button2.Enabled = !b;
-                        Cancel.Enabled = !b;
-                        break;
-                    }
-                case 2:
-                    {
-                        comboBox1.Enabled = b;
-                        comboBox2.Enabled = b;
-                        break;
-                    }
-            }
         }
-
 
         private void button3_Click(object sender, EventArgs e)
         {
@@ -201,21 +182,6 @@ namespace PolyclinicView
             IReferenceBookViewRef = RB;
             ReferenceBook_Click?.Invoke(this, EventArgs.Empty);
             RB.ShowDialog();
-        }
-
-        public void RefreshDrugsAndDiagnosis(IEnumerable Drugs, IEnumerable Diagnoses)
-        {
-            foreach (PolyclinicBL.Diagnoses d in Diagnoses)
-            {
-                comboBox3.Items.Add(d.Diagnosis);
-            }
-            comboBox3.Text = "";
-
-            foreach (PolyclinicBL.Drug drug in Drugs)
-            {
-                comboBox4.Items.Add(drug.Medicines);
-            }
-            comboBox4.Text = "";
         }
 
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
@@ -241,7 +207,48 @@ namespace PolyclinicView
             }
 
         }
+        #endregion
 
+        #region Necessary methods
+        public void RefreshDrugsAndDiagnosis(IEnumerable Drugs, IEnumerable Diagnoses)
+        {
+            foreach (PolyclinicBL.Diagnoses d in Diagnoses)
+            {
+                comboBox3.Items.Add(d.Diagnosis);
+            }
+            comboBox3.Text = "";
+
+            foreach (PolyclinicBL.Drug drug in Drugs)
+            {
+                comboBox4.Items.Add(drug.Medicines);
+            }
+            comboBox4.Text = "";
+        }
+
+        private void SetTrueFalse(bool b, int i)
+        {
+            switch (i)
+            {
+                case 1:
+                    {
+                        comboBox3.Enabled = !b;
+                        comboBox4.Enabled = !b;
+                        textBox1.ReadOnly = b;
+                        button2.Enabled = !b;
+                        Cancel.Enabled = !b;
+                        break;
+                    }
+                case 2:
+                    {
+                        comboBox1.Enabled = b;
+                        comboBox2.Enabled = b;
+                        break;
+                    }
+            }
+        }
+        #endregion
+
+        #region Interface implementation.
         public void SetData(IEnumerable Doctors, IEnumerable Drugs, IEnumerable Diagnoses)
         {
             //nullReference exc.
@@ -286,5 +293,6 @@ namespace PolyclinicView
                 throw new InvalidCastException(String.Format("{0} is not {1}", nameof(doctor), typeof(PolyclinicDBManager.Doctor)));
             }
         }
+        #endregion
     }
 }

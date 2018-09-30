@@ -240,7 +240,7 @@
       <Name>PolyclinicBL</Name>
     </ProjectReference>
     <ProjectReference Include="..\PolyclinicDBManager\PolyclinicDBManager.csproj">
-      <Project>{3b18ffc4-0350-4c54-af10-cac961726839}</Project>
+      <Project>{d155460e-ee4f-45a9-9ddd-256c6a4dd049}</Project>
       <Name>PolyclinicDBManager</Name>
     </ProjectReference>
   </ItemGroup>

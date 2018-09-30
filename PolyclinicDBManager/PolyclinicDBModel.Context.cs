@@ -25,17 +25,17 @@ namespace PolyclinicDBManager
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Diagnosis> Diagnosis { get; set; }
         public virtual DbSet<Doctor> Doctor { get; set; }
         public virtual DbSet<DoctorsTimeTable> DoctorsTimeTable { get; set; }
+        public virtual DbSet<Drug> Drug { get; set; }
+        public virtual DbSet<Login> Login { get; set; }
         public virtual DbSet<Patient> Patient { get; set; }
         public virtual DbSet<Region> Region { get; set; }
+        public virtual DbSet<Room> Room { get; set; }
         public virtual DbSet<Specialization> Specialization { get; set; }
         public virtual DbSet<Street> Street { get; set; }
         public virtual DbSet<Ticket> Ticket { get; set; }
-        public virtual DbSet<Diagnosis> Diagnosis { get; set; }
-        public virtual DbSet<Drug> Drug { get; set; }
-        public virtual DbSet<Login> Login { get; set; }
-        public virtual DbSet<Room> Room { get; set; }
         public virtual DbSet<VisitorStatistics> VisitorStatistics { get; set; }
     }
 }
