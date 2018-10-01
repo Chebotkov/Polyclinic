@@ -173,4 +173,14 @@ namespace PolyclinicBL
             Time = time;
         }
     }
+
+    public class ShowTicketOnScreenEventArgs : EventArgs
+    {
+        public PrintedTicket printedTicket { get; private set; }
+
+        public ShowTicketOnScreenEventArgs(PrintedTicket printedTicket)
+        {
+            this.printedTicket = printedTicket;
+        }
+    }
 }

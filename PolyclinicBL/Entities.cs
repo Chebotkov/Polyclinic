@@ -84,4 +84,14 @@ namespace PolyclinicBL
             this.Description = Description;
         }
     }
+
+    public struct PrintedTicket
+    {
+        public string PatientFullName { get; set; }
+        public string DocSpecialization { get; set; }
+        public string DocFullName { get; set; }
+        public int DocRoom { get; set; }
+        public string Date { get; set; }
+        public string Time { get; set; }
+    }
 }

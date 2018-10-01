@@ -70,3 +70,4 @@ D:\Projects\Polyclinic\PolyclinicView\obj\Debug\PolyclinicView.csproj.CoreCompil
 D:\Projects\Polyclinic\PolyclinicView\obj\Debug\asa-TZ\PolyclinicView.resources.dll
 D:\Projects\Polyclinic\PolyclinicView\obj\Debug\PolyclinicView.exe
 D:\Projects\Polyclinic\PolyclinicView\obj\Debug\PolyclinicView.pdb
+D:\Projects\Polyclinic\PolyclinicView\obj\Debug\PolyclinicView.ShowTicketOnScreen.resources

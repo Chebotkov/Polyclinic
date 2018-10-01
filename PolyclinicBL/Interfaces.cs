@@ -86,4 +86,10 @@ namespace PolyclinicBL
         string GetSpecializationName(int specializationId);
     }
 
+    public interface IPrintTicketModel
+    {
+        IEnumerable GetPatients();
+        IEnumerable GetTicketsByPatientsId(int patientId);
+        PrintedTicket GetFullTicket(int ticketId);
+    }
 }

@@ -108,5 +108,21 @@ namespace PolyclinicDBManager.Models
                 context.SaveChanges();
             }
         }
+
+        public string GetSpecializationName(int specializationId)
+        {
+            string specializationName;
+
+            using (var context = new PolyclinicDBContext())
+            {
+                var specializationNames = from s in context.Specialization.AsNoTracking()
+                                          where s.id == specializationId
+                                          select s;
+
+                specializationName = specializationNames.ToList()[0].SpecializationName;
+            }
+
+            return specializationName;
+        }
     }
 }

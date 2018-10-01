@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,39 +8,44 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PolyclinicBL;
 
 namespace PolyclinicView
 {
     public interface IPrintTicketView
     {
-
+        event EventHandler PrintTicketLoad;
+        event EventHandler<DoctorEventArgs> PatientChoise;
+        event EventHandler ShowTicketOnScreenOpen;
+        event EventHandler<DoctorEventArgs> TicketChoise; 
+        void SetPatients(IEnumerable Patients);
+        void SetTickets(IEnumerable Tickets);
+        IShowTicketOnScreen iShowTicketOnScreen { get; }
+        PrintedTicket printedTicket { get; set; }
     }
 
     public partial class PrintTicketForm : Form, IPrintTicketView
     {
-        /*public List<Patient> Patients = new List<Patient>();
-        public List<Doctor> Doctors = new List<Doctor>();
-        public List<Ticket> OrderedTickets = new List<Ticket>();
+        public event EventHandler PrintTicketLoad;
+        public event EventHandler<DoctorEventArgs> PatientChoise;
+        public event EventHandler ShowTicketOnScreenOpen;
+        public event EventHandler<DoctorEventArgs> TicketChoise;
+        public IShowTicketOnScreen iShowTicketOnScreen { get; private set; }
+        public PrintedTicket printedTicket { get; set; }
 
-        Doctor Doc = new Doctor();*/
+        private bool isLoad = false;
 
         public PrintTicketForm()
         {
             InitializeComponent();
         }
 
+        #region Actions
         private void PrintTicketForm_Load(object sender, EventArgs e)
         {
-            /*Filling F = new Filling();
-            F.PatientsListFilling(Patients);
-            F.DoctorsListFilling(Doctors);
-            F.TicketsFilling(Patients, Doctors, OrderedTickets);*/
+            PrintTicketLoad?.Invoke(this, EventArgs.Empty);
 
             comboBox2.Enabled = false;
-            /*foreach (Patient p in Patients)
-            {
-                comboBox1.Items.Add(p.id +"."+p.LastName + " " + p.Name + " " + p.PatronymicName);
-            }*/
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -56,47 +62,64 @@ namespace PolyclinicView
                 errorProvider1.SetError(label2, "Выберите талон");
                 print = false;
             }
-            /*if (print)
+            
+            if (print)
             {
-                string date = comboBox2.Text.Substring(0, comboBox2.Text.IndexOf(" "));
-                string time = (comboBox2.Text.Substring(date.Length+1, comboBox2.Text.Length-date.Length-1)).Substring(0, 6);
-                string patient = comboBox1.Text.Substring(comboBox1.Text.IndexOf(".")+1, comboBox1.Text.Length - comboBox1.Text.IndexOf(".")-1);
-                ShowTicketOnScreen STOS = new ShowTicketOnScreen(patient, Doc, date, time);
+                TicketChoise?.Invoke(this, new DoctorEventArgs(Editor.GetId(comboBox2.SelectedItem.ToString())));
+                
+                ShowTicketOnScreen STOS = new ShowTicketOnScreen(printedTicket);
                 STOS.Owner = this;
+                iShowTicketOnScreen = STOS;
+                ShowTicketOnScreenOpen?.Invoke(this, EventArgs.Empty);
                 this.Visible = false;
                 STOS.ShowDialog();
-            }*/
+            }
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            errorProvider1.Clear();
-            if (comboBox1.SelectedIndex != -1)
+            if (!isLoad)
             {
-                comboBox2.Items.Clear();
-                /*foreach (Ticket T in OrderedTickets)
-                {
-                    if (Convert.ToInt32(comboBox1.Text.Substring(0, comboBox1.Text.IndexOf("."))) == T.PatientsId)
-                    {
-                        foreach (Doctor d in Doctors)
-                        {
-                            if (d.id == Convert.ToInt32(T.DoctorsFullName))
-                            {
-                                Doc = d;
-                                comboBox2.Items.Add(T.DateOfRecord + " " + T.VisitingTime + " " + d.Specialization+  " " + d.LastName + " " + d.Name + " " + d.Patronymic);
-                            }
-                        }
-                    }
-                }*/
+                errorProvider1.Clear();
+
+                PatientChoise?.Invoke(this, new DoctorEventArgs(Editor.GetId(comboBox1.SelectedItem.ToString())));
+
                 if (comboBox2.Items.Count == 0) MessageBox.Show("Для данного пациента не найдено талонов", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 else comboBox2.Enabled = true;
             }
+
+            isLoad = false;
         }
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
             errorProvider1.Clear();
         }
+        #endregion
+
+        #region Interface implementation
+        public void SetPatients(IEnumerable Patients)
+        {
+            if (Patients is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(Patients)));
+            }
+
+            isLoad = true;
+            comboBox1.DataSource = Patients;
+        }
+
+        public void SetTickets(IEnumerable Tickets)
+        {
+            if (Tickets is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(Tickets)));
+            }
+
+            comboBox2.DataSource = Tickets;
+            comboBox2.SelectedIndex = -1;
+            comboBox2.Text = "";
+        }
+        #endregion
     }
-    
 }

@@ -46,7 +46,7 @@ namespace PolyclinicView
 
         private void RegistratorView_PrintTicket_Click(object sender, EventArgs e)
         {
-            PrintTicketPresenter printTicketPresenter = new PrintTicketPresenter(registratorView.IPrintTicketViewRef);
+            PrintTicketPresenter printTicketPresenter = new PrintTicketPresenter(registratorView.IPrintTicketViewRef, new PolyclinicDBManager.Models.PrintTicketModel());
         }
 
         private void RegistratorView_Registers_Click(object sender, EventArgs e)
