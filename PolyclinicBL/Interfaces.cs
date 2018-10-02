@@ -92,4 +92,11 @@ namespace PolyclinicBL
         IEnumerable GetTicketsByPatientsId(int patientId);
         PrintedTicket GetFullTicket(int ticketId);
     }
+
+    public interface IRoomsRegisterModel
+    {
+        List<int> GetRooms(int specializationId);
+        IEnumerable GetSpecializations();
+        void SetRooms(List<int> rooms, int specializationId);
+    }
 }

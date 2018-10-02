@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PolyclinicBL;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -6,16 +8,21 @@ namespace PolyclinicView
 {
     public interface IRoomsRegisterView
     {
-
+        event EventHandler RoomsRegisterLoad;
+        event EventHandler<DoctorEventArgs> SpecializationChoise;
+        event EventHandler<RoomsEventArgs> RoomsAdd;
+        void SetSpecializations(IEnumerable specializations);
+        void SetAvailableRooms(List<int> rooms);
     }
 
     public partial class RoomsRegister : Form, IRoomsRegisterView
     {
-        /*Database1DataSetTableAdapters.RoomsTableAdapter roomsTableAdapter = new Database1DataSetTableAdapters.RoomsTableAdapter();
-        public List<Room> Rooms = new List<Room>();
-        public List<Specialization> Specializations = new List<Specialization>();
-        Filling F = new Filling();*/
-        bool IsOpenedFromND = false;
+        private bool IsOpenedFromND = false;
+        private List<int> rooms;
+
+        public event EventHandler RoomsRegisterLoad;
+        public event EventHandler<RoomsEventArgs> RoomsAdd;
+        public event EventHandler<DoctorEventArgs> SpecializationChoise;
 
         public RoomsRegister()
         {
@@ -28,21 +35,18 @@ namespace PolyclinicView
             IsOpenedFromND = b;
         }
 
+        #region Actions
         private void RoomsRegister_Load(object sender, EventArgs e)
         {
-            /*F.SpecializationsFilling(Specializations);
-            F.RoomsFilling(Rooms);
+            RoomsRegisterLoad?.Invoke(this, EventArgs.Empty);
 
             radioButton3.Select();
-            foreach (Specialization s in Specializations)
-            {
-                comboBox1.Items.Add(s.SpecializationName);
-                comboBox2.Items.Add(s.SpecializationName);
-            }*/
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            SpecializationChoise?.Invoke(this, new DoctorEventArgs(Editor.GetId(comboBox1.SelectedItem.ToString())));
+
             groupBox1.Enabled = true;
             radioButton1.Select();
             textBox1.Clear();
@@ -77,6 +81,9 @@ namespace PolyclinicView
         private void button2_Click(object sender, EventArgs e)
         {
             bool save = true;
+
+            int firstRoom = Int32.Parse(textBox2.Text);
+            int lastRoom = Int32.Parse(textBox3.Text);
             if (String.IsNullOrEmpty(textBox2.Text))
             {
                 errorProvider1.SetError(textBox2, "Укажите начало кабинетов");
@@ -87,7 +94,7 @@ namespace PolyclinicView
                 errorProvider1.SetError(textBox3, "Укажите конец кабинетов");
                 save = false;
             }
-            else if (Convert.ToInt32(textBox3.Text) - Convert.ToInt32(textBox2.Text) < 0)
+            else if (lastRoom - firstRoom < 0)
             {
                 MessageBox.Show("Указан неверный интервал", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 save = false;
@@ -95,13 +102,15 @@ namespace PolyclinicView
 
             if (save)
             {
-                int AddedRooms = Convert.ToInt32(textBox3.Text) - Convert.ToInt32(textBox2.Text);
-                /*for (int i = Convert.ToInt32(textBox2.Text); i <= Convert.ToInt32(textBox3.Text); i++)
+                int AddedRooms = lastRoom - firstRoom;
+                List<int> Rooms = new List<int>(); 
+
+                for (int i = firstRoom; i <= lastRoom; i++)
                 {
                     bool exists = false;
-                    foreach (Room r in Rooms)
+                    foreach (int room in rooms)
                     {
-                        if (r.RoomNum == i)
+                        if (room == i)
                         {
                             exists = true;
                             AddedRooms--;
@@ -111,63 +120,54 @@ namespace PolyclinicView
 
                     if (!exists)
                     {
-                        foreach (Specialization s in Specializations)
-                        {
-                            if (s.SpecializationName == comboBox1.SelectedItem.ToString())
-                            {
-                                roomsTableAdapter.InsertQuery(i, s.SpecId);
-                                break;
-                            }
-                        }
+                        Rooms.Add(i);
                     }
                 }
+
                 if (AddedRooms == -1) MessageBox.Show("Выбранные кабинеты уже закреплены за какими-либо специализациями", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 else MessageBox.Show("Кабинеты успешно добавлены", "Готово", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 textBox2.Clear();
                 textBox3.Clear();
-                Rooms.Clear();
-                F.RoomsFilling(Rooms);*/
+
+                RoomsAdd?.Invoke(this, new RoomsEventArgs(Editor.GetId(comboBox1.SelectedItem.ToString()), Rooms));
+
+                radioButton4.Select();
+                radioButton3.Select();
             }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             bool exists = false;
+            int currentRoom = Int32.Parse(textBox1.Text);
             if (String.IsNullOrEmpty(textBox1.Text))
                 errorProvider1.SetError(textBox1, "Укажите номер кабинета");
-            /*else
+            else
             {
-                foreach (Room r in Rooms)
+                foreach (int room in rooms)
                 {
-                    if (r.RoomNum == Convert.ToInt32(textBox1.Text))
+                    if (room == currentRoom)
                     {
                         MessageBox.Show("Данный кабинет уже есть", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         exists = true;
                         break;
                     }
                 }
+
                 if (!exists)
                 {
-                    foreach (Specialization s in Specializations)
-                    {
-                        if (s.SpecializationName == comboBox1.SelectedItem.ToString())
-                        {
-                            roomsTableAdapter.InsertQuery(Convert.ToInt32(textBox1.Text), s.SpecId);
-                            MessageBox.Show("Кабинет успешно добавлен", "Готово", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            textBox1.Clear();
-                            Rooms.Clear();
-                            F.RoomsFilling(Rooms);
-                            break;
-                        }
-                    }
+                    RoomsAdd?.Invoke(this, new RoomsEventArgs(Editor.GetId(comboBox1.SelectedItem.ToString()), new List<int> { currentRoom }));
+                    MessageBox.Show("Кабинет успешно добавлен", "Готово", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    radioButton4.Select();
+                    radioButton3.Select();
                 }
-            }*/
+            }
         }
 
         private void radioButton3_CheckedChanged(object sender, EventArgs e)
         {
             groupBox1.Enabled = false;
-            listBox1.Items.Clear();
             comboBox1.Enabled = true;
             comboBox2.Enabled = false;
             comboBox1.Text = "";
@@ -180,7 +180,6 @@ namespace PolyclinicView
         private void radioButton4_CheckedChanged(object sender, EventArgs e)
         {
             listBox1.Enabled = true;
-            listBox1.Items.Clear();
             comboBox1.Enabled = false;
             comboBox2.Enabled = true;
             groupBox1.Enabled = false;
@@ -193,20 +192,10 @@ namespace PolyclinicView
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            listBox1.Items.Clear();
             listBox1.Enabled = true;
 
-            /*foreach (Specialization s in Specializations)
-            {
-                if (s.SpecializationName == comboBox2.SelectedItem.ToString())
-                {
-                    foreach (Room r in Rooms)
-                    {
-                        if (r.SpecId == s.SpecId)
-                            listBox1.Items.Add(r.RoomNum);
-                    }
-                }
-            }*/
+            SpecializationChoise?.Invoke(this, new DoctorEventArgs(Editor.GetId(comboBox2.SelectedItem.ToString())));
+            listBox1.DataSource = rooms;
         }
 
         private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
@@ -238,11 +227,36 @@ namespace PolyclinicView
 
         private void RoomsRegister_FormClosed(object sender, FormClosedEventArgs e)
         {
-            /*if(IsOpenedFromND)
+            if(IsOpenedFromND)
             {
+                throw new NotImplementedException();
                 NewDoctor ND = this.Owner as NewDoctor;
                 ND.RefreshRooms();
-            }*/
+            }
         }
+        #endregion
+
+        #region Interface implementation
+        public void SetSpecializations(IEnumerable specializations)
+        {
+            if (specializations is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(specializations)));
+            }
+
+            comboBox1.DataSource = specializations;
+            comboBox2.DataSource = specializations;
+        }
+
+        public void SetAvailableRooms(List<int> rooms)
+        {
+            if (rooms is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(rooms)));
+            }
+
+            this.rooms = rooms;
+        }
+        #endregion
     }
 }

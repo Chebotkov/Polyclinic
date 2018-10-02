@@ -36,7 +36,7 @@ namespace PolyclinicView
 
         private void RegistratorView_RoomsRegister_Click(object sender, EventArgs e)
         {
-            RoomsRegisterPresenter roomsRegisterPresenter = new RoomsRegisterPresenter(registratorView.IRoomsRegisterViewRef);
+            RoomsRegisterPresenter roomsRegisterPresenter = new RoomsRegisterPresenter(registratorView.IRoomsRegisterViewRef, new PolyclinicDBManager.Models.RoomsRegisterModel());
         }
 
         private void RegistratorView_Registration_Click(object sender, EventArgs e)

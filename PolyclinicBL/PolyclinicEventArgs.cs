@@ -183,4 +183,16 @@ namespace PolyclinicBL
             this.printedTicket = printedTicket;
         }
     }
+
+    public class RoomsEventArgs : EventArgs
+    {
+        public int SpecializationId { get; private set; }
+        public List<int> Rooms { get; private set; }
+
+        public RoomsEventArgs(int SpecializationId, List<int> Rooms)
+        {
+            this.SpecializationId = SpecializationId;
+            this.Rooms = Rooms;
+        }
+    }
 }

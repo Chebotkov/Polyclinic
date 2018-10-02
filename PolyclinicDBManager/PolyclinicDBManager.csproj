@@ -41,6 +41,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -70,6 +71,7 @@
     <Compile Include="Models\MedicalCardModel.cs" />
     <Compile Include="Models\NewSpecializationModel.cs" />
     <Compile Include="Models\PrintTicketModel.cs" />
+    <Compile Include="Models\RoomsRegisterModel.cs" />
     <Compile Include="Patient.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>
     </Compile>
