@@ -12,7 +12,7 @@ namespace PolyclinicView
         event EventHandler TicketOrderFormLoad;
         event EventHandler<TicketEventArgs> TicketOrder;
         event EventHandler<PatientsIdAndSpecializationNameEventArgs> SpecializationChoise;
-        event EventHandler<DoctorEventArgs> DoctorsSheduleCheck;
+        event EventHandler<EntityIdEventArgs> DoctorsSheduleCheck;
         event EventHandler NewSpecializationOpen;
 
         void FillFormWithSP(IEnumerable specializations, IEnumerable patients);
@@ -30,7 +30,7 @@ namespace PolyclinicView
         public event EventHandler<TicketEventArgs> TicketOrder;
         public event EventHandler TicketOrderFormLoad;
         public event EventHandler<PatientsIdAndSpecializationNameEventArgs> SpecializationChoise;
-        public event EventHandler<DoctorEventArgs> DoctorsSheduleCheck;
+        public event EventHandler<EntityIdEventArgs> DoctorsSheduleCheck;
         public event EventHandler NewSpecializationOpen;
 
         public Doctor ChosenDoctor { get; private set; }
@@ -178,7 +178,7 @@ namespace PolyclinicView
         {
             bool order = true;
 
-            DoctorsSheduleCheck?.Invoke(this, new DoctorEventArgs(Editor.GetId(comboBox4.SelectedItem.ToString())));
+            DoctorsSheduleCheck?.Invoke(this, new EntityIdEventArgs(Editor.GetId(comboBox4.SelectedItem.ToString())));
 
             if (ChosenDoctor.Shedule == "00:00-00:00" || ChosenDoctor.Interval == 0)
             {

@@ -46,7 +46,7 @@ namespace PolyclinicView
             iTicketOrderFormModel.AddTicketToStorage(e.PatientsId, e.DoctorsId, Editor.ParseToDateTime(e.ChosenDate, e.ChosenTime));
         }
 
-        private void ITicketOrderView_DoctorsSheduleCheck(object sender, DoctorEventArgs e)
+        private void ITicketOrderView_DoctorsSheduleCheck(object sender, EntityIdEventArgs e)
         {
             iTicketOrderView.SetChosenDoctor(iTicketOrderFormModel.GetDoctorById(e.DoctorsId));
             iTicketOrderView.SetOrderedTickets(iTicketOrderFormModel.GetOrderedTickets());

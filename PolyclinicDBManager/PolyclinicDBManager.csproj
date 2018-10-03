@@ -69,6 +69,7 @@
     </Compile>
     <Compile Include="Models\MainFormModel.cs" />
     <Compile Include="Models\MedicalCardModel.cs" />
+    <Compile Include="Models\NewDoctorModel.cs" />
     <Compile Include="Models\NewSpecializationModel.cs" />
     <Compile Include="Models\PrintTicketModel.cs" />
     <Compile Include="Models\RoomsRegisterModel.cs" />

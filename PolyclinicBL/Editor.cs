@@ -160,6 +160,16 @@ namespace PolyclinicBL
             else return Encoding.Default.GetBytes(new char[0]);
         }
 
+        public static string GetText(List<string> data)
+        {
+            if (data is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(data)));
+            }
+
+            return String.Join(Environment.NewLine, data);
+        }
+
         public static string GetTime(string information)
         {
             return information.Substring(information.Length - 6);

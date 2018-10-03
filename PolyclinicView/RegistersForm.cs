@@ -21,10 +21,19 @@ namespace PolyclinicView
         event EventHandler NewDoctor_Click;
         event EventHandler NewSpecialization_Click;
         event EventHandler GetEntities;
+        event EventHandler DoctorsGet;
+        event EventHandler PatientsGet;
+        event EventHandler SpecializationsGet;
         event EventHandler<StreetsEventHandler> FillStreets;
+        event EventHandler<EntityIdEventArgs> DoctorsListGet;
+        event EventHandler<EntityIdEventArgs> PatientsInfoGet;
+        event EventHandler<EntityIdEventArgs> DoctorsListGetBySpecialization;
+        event EventHandler<EntityIdEventArgs> RegionInfoGet;
 
         void SetEntities(IEnumerable Patients, IEnumerable Doctors, IEnumerable Specializations, IEnumerable Regions);
         void SetStreets(IEnumerable Streets);
+        void SetEntity(IEnumerable entities, char entity);
+        void SetData(string data);
     }
 
     public partial class RegistersForm : Form, IRegistersView
@@ -42,11 +51,23 @@ namespace PolyclinicView
         public event EventHandler NewDoctor_Click;
         public event EventHandler NewSpecialization_Click;
         public event EventHandler GetEntities;
+        public event EventHandler DoctorsGet;
+        public event EventHandler PatientsGet;
+        public event EventHandler SpecializationsGet;
         public event EventHandler<StreetsEventHandler> FillStreets;
+        public event EventHandler<EntityIdEventArgs> DoctorsListGet;
+        public event EventHandler<EntityIdEventArgs> PatientsInfoGet;
+        public event EventHandler<EntityIdEventArgs> DoctorsListGetBySpecialization;
+        public event EventHandler<EntityIdEventArgs> RegionInfoGet;
 
         public RegistersForm()
         {
             InitializeComponent();
+        }
+
+        private void RegistersForm_Load(object sender, EventArgs e)
+        {
+            GetEntities?.Invoke(this, EventArgs.Empty);
         }
 
         private void radioButton3_CheckedChanged(object sender, EventArgs e)
@@ -72,11 +93,6 @@ namespace PolyclinicView
             RefreshFields();
 
             comboBox1.DataSource = Doctors;
-        }
-
-        private void RegistersForm_Load(object sender, EventArgs e)
-        {
-            GetEntities?.Invoke(this, EventArgs.Empty);
         }
 
         private void radioButton5_CheckedChanged(object sender, EventArgs e)
@@ -259,111 +275,71 @@ namespace PolyclinicView
             comboBox1.DataSource = Specializations;
         }
 
-        private void RefreshFields()
-        {
-            comboBox1.Text = "";
-            errorProvider1.Clear();
-            comboBox1.Items.Clear();
-            textBox1.Clear();
-            textBox2.Clear();
-        }
-
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            /*
             textBox2.Clear();
-            if (radioButton3.Checked && comboBox1.SelectedIndex != -1)
+            if (radioButton3.Checked)
             {
-                if (Doctors[comboBox1.SelectedIndex].Specialization != "Терапевт") textBox2.Text = Doctors[comboBox1.SelectedIndex].Name + " " + Doctors[comboBox1.SelectedIndex].LastName + " " + Doctors[comboBox1.SelectedIndex].Patronymic + "; " + Doctors[comboBox1.SelectedIndex].Specialization + "; № кабинета " + Doctors[comboBox1.SelectedIndex].Room + "; Время приёма: " + Doctors[comboBox1.SelectedIndex].AppointmentTime;
-                else textBox2.Text = Doctors[comboBox1.SelectedIndex].Name + " " + Doctors[comboBox1.SelectedIndex].LastName + " " + Doctors[comboBox1.SelectedIndex].Patronymic + "; " + Doctors[comboBox1.SelectedIndex].Specialization + "; № кабинета " + Doctors[comboBox1.SelectedIndex].Room + "; № участка:" + Doctors[comboBox1.SelectedIndex].Region + "; Время приёма: " + Doctors[comboBox1.SelectedIndex].AppointmentTime;
+                DoctorsListGet?.Invoke(this, new EntityIdEventArgs(Editor.GetId(comboBox1.SelectedItem.ToString())));
             }
+
             if (radioButton2.Checked)
             {
-                int i = 0;
-                foreach (Doctor D in Doctors)
-                {
-                    if (D.Region == Convert.ToInt32(comboBox1.Text.Substring(0, comboBox1.Text.IndexOf('.'))))
-                    {
-                        if (i == 0)
-                        {
-                            textBox2.Text += "Врачи-терапевты, закреплённые за этим учатском:" + Environment.NewLine;
-                            i++;
-                        }
-                        textBox2.Text += D.Name + " " + D.LastName + " " + D.Patronymic + "; № кабинета " + D.Room + Environment.NewLine;
-                    }
-                }
-                if (i == 0) textBox2.Text += "За этим учатском нет закреплённых терапевтов" + Environment.NewLine;
-
-                textBox2.Text += Environment.NewLine + "Адреса при участке:" + Environment.NewLine;
-                foreach (Region r in Regions)
-                {
-                    if (r.RegNum == Convert.ToInt32(comboBox1.Text.Substring(0, comboBox1.Text.IndexOf('.'))))
-                    {
-                        foreach (string s in r.Addresses)
-                        {
-                            textBox2.Text += "Участок №" + r.RegNum + ", " + s + Environment.NewLine;
-                        }
-                        break;
-                    }
-                }
+                RegionInfoGet?.Invoke(this, new EntityIdEventArgs(Editor.GetId(comboBox1.SelectedItem.ToString())));
             }
+
             if (radioButton1.Checked)
             {
-                foreach (Doctor D in Doctors)
-                {
-                    if (D.Specialization == comboBox1.SelectedItem.ToString())
-                    {
-                        if (comboBox1.SelectedItem.ToString() == "Терапевт") textBox2.Text += D.Name + " " + D.LastName + " " + D.Patronymic + "; " + D.Specialization + "; № кабинета: " + D.Room + "; Время приёма: " + D.AppointmentTime + "; Обслуживаемый участок:" + D.Region + Environment.NewLine;
-                        else textBox2.Text += D.Name + " " + D.LastName + " " + D.Patronymic + "; " + D.Specialization + "; № кабинета " + D.Room + "; Время приёма: " + D.AppointmentTime + Environment.NewLine;
-                    }
-                }
+                DoctorsListGetBySpecialization?.Invoke(this, new EntityIdEventArgs(Editor.GetId(comboBox1.SelectedItem.ToString())));
             }
+
             if (radioButton5.Checked)
             {
-                textBox2.Text = "ФИО: " + Patients[comboBox1.SelectedIndex].LastName + " " + Patients[comboBox1.SelectedIndex].Name + " " + Patients[comboBox1.SelectedIndex].PatronymicName + Environment.NewLine + "Пол:" + Patients[comboBox1.SelectedIndex].Gender + Environment.NewLine + "Дата рождения: " + Patients[comboBox1.SelectedIndex].Birth + Environment.NewLine + "№ участка:" + Patients[comboBox1.SelectedIndex].Region + ", Адрес:" + Patients[comboBox1.SelectedIndex].Address + Environment.NewLine + "Дата регистрации: " + Patients[comboBox1.SelectedIndex].RegistrationDate;
-            }*/
+                PatientsInfoGet?.Invoke(this, new EntityIdEventArgs(Editor.GetId(comboBox1.SelectedItem.ToString())));
+            }
 
         }
 
-        public void RefreshComboboxes(char c)
+        #region Necessary methods
+        /// <summary>
+        /// Refreshes collection by parameter "c".
+        /// </summary>
+        /// <param name="entity">Certain entity: d - Doctor, p - Patient, s - Specialization.</param>
+        /// <exception cref="ArgumentException">Throws when <paramref name="entity"/> isn't valid.</exception>
+        public void RefreshComboboxes(char entity)
         {
-            comboBox1.Items.Clear();
-            /*switch (c)
+            switch (entity)
             {
                 case 'd':
                     {
-                        Doctors.Clear();
-                        F.DoctorsListFilling(Doctors);
-                        Doctors.Sort();
-                        foreach (Doctor d in Doctors)
-                        {
-                            comboBox1.Items.Add(d.id + ". " + d.LastName + " " + d.Name + " " + d.Patronymic);
-                        }
+                        DoctorsGet?.Invoke(this, EventArgs.Empty);
                         break;
                     }
                 case 'p':
                     {
-                        Patients.Clear();
-                        F.PatientsListFilling(Patients);
-                        foreach (Patient p in Patients)
-                        {
-                            comboBox1.Items.Add(p.id + ". " + p.LastName + " " + p.Name + " " + p.PatronymicName);
-                        }
+                        PatientsGet?.Invoke(this, EventArgs.Empty);
                         break;
                     }
                 case 's':
                     {
-                        Specializations.Clear();
-                        F.SpecializationsFilling(Specializations);
-                        foreach (Specialization s in Specializations)
-                        {
-                            comboBox1.Items.Add(s.SpecializationName);
-                        }
+                        SpecializationsGet?.Invoke(this, EventArgs.Empty);
                         break;
                     }
-            }*/
+                default:
+                    throw new ArgumentException(String.Format("{0} is not valid. There is only 'd', 'p' and 'c' parametres.", nameof(entity)));
+            }
         }
 
+        private void RefreshFields()
+        {
+            comboBox1.Text = "";
+            errorProvider1.Clear();
+            textBox1.Clear();
+            textBox2.Clear();
+        }
+        #endregion
+
+        #region Interface implementation
         public void SetEntities(IEnumerable Patients, IEnumerable Doctors, IEnumerable Specializations, IEnumerable Regions)
         {
             //Empty references
@@ -382,5 +358,52 @@ namespace PolyclinicView
 
             Streets = streets;
         }
+
+        public void SetData(string data)
+        {
+            if (data is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(data)));
+            }
+            
+            textBox2.Text = data;
+        }
+
+        /// <summary>
+        /// Sets collection by parameter "entity".
+        /// </summary>
+        /// <param name="entities">Collection of entities.</param>
+        /// <param name="entity">Certain entity: d - Doctor, p - Patient, s - Specialization.</param>
+        /// <exception cref="ArgumentNullException">Throws when <paramref name="entities"/> is null.</exception>
+        /// <exception cref="ArgumentException">Throws when <paramref name="entity"/> isn't valid.</exception>
+        public void SetEntity(IEnumerable entities, char entity)
+        {
+            if (entities is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(entities)));
+            }
+
+            switch (entity)
+            {
+                case 'd':
+                    {
+                        Doctors = entities;
+                        break;
+                    }
+                case 'p':
+                    {
+                        Patients = entities;
+                        break;
+                    }
+                case 's':
+                    {
+                        Streets = entities;
+                        break;
+                    }
+                default:
+                    throw new ArgumentException(String.Format("{0} is not valid. There is only 'd', 'p' and 'c' parametres.", nameof(entity)));
+            }
+        }
+        #endregion
     }
 }

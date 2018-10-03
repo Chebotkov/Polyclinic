@@ -10,11 +10,11 @@ namespace PolyclinicView
     public interface IMedicalCardView
     {
         IReferenceBookView IReferenceBookViewRef { get; set; }
-        event EventHandler<DoctorEventArgs> SaveChanges;
+        event EventHandler<EntityIdEventArgs> SaveChanges;
         event EventHandler<PatientsArrivalEventArgs> Report;
         event EventHandler ReferenceBook_Click;
         event EventHandler MedicalCardFormLoad;
-        event EventHandler<DoctorEventArgs> ReadMedicalCard;
+        event EventHandler<EntityIdEventArgs> ReadMedicalCard;
         event EventHandler<TicketEventArgs> DoctorSelect;
         event EventHandler<MedicalCardEventAgs> WriteToMedicalCard;
         void RefreshDrugsAndDiagnosis(IEnumerable Drugs, IEnumerable Diagnoses);
@@ -28,11 +28,11 @@ namespace PolyclinicView
     public partial class MedicalCardForm : Form, IMedicalCardView
     {
         public IReferenceBookView IReferenceBookViewRef { get; set; }
-        public event EventHandler<DoctorEventArgs> SaveChanges;
+        public event EventHandler<EntityIdEventArgs> SaveChanges;
         public event EventHandler<PatientsArrivalEventArgs> Report;
         public event EventHandler ReferenceBook_Click;
         public event EventHandler MedicalCardFormLoad;
-        public event EventHandler<DoctorEventArgs> ReadMedicalCard;
+        public event EventHandler<EntityIdEventArgs> ReadMedicalCard;
         public event EventHandler<TicketEventArgs> DoctorSelect;
         public event EventHandler<MedicalCardEventAgs> WriteToMedicalCard;
         public string SpecializationName { get; set; }
@@ -67,7 +67,7 @@ namespace PolyclinicView
                 SetTrueFalse(false, 1);
                 SetTrueFalse(false, 2);
 
-                SaveChanges?.Invoke(this, new DoctorEventArgs(Editor.GetId(comboBox2.SelectedItem.ToString())));
+                SaveChanges?.Invoke(this, new EntityIdEventArgs(Editor.GetId(comboBox2.SelectedItem.ToString())));
                 textBox1.Text += Environment.NewLine + Environment.NewLine + DateTime.Now.ToString() + Environment.NewLine + String.Format("Врач: {0} {1} {2}. Специальность: {3}.", doctor.FirstName, doctor.LastName, doctor.Patronymic, SpecializationName) + Environment.NewLine;
 
                 textBox1.SelectionStart = textBox1.TextLength;
@@ -168,7 +168,7 @@ namespace PolyclinicView
             textBox1.Clear();
             LastLineIndex = 0;
 
-            ReadMedicalCard?.Invoke(this, new DoctorEventArgs(Editor.GetId(comboBox1.SelectedItem.ToString())));
+            ReadMedicalCard?.Invoke(this, new EntityIdEventArgs(Editor.GetId(comboBox1.SelectedItem.ToString())));
 
             TextBoxContent = textBox1.Text;
             LastLineIndex = textBox1.Lines.Length;

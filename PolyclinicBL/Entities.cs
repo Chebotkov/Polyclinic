@@ -52,7 +52,7 @@ namespace PolyclinicBL
         public string VisitingDate { get; private set; }
         public string VisitingTime { get; private set; }
 
-        public Ticket(int patientsId, int doctorsId, string visitingDate,string visitingTime)
+        public Ticket(int patientsId, int doctorsId, string visitingDate, string visitingTime)
         {
             PatientsId = patientsId;
             DoctorsId = doctorsId;
@@ -93,5 +93,17 @@ namespace PolyclinicBL
         public int DocRoom { get; set; }
         public string Date { get; set; }
         public string Time { get; set; }
+    }
+
+    public struct Doctor
+    {
+        public string LastName { get; set; }
+        public string FirstName { get; set; }
+        public string Patronymic { get; set; }
+        public int Specialization { get; set; }
+        public int? Region { get; set; }
+        public int Room { get; set; }
+        public string Schedule { get; set; }
+        public int Interval { get; set; }
     }
 }

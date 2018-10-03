@@ -50,6 +50,11 @@ namespace PolyclinicBL
         IEnumerable GetStreetsByRegionsId(int regionsId);
         void AddNewRegion(int regionId, string regionName);
         void AddNewStreet(int regionsId, string street);
+        List<string> GetDoctorsByCriterion(int doctorSpecialization);
+        List<string> GetDoctorsBySpecialization(int specializationId);
+        string GetDoctorInfo(int doctorId);
+        List<string> GetRegionInfo(int regionId);
+        string GetPatientsFullInfo(int patientId);
     }
 
     public interface IShowStatisticsModel
@@ -98,5 +103,13 @@ namespace PolyclinicBL
         List<int> GetRooms(int specializationId);
         IEnumerable GetSpecializations();
         void SetRooms(List<int> rooms, int specializationId);
+    }
+
+    public interface INewDoctorModel
+    {
+        IEnumerable GetSpecializations();
+        IEnumerable GetRegions();
+        IEnumerable GetRooms(int specializationId);
+        void DoctorCreate(PolyclinicBL.Doctor doctor);
     }
 }

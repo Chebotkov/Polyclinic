@@ -13,7 +13,7 @@ namespace PolyclinicView
         event EventHandler<DateChangedEventArgs> DateChange;
         event EventHandler MedicalCardOpen;
         event EventHandler ShowStatisticsLoad;
-        event EventHandler<DoctorEventArgs> ShowDoctorsStatistic;
+        event EventHandler<EntityIdEventArgs> ShowDoctorsStatistic;
 
         void SetDoctors(IEnumerable doctors);
         void SetDoctorsStatistic(IEnumerable statistic);
@@ -25,7 +25,7 @@ namespace PolyclinicView
         public event EventHandler<DateChangedEventArgs> DateChange;
         public event EventHandler MedicalCardOpen;
         public event EventHandler ShowStatisticsLoad;
-        public event EventHandler<DoctorEventArgs> ShowDoctorsStatistic;
+        public event EventHandler<EntityIdEventArgs> ShowDoctorsStatistic;
 
         public IShowMedicalCard iShowMedicalCard { get; private set; }
         private IEnumerable Statistics;
@@ -64,7 +64,7 @@ namespace PolyclinicView
                 label7.Text = "Явившиеся пациенты: 0";
                 label6.Text = "Неявившиеся пациенты: 0";
 
-                ShowDoctorsStatistic?.Invoke(this, new DoctorEventArgs(Editor.GetId(comboBox1.SelectedItem.ToString())));
+                ShowDoctorsStatistic?.Invoke(this, new EntityIdEventArgs(Editor.GetId(comboBox1.SelectedItem.ToString())));
 
 
                 label8.Text = "Статистика посещений на сегодня: ";

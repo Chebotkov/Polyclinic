@@ -41,8 +41,6 @@ namespace PolyclinicDBManager
 
             using (var context = new PolyclinicDBContext())
             {
-                IQueryable<Specialization> query = context.Specialization;
-
                 Specialization specialization = new Specialization
                 {
                     SpecializationName = specializationName
@@ -62,8 +60,6 @@ namespace PolyclinicDBManager
 
             using (var context = new PolyclinicDBContext())
             {
-                IQueryable<DoctorsTimeTable> query = context.DoctorsTimeTable;
-
                 DoctorsTimeTable doctorsTimeTable = new DoctorsTimeTable()
                 {
                     SpecId = specializationId,

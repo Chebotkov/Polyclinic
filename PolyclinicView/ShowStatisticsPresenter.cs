@@ -42,7 +42,7 @@ namespace PolyclinicView
             ShowMedicalCardPresenter showMedicalCardPresenter = new ShowMedicalCardPresenter(iShowStatistic.iShowMedicalCard, new MedicalCardManager());
         }
 
-        private void IShowStatistic_ShowDoctorsStatistic(object sender, DoctorEventArgs e)
+        private void IShowStatistic_ShowDoctorsStatistic(object sender, EntityIdEventArgs e)
         {
             iShowStatistic.SetDoctorsStatistic(iShowStatisticsModel.GetDoctorsStatistic(e.DoctorsId));
         }

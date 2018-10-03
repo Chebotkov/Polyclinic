@@ -32,7 +32,7 @@ namespace PolyclinicView
             iPrintTicketView.TicketChoise += IPrintTicketView_TicketChoise;
         }
 
-        private void IPrintTicketView_TicketChoise(object sender, DoctorEventArgs e)
+        private void IPrintTicketView_TicketChoise(object sender, EntityIdEventArgs e)
         {
             iPrintTicketView.printedTicket = printTicketModel.GetFullTicket(e.DoctorsId);
         }
@@ -42,7 +42,7 @@ namespace PolyclinicView
             ShowTicketOnScreenPresenter showTicketOnScreenPresenter = new ShowTicketOnScreenPresenter(iPrintTicketView.iShowTicketOnScreen, new MSWordWorker());
         }
 
-        private void IPrintTicketView_PatientChoise(object sender, DoctorEventArgs e)
+        private void IPrintTicketView_PatientChoise(object sender, EntityIdEventArgs e)
         {
             iPrintTicketView.SetTickets(printTicketModel.GetTicketsByPatientsId(e.DoctorsId));
         }

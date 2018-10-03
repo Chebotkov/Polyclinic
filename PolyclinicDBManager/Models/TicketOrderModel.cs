@@ -66,14 +66,7 @@ namespace PolyclinicDBManager
 
         public int GetTherapistId()
         {
-            int id = 0;
-            using (var context = new PolyclinicDBContext())
-            {
-                var specialization = context.Specialization.Where(s => s.SpecializationName == "Терапевт");
-                id = specialization.ToList()[0].id;
-            }
-            
-            return id;
+            return iCRUDMethods.GetTherapistId();
         }
 
 

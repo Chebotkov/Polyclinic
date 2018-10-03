@@ -17,10 +17,10 @@ namespace PolyclinicBL
         }
     }
 
-    public class DoctorEventArgs : EventArgs
+    public class EntityIdEventArgs : EventArgs
     {
         public int DoctorsId { get; private set; }
-        public DoctorEventArgs(int doctorsId)
+        public EntityIdEventArgs(int doctorsId)
         {
             DoctorsId = doctorsId;
         }
@@ -193,6 +193,15 @@ namespace PolyclinicBL
         {
             this.SpecializationId = SpecializationId;
             this.Rooms = Rooms;
+        }
+    }
+
+    public class NewDoctorEventArgs : EventArgs
+    {
+        public PolyclinicBL.Doctor doctor { get; private set; }
+        public NewDoctorEventArgs(Doctor doctor)
+        {
+            this.doctor = doctor;
         }
     }
 }

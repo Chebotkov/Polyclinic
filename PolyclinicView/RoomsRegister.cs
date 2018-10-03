@@ -9,7 +9,7 @@ namespace PolyclinicView
     public interface IRoomsRegisterView
     {
         event EventHandler RoomsRegisterLoad;
-        event EventHandler<DoctorEventArgs> SpecializationChoise;
+        event EventHandler<EntityIdEventArgs> SpecializationChoise;
         event EventHandler<RoomsEventArgs> RoomsAdd;
         void SetSpecializations(IEnumerable specializations);
         void SetAvailableRooms(List<int> rooms);
@@ -22,7 +22,7 @@ namespace PolyclinicView
 
         public event EventHandler RoomsRegisterLoad;
         public event EventHandler<RoomsEventArgs> RoomsAdd;
-        public event EventHandler<DoctorEventArgs> SpecializationChoise;
+        public event EventHandler<EntityIdEventArgs> SpecializationChoise;
 
         public RoomsRegister()
         {
@@ -45,7 +45,7 @@ namespace PolyclinicView
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SpecializationChoise?.Invoke(this, new DoctorEventArgs(Editor.GetId(comboBox1.SelectedItem.ToString())));
+            SpecializationChoise?.Invoke(this, new EntityIdEventArgs(Editor.GetId(comboBox1.SelectedItem.ToString())));
 
             groupBox1.Enabled = true;
             radioButton1.Select();
@@ -194,7 +194,7 @@ namespace PolyclinicView
         {
             listBox1.Enabled = true;
 
-            SpecializationChoise?.Invoke(this, new DoctorEventArgs(Editor.GetId(comboBox2.SelectedItem.ToString())));
+            SpecializationChoise?.Invoke(this, new EntityIdEventArgs(Editor.GetId(comboBox2.SelectedItem.ToString())));
             listBox1.DataSource = rooms;
         }
 

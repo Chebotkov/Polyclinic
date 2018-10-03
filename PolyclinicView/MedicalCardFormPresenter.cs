@@ -48,7 +48,7 @@ namespace PolyclinicView
             medicalCardModel.UpdateArrivalStatistics(e.PatientId, e.DoctorId, e.IsPatientArrived, Editor.ParseToDateTime(e.Date, e.Time));
         }
 
-        private void IMedicalCardView_SaveChanges(object sender, DoctorEventArgs e)
+        private void IMedicalCardView_SaveChanges(object sender, EntityIdEventArgs e)
         {
             Doctor doctor = medicalCardModel.GetDoctorById(e.DoctorsId) as Doctor;
             iMedicalCardView.SetDoctor(doctor);
@@ -65,7 +65,7 @@ namespace PolyclinicView
             iMedicalCardView.SetPatients(medicalCardModel.GetTickets(e.DoctorsId, e.ChosenDate));
         }
 
-        private void IMedicalCardView_ReadMedicalCard(object sender, DoctorEventArgs e)
+        private void IMedicalCardView_ReadMedicalCard(object sender, EntityIdEventArgs e)
         {
             iMedicalCardView.SetPatientsCard(medicalCardManager.ReadMedicalCard(e.DoctorsId));
         }

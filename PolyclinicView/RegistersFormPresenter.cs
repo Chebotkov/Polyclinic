@@ -35,6 +35,48 @@ namespace PolyclinicView
             iRegistersView.FillStreets += IRegistersView_FillStreets;
             iRegistersView.AddNewRegion += IRegistersView_AddNewRegion;
             iRegistersView.AddNewStreet += IRegistersView_AddNewStreet;
+            iRegistersView.DoctorsListGet += IRegistersView_DoctorsListGet;
+            iRegistersView.PatientsInfoGet += IRegistersView_PatientsInfoGet;
+            iRegistersView.DoctorsListGetBySpecialization += IRegistersView_DoctorsListGetBySpecialization;
+            iRegistersView.RegionInfoGet += IRegistersView_RegionInfoGet;
+            iRegistersView.DoctorsGet += IRegistersView_DoctorsGet;
+            iRegistersView.PatientsGet += IRegistersView_PatientsGet;
+            iRegistersView.SpecializationsGet += IRegistersView_SpecializationsGet;
+        }
+
+        private void IRegistersView_SpecializationsGet(object sender, EventArgs e)
+        {
+            iRegistersView.SetEntity(iRegistersModel.GetSpecializations(), 's');
+        }
+
+        private void IRegistersView_PatientsGet(object sender, EventArgs e)
+        {
+            iRegistersView.SetEntity(iRegistersModel.GetPatients(), 'p');
+        }
+
+        private void IRegistersView_DoctorsGet(object sender, EventArgs e)
+        {
+            iRegistersView.SetEntity(iRegistersModel.GetDoctors(), 'd');
+        }
+
+        private void IRegistersView_RegionInfoGet(object sender, EntityIdEventArgs e)
+        {
+            iRegistersView.SetData(Editor.GetText(iRegistersModel.GetRegionInfo(e.DoctorsId)));
+        }
+
+        private void IRegistersView_DoctorsListGetBySpecialization(object sender, EntityIdEventArgs e)
+        {
+            iRegistersView.SetData(Editor.GetText(iRegistersModel.GetDoctorsBySpecialization(e.DoctorsId)));
+        }
+
+        private void IRegistersView_PatientsInfoGet(object sender, EntityIdEventArgs e)
+        {
+            iRegistersView.SetData(iRegistersModel.GetPatientsFullInfo(e.DoctorsId));
+        }
+
+        private void IRegistersView_DoctorsListGet(object sender, EntityIdEventArgs e)
+        {
+            iRegistersView.SetData(iRegistersModel.GetDoctorInfo(e.DoctorsId));
         }
 
         private void IRegistersView_AddNewStreet(object sender, StreetsEventHandler e)

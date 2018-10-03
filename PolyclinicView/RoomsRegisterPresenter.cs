@@ -36,7 +36,7 @@ namespace PolyclinicView
             roomsRegisterModel.SetRooms(e.Rooms, e.SpecializationId);
         }
 
-        private void IRoomsRegister_SpecializationChoise(object sender, DoctorEventArgs e)
+        private void IRoomsRegister_SpecializationChoise(object sender, EntityIdEventArgs e)
         {
             iRoomsRegister.SetAvailableRooms(roomsRegisterModel.GetRooms(e.DoctorsId));
         }

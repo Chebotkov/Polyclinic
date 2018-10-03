@@ -14,9 +14,12 @@ namespace PolyclinicDBManager
         IEnumerable GetDoctors();
         IEnumerable GetPatientsFullNames();
         IEnumerable GetSpecializationsNames();
+        IEnumerable GetSpecializationsNamesOnly();
         Doctor GetDoctorById(int id);
         IEnumerable<PolyclinicBL.Drug> GetDrugs();
         IEnumerable<PolyclinicBL.Diagnoses> GetDiagnoses();
+        int GetTherapistId();
+        string GetSpecializationName(int specializationId);
     }
 
     public class CRUDMethods : ICRUDMethods
@@ -86,6 +89,22 @@ namespace PolyclinicDBManager
             }
 
             return specializations;
+        }
+
+        public IEnumerable GetSpecializationsNamesOnly()
+        {
+            List<string> specializationsList = new List<string>();
+            using (var context = new PolyclinicDBContext())
+            {
+                IQueryable<Specialization> query = context.Specialization.AsNoTracking();
+
+                foreach (Specialization specialization in query.ToList())
+                {
+                    specializationsList.Add(specialization.SpecializationName);
+                }
+            }
+
+            return specializationsList;
         }
 
         public IEnumerable GetSpecializationsNames()
@@ -168,6 +187,34 @@ namespace PolyclinicDBManager
             }
 
             return Drugs;
+        }
+
+        public int GetTherapistId()
+        {
+            int id = 0;
+            using (var context = new PolyclinicDBContext())
+            {
+                var specialization = context.Specialization.Where(s => s.SpecializationName == "Терапевт");
+                id = specialization.ToList()[0].id;
+            }
+
+            return id;
+        }
+
+        public string GetSpecializationName(int specializationId)
+        {
+            string specializationName;
+
+            using (var context = new PolyclinicDBContext())
+            {
+                var specializationNames = from s in context.Specialization.AsNoTracking()
+                                          where s.id == specializationId
+                                          select s;
+
+                specializationName = specializationNames.ToList()[0].SpecializationName;
+            }
+
+            return specializationName;
         }
     }
 }

@@ -15,9 +15,9 @@ namespace PolyclinicView
     public interface IPrintTicketView
     {
         event EventHandler PrintTicketLoad;
-        event EventHandler<DoctorEventArgs> PatientChoise;
+        event EventHandler<EntityIdEventArgs> PatientChoise;
         event EventHandler ShowTicketOnScreenOpen;
-        event EventHandler<DoctorEventArgs> TicketChoise; 
+        event EventHandler<EntityIdEventArgs> TicketChoise; 
         void SetPatients(IEnumerable Patients);
         void SetTickets(IEnumerable Tickets);
         IShowTicketOnScreen iShowTicketOnScreen { get; }
@@ -27,9 +27,9 @@ namespace PolyclinicView
     public partial class PrintTicketForm : Form, IPrintTicketView
     {
         public event EventHandler PrintTicketLoad;
-        public event EventHandler<DoctorEventArgs> PatientChoise;
+        public event EventHandler<EntityIdEventArgs> PatientChoise;
         public event EventHandler ShowTicketOnScreenOpen;
-        public event EventHandler<DoctorEventArgs> TicketChoise;
+        public event EventHandler<EntityIdEventArgs> TicketChoise;
         public IShowTicketOnScreen iShowTicketOnScreen { get; private set; }
         public PrintedTicket printedTicket { get; set; }
 
@@ -65,7 +65,7 @@ namespace PolyclinicView
             
             if (print)
             {
-                TicketChoise?.Invoke(this, new DoctorEventArgs(Editor.GetId(comboBox2.SelectedItem.ToString())));
+                TicketChoise?.Invoke(this, new EntityIdEventArgs(Editor.GetId(comboBox2.SelectedItem.ToString())));
                 
                 ShowTicketOnScreen STOS = new ShowTicketOnScreen(printedTicket);
                 STOS.Owner = this;
@@ -82,7 +82,7 @@ namespace PolyclinicView
             {
                 errorProvider1.Clear();
 
-                PatientChoise?.Invoke(this, new DoctorEventArgs(Editor.GetId(comboBox1.SelectedItem.ToString())));
+                PatientChoise?.Invoke(this, new EntityIdEventArgs(Editor.GetId(comboBox1.SelectedItem.ToString())));
 
                 if (comboBox2.Items.Count == 0) MessageBox.Show("Для данного пациента не найдено талонов", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 else comboBox2.Enabled = true;
