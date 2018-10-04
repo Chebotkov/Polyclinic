@@ -123,8 +123,8 @@ namespace PolyclinicView
         {
             if(IsOpenedFromRF)
             {
-                /*RegistersForm RF = this.Owner as RegistersForm;
-                RF.RefreshComboboxes('p');*/
+                RegistersForm RF = this.Owner as RegistersForm;
+                RF.RefreshComboboxes('p');
             }
         }
 

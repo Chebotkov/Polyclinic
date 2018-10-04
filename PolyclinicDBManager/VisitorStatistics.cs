@@ -14,6 +14,7 @@ namespace PolyclinicDBManager
     
     public partial class VisitorStatistics
     {
+        public int Id { get; set; }
         public int DocId { get; set; }
         public System.DateTime Date { get; set; }
         public int ArrivedPatients { get; set; }

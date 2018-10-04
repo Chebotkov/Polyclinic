@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using PolyclinicBL;
 using PolyclinicDBManager.Models;
 
@@ -41,7 +42,7 @@ namespace PolyclinicView
 
         private void INewDoctorView_IsRoomFree(object sender, EntityIdEventArgs e)
         {
-            throw new NotImplementedException();
+            iNewDoctorView.SetInformationAboutRoom(newDoctorModel.IsRoomFree(e.DoctorsId));
         }
 
         private void INewDoctorView_SpecializationSelect(object sender, EntityIdEventArgs e)

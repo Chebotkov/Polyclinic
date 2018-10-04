@@ -81,20 +81,26 @@ namespace PolyclinicView
         private void button2_Click(object sender, EventArgs e)
         {
             bool save = true;
+            int firstRoom = 0;
+            int lastRoom = 0;
 
-            int firstRoom = Int32.Parse(textBox2.Text);
-            int lastRoom = Int32.Parse(textBox3.Text);
             if (String.IsNullOrEmpty(textBox2.Text))
             {
-                errorProvider1.SetError(textBox2, "Укажите начало кабинетов");
+                errorProvider1.SetError(textBox2, "Укажите начало интервала кабинетов");
                 save = false;
             }
             else if (String.IsNullOrEmpty(textBox3.Text))
             {
-                errorProvider1.SetError(textBox3, "Укажите конец кабинетов");
+                errorProvider1.SetError(textBox3, "Укажите конец интервала кабинетов");
                 save = false;
             }
-            else if (lastRoom - firstRoom < 0)
+            else
+            {
+                firstRoom = Int32.Parse(textBox2.Text);
+                lastRoom = Int32.Parse(textBox3.Text);
+            }
+
+            if (lastRoom - firstRoom < 0)
             {
                 MessageBox.Show("Указан неверный интервал", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 save = false;
@@ -229,7 +235,6 @@ namespace PolyclinicView
         {
             if(IsOpenedFromND)
             {
-                throw new NotImplementedException();
                 NewDoctor ND = this.Owner as NewDoctor;
                 ND.RefreshRooms();
             }

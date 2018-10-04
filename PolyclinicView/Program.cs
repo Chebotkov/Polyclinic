@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using PolyclinicDBManager;
+using PolyclinicBL;
 
 namespace PolyclinicView
 {
@@ -22,7 +23,7 @@ namespace PolyclinicView
             MessageService messageService = new MessageService();
             MainFormModel mainFormModel = new MainFormModel();
            
-            MainFormPresenter mainFormPresenter = new MainFormPresenter(mainForm, messageService, mainFormModel);
+            MainFormPresenter mainFormPresenter = new MainFormPresenter(mainForm, messageService, mainFormModel, new MSWordWorker());
 
             Application.Run(mainForm);
         }

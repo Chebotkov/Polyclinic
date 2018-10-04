@@ -14,9 +14,8 @@ namespace PolyclinicDBManager
     
     public partial class Room
     {
+        public int RoomId { get; set; }
         public int SpecId { get; set; }
         public int RoomNumber { get; set; }
-    
-        public virtual Specialization Specialization { get; set; }
     }
 }

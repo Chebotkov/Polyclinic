@@ -23,6 +23,7 @@ namespace PolyclinicView
         void SetRegionsAndSpecializations(IEnumerable regions, IEnumerable specializations);
         void SetRooms(IEnumerable rooms);
         void SetInformationAboutRoom(bool isFree);
+        void RefreshRooms();
 
         IRoomsRegisterView RoomsRegisterView { get; }
     }
@@ -76,13 +77,6 @@ namespace PolyclinicView
                 }
             }
 
-            IsRoomFree?.Invoke(this, new EntityIdEventArgs(Int32.Parse(comboBox3.SelectedItem.ToString())));
-            if (!isRoomFree)
-            {
-                MessageBox.Show("Данный кабинет уже закреплён за другим врачом", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                save = false;
-            }
-
             if (comboBox1.SelectedItem == null)
             {
                 errorProvider1.SetError(comboBox1, "Выберите специализацию!");
@@ -100,6 +94,15 @@ namespace PolyclinicView
                 errorProvider1.SetError(comboBox3, "Выберите кабинет!");
                 save = false;
             }
+            else
+            {
+                IsRoomFree?.Invoke(this, new EntityIdEventArgs(Int32.Parse(comboBox3.SelectedItem.ToString())));
+                if (!isRoomFree)
+                {
+                    MessageBox.Show("Данный кабинет уже закреплён за другим врачом", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    save = false;
+                }
+            }
 
             if (save)
             {
@@ -116,7 +119,7 @@ namespace PolyclinicView
 
                 if (Editor.GetSpecialization(comboBox1.SelectedItem.ToString()) == "Терапевт")
                 {
-                    doctor.Region = Convert.ToInt32(comboBox2.SelectedItem);
+                    doctor.Region = Editor.GetId(comboBox2.SelectedItem.ToString());
                 }
 
                 DoctorCreate?.Invoke(this, new NewDoctorEventArgs(doctor));
@@ -136,7 +139,7 @@ namespace PolyclinicView
 
             comboBox3.Enabled = true;
 
-            if (comboBox1.SelectedItem.ToString() == "Терапевт") comboBox2.Enabled = true;
+            if (Editor.GetSpecialization(comboBox1.SelectedItem.ToString()) == "Терапевт") comboBox2.Enabled = true;
             else
             {
                 comboBox2.Text = "";
@@ -164,6 +167,10 @@ namespace PolyclinicView
         }
 
         #region Interface implementation
+        public void RefreshRooms()
+        {
+            SpecializationSelect?.Invoke(this, new EntityIdEventArgs(Editor.GetId(comboBox1.SelectedItem.ToString())));
+        }
 
         public void SetRooms(IEnumerable rooms)
         {

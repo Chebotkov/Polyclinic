@@ -10,6 +10,9 @@ namespace PolyclinicBL
     public interface IMainFormModel
     {
         Entities LoginChecker(string enteredLogin);
+        void DeleteOldTickets();
+        void CheckStatistics(int limitDays);
+        List<PrintedTicket> GetOldPrintedTickets();
     }
 
     public interface IRegistrationModel
@@ -111,5 +114,6 @@ namespace PolyclinicBL
         IEnumerable GetRegions();
         IEnumerable GetRooms(int specializationId);
         void DoctorCreate(PolyclinicBL.Doctor doctor);
+        bool IsRoomFree(int room);
     }
 }

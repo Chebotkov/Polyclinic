@@ -20,7 +20,7 @@ namespace PolyclinicView
         void SetChosenDoctor(object doctor);
         void SetOrderedTickets(object tickets);
 
-        Doctor ChosenDoctor { get; }
+        PolyclinicDBManager.Doctor ChosenDoctor { get; }
         List<PolyclinicBL.Ticket> OrderedTickets { get; }
         INewSpecialization INewSpecializationRef { get; }
     }
@@ -33,7 +33,7 @@ namespace PolyclinicView
         public event EventHandler<EntityIdEventArgs> DoctorsSheduleCheck;
         public event EventHandler NewSpecializationOpen;
 
-        public Doctor ChosenDoctor { get; private set; }
+        public PolyclinicDBManager.Doctor ChosenDoctor { get; private set; }
         public List<PolyclinicBL.Ticket> OrderedTickets { get; private set; }
         public INewSpecialization INewSpecializationRef { get; private set; }
         string chosenDate;
@@ -228,11 +228,11 @@ namespace PolyclinicView
                 throw new ArgumentNullException(String.Format("{0} is null", nameof(doctor)));
             }
             
-            ChosenDoctor = doctor as Doctor;
+            ChosenDoctor = doctor as PolyclinicDBManager.Doctor;
 
             if (ChosenDoctor == null)
             {
-                throw new InvalidCastException(String.Format("Can't cast {0} to {1}", nameof(doctor), typeof(Doctor)));
+                throw new InvalidCastException(String.Format("Can't cast {0} to {1}", nameof(doctor), typeof(PolyclinicDBManager.Doctor)));
             }
         }
 
@@ -247,7 +247,7 @@ namespace PolyclinicView
 
             if (OrderedTickets == null)
             {
-                throw new InvalidCastException(String.Format("Can't cast {0} to {1}", nameof(tickets), typeof(Doctor)));
+                throw new InvalidCastException(String.Format("Can't cast {0} to {1}", nameof(tickets), typeof(List<PolyclinicBL.Ticket>)));
             }
         }
 

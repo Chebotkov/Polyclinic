@@ -4,7 +4,7 @@
     <Key>
       <PropertyRef Name="DiagnosisName" />
     </Key>
-    <Property Name="DiagnosisName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" Type="String" />
+    <Property Name="DiagnosisName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
   </EntityType>
   <EntityType Name="Doctor">
@@ -23,7 +23,7 @@
     <NavigationProperty Name="RegionName" Relationship="Self.FK_Doctors_Regions" FromRole="Doctor" ToRole="Region" />
     <NavigationProperty Name="SpecializationName" Relationship="Self.FK_Doctors_Specializations" FromRole="Doctor" ToRole="Specialization" />
     <NavigationProperty Name="Tickets" Relationship="Self.FK_Tickets_Doctors" FromRole="Doctor" ToRole="Ticket" />
-    <NavigationProperty Name="VisitorStatistics" Relationship="PolyclinicDBModel.FK_VisitorStatistics_Doctor" FromRole="Doctor" ToRole="VisitorStatistics" />
+    <NavigationProperty Name="VisitorStatistics" Relationship="Self.FK_VisitorStatistics_Doctor" FromRole="Doctor" ToRole="VisitorStatistics" />
   </EntityType>
   <EntityType Name="DoctorsTimeTable">
     <Key>
@@ -77,11 +77,11 @@
   </EntityType>
   <EntityType Name="Room">
     <Key>
-      <PropertyRef Name="SpecId" />
+      <PropertyRef Name="RoomId" />
     </Key>
+    <Property Name="RoomId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="SpecId" Type="Int32" Nullable="false" />
     <Property Name="RoomNumber" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="Specialization" Relationship="Self.FK_Rooms_Specializations" FromRole="Room" ToRole="Specialization" />
   </EntityType>
   <EntityType Name="Specialization">
     <Key>
@@ -91,7 +91,6 @@
     <Property Name="SpecializationName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <NavigationProperty Name="Doctors" Relationship="Self.FK_Doctors_Specializations" FromRole="Specialization" ToRole="Doctor" />
     <NavigationProperty Name="DoctorsTimeTables" Relationship="Self.FK_DoctorsTimeTable_Specializations" FromRole="Specialization" ToRole="DoctorsTimeTable" />
-    <NavigationProperty Name="Rooms" Relationship="Self.FK_Rooms_Specializations" FromRole="Specialization" ToRole="Room" />
   </EntityType>
   <EntityType Name="Street">
     <Key>
@@ -116,13 +115,14 @@
   </EntityType>
   <EntityType Name="VisitorStatistics">
     <Key>
-      <PropertyRef Name="DocId" />
+      <PropertyRef Name="Id" />
     </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="DocId" Type="Int32" Nullable="false" />
     <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="ArrivedPatients" Type="Int32" Nullable="false" />
     <Property Name="NonArrivedPatients" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="Doctor" Relationship="PolyclinicDBModel.FK_VisitorStatistics_Doctor" FromRole="VisitorStatistics" ToRole="Doctor" />
+    <NavigationProperty Name="Doctor" Relationship="Self.FK_VisitorStatistics_Doctor" FromRole="VisitorStatistics" ToRole="Doctor" />
   </EntityType>
   <Association Name="FK_Doctors_Regions">
     <End Role="Region" Type="Self.Region" Multiplicity="0..1">
@@ -161,6 +161,20 @@
       </Principal>
       <Dependent Role="Ticket">
         <PropertyRef Name="DoctorsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VisitorStatistics_Doctor">
+    <End Role="Doctor" Type="Self.Doctor" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="VisitorStatistics" Type="Self.VisitorStatistics" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Doctor">
+        <PropertyRef Name="DocId" />
+      </Principal>
+      <Dependent Role="VisitorStatistics">
+        <PropertyRef Name="DocId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -220,20 +234,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Rooms_Specializations">
-    <End Role="Specialization" Type="Self.Specialization" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Role="Room" Type="Self.Room" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="Specialization">
-        <PropertyRef Name="id" />
-      </Principal>
-      <Dependent Role="Room">
-        <PropertyRef Name="SpecId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <EntityContainer Name="PolyclinicDBContext" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Diagnosis" EntityType="Self.Diagnosis" />
     <EntitySet Name="Doctor" EntityType="Self.Doctor" />
@@ -259,6 +259,10 @@
       <End Role="Doctor" EntitySet="Doctor" />
       <End Role="Ticket" EntitySet="Ticket" />
     </AssociationSet>
+    <AssociationSet Name="FK_VisitorStatistics_Doctor" Association="Self.FK_VisitorStatistics_Doctor">
+      <End Role="Doctor" EntitySet="Doctor" />
+      <End Role="VisitorStatistics" EntitySet="VisitorStatistics" />
+    </AssociationSet>
     <AssociationSet Name="FK_DoctorsTimeTable_Specializations" Association="Self.FK_DoctorsTimeTable_Specializations">
       <End Role="Specialization" EntitySet="Specialization" />
       <End Role="DoctorsTimeTable" EntitySet="DoctorsTimeTable" />
@@ -275,27 +279,5 @@
       <End Role="Region" EntitySet="Region" />
       <End Role="Street" EntitySet="Street" />
     </AssociationSet>
-    <AssociationSet Name="FK_Rooms_Specializations" Association="Self.FK_Rooms_Specializations">
-      <End Role="Specialization" EntitySet="Specialization" />
-      <End Role="Room" EntitySet="Room" />
-    </AssociationSet>
-    <AssociationSet Name="FK_VisitorStatistics_Doctor" Association="PolyclinicDBModel.FK_VisitorStatistics_Doctor">
-      <End Role="Doctor" EntitySet="Doctor" />
-      <End Role="VisitorStatistics" EntitySet="VisitorStatistics" />
-    </AssociationSet>
   </EntityContainer>
-  <Association Name="FK_VisitorStatistics_Doctor">
-    <End Type="PolyclinicDBModel.Doctor" Role="Doctor" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Type="PolyclinicDBModel.VisitorStatistics" Role="VisitorStatistics" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="Doctor">
-        <PropertyRef Name="DocId" />
-      </Principal>
-      <Dependent Role="VisitorStatistics">
-        <PropertyRef Name="DocId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
 </Schema>

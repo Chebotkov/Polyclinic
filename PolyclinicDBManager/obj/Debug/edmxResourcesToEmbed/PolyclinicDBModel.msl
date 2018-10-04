@@ -76,6 +76,7 @@
     <EntitySetMapping Name="Room">
       <EntityTypeMapping TypeName="PolyclinicDBModel.Room">
         <MappingFragment StoreEntitySet="Room">
+          <ScalarProperty Name="RoomId" ColumnName="RoomId" />
           <ScalarProperty Name="SpecId" ColumnName="SpecId" />
           <ScalarProperty Name="RoomNumber" ColumnName="Room" />
         </MappingFragment>
@@ -112,6 +113,7 @@
     <EntitySetMapping Name="VisitorStatistics">
       <EntityTypeMapping TypeName="PolyclinicDBModel.VisitorStatistics">
         <MappingFragment StoreEntitySet="VisitorStatistics">
+          <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="DocId" ColumnName="DocId" />
           <ScalarProperty Name="Date" ColumnName="Date" />
           <ScalarProperty Name="ArrivedPatients" ColumnName="ArrivedPatients" />

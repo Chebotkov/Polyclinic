@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Word = Microsoft.Office.Interop.Word;
 
@@ -7,6 +8,7 @@ namespace PolyclinicBL
     public interface ITicketCreator
     {
         void WriteToWordFile(PrintedTicket printedTicket);
+        void RemoveTickets(List<PrintedTicket> oldTickets);
     }
 
     public class MSWordWorker : ITicketCreator
@@ -84,6 +86,21 @@ namespace PolyclinicBL
             }
 
             return currentPath;
+        }
+
+        public void RemoveTickets(List<PrintedTicket> oldTickets)
+        {
+            if (oldTickets is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(oldTickets)));
+            }
+
+            foreach (PrintedTicket printedTicket in oldTickets)
+            { 
+                string Path = String.Concat(GetApplicationsPath() + PathToTickets, printedTicket.PatientFullName, printedTicket.DocSpecialization, printedTicket.DocFullName, printedTicket.DocRoom, printedTicket.Date + "." + printedTicket.Time.Split(':')[0], ".docx");
+                FileInfo file = new FileInfo(Path);
+                file.Delete();
+            }
         }
     }
 }

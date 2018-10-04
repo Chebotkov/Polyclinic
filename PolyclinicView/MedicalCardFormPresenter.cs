@@ -50,7 +50,7 @@ namespace PolyclinicView
 
         private void IMedicalCardView_SaveChanges(object sender, EntityIdEventArgs e)
         {
-            Doctor doctor = medicalCardModel.GetDoctorById(e.DoctorsId) as Doctor;
+            PolyclinicDBManager.Doctor doctor = medicalCardModel.GetDoctorById(e.DoctorsId) as PolyclinicDBManager.Doctor;
             iMedicalCardView.SetDoctor(doctor);
             iMedicalCardView.SpecializationName = medicalCardModel.GetSpecializationName(doctor.Specialization);
         }

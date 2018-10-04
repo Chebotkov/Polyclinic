@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D155460E-EE4F-45A9-9DDD-256C6A4DD049}</ProjectGuid>
+    <ProjectGuid>{69FB67B4-4783-4760-A0A3-262FD71D9156}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PolyclinicDBManager</RootNamespace>
@@ -36,12 +36,17 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework.SqlServerCompact, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.SqlServerCompact.6.2.0\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -63,16 +68,21 @@
     <Compile Include="Drug.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ListRecordingModel.cs" />
     <Compile Include="Login.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ListRecordingModel.cs" />
     <Compile Include="Models\MainFormModel.cs" />
     <Compile Include="Models\MedicalCardModel.cs" />
     <Compile Include="Models\NewDoctorModel.cs" />
     <Compile Include="Models\NewSpecializationModel.cs" />
     <Compile Include="Models\PrintTicketModel.cs" />
+    <Compile Include="Models\ReferenceBookModel.cs" />
+    <Compile Include="Models\RegistersModel.cs" />
+    <Compile Include="Models\RegistrationModel.cs" />
     <Compile Include="Models\RoomsRegisterModel.cs" />
+    <Compile Include="Models\ShowStatisticsModel.cs" />
+    <Compile Include="Models\TicketOrderModel.cs" />
     <Compile Include="Patient.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>
     </Compile>
@@ -97,16 +107,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Models\ReferenceBookModel.cs" />
     <Compile Include="Region.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\RegistersModel.cs" />
-    <Compile Include="Models\RegistrationModel.cs" />
     <Compile Include="Room.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ShowStatisticsModel.cs" />
     <Compile Include="Specialization.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>
     </Compile>
@@ -116,7 +122,6 @@
     <Compile Include="Ticket.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\TicketOrderModel.cs" />
     <Compile Include="VisitorStatistics.cs">
       <DependentUpon>PolyclinicDBModel.tt</DependentUpon>
     </Compile>
@@ -157,5 +162,13 @@
       <Name>PolyclinicBL</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    if not exist "$(TargetDir)x86" md "$(TargetDir)x86"
+    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\x86\*.*" "$(TargetDir)x86"
+    if not exist "$(TargetDir)amd64" md "$(TargetDir)amd64"
+    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\amd64\*.*" "$(TargetDir)amd64"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

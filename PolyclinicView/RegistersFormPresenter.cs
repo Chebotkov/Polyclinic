@@ -42,6 +42,12 @@ namespace PolyclinicView
             iRegistersView.DoctorsGet += IRegistersView_DoctorsGet;
             iRegistersView.PatientsGet += IRegistersView_PatientsGet;
             iRegistersView.SpecializationsGet += IRegistersView_SpecializationsGet;
+            iRegistersView.Registration_Click += IRegistersView_Registration_Click;
+        }
+
+        private void IRegistersView_Registration_Click(object sender, EventArgs e)
+        {
+            RegistrationPresenter registrationPresenter = new RegistrationPresenter(iRegistersView.registrationView, new RegistrationModel(), new MedicalCardManager());
         }
 
         private void IRegistersView_SpecializationsGet(object sender, EventArgs e)
@@ -106,7 +112,7 @@ namespace PolyclinicView
 
         private void IRegistersView_NewDoctor_Click(object sender, EventArgs e)
         {
-            NewDoctorPresenter newDoctorPresenter = new NewDoctorPresenter(iRegistersView.INewDoctorViewRef);
+            NewDoctorPresenter newDoctorPresenter = new NewDoctorPresenter(iRegistersView.INewDoctorViewRef, new NewDoctorModel());
         }
     }
 }

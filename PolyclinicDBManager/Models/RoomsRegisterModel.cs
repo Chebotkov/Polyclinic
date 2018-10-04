@@ -55,18 +55,15 @@ namespace PolyclinicDBManager.Models
             {
                 throw new ArgumentNullException(String.Format("{0} is null", nameof(rooms)));
             }
-
+            ///asdasd
             using (var context = new PolyclinicDBContext())
             {
-                IQueryable<Room> query = context.Room;
-                var Rooms = query.ToList();
-
                 foreach (int roomNum in rooms)
                 {
-                    Room room = new Room { RoomNumber = roomNum, SpecId = specializationId };
+                    Room room = new Room { RoomNumber = roomNum, SpecId = specializationId, RoomId = 0 };
                     context.Room.Add(room);
                 }
-
+                
                 context.SaveChanges();
             }
         }

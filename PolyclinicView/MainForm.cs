@@ -14,6 +14,7 @@ namespace PolyclinicView
         IDoctorView IDoctorViewRef { get; set; }
 
         void EntityChoice(Entities entity);
+        event EventHandler MainFormLoad;
         event EventHandler Enter_Click;
         event EventHandler Doctor_Click;
         event EventHandler Registrator_Click;
@@ -24,6 +25,7 @@ namespace PolyclinicView
         private Thread MelodyThread;
         private MessageService MessageService = new MessageService();
 
+        public event EventHandler MainFormLoad;
         public event EventHandler Enter_Click;
         public event EventHandler Doctor_Click;
         public event EventHandler Registrator_Click;
@@ -48,6 +50,8 @@ namespace PolyclinicView
         {
             /*MelodyThread = new Thread(new ThreadStart(MissionImpossible));
             MelodyThread.Start();*/
+
+            MainFormLoad?.Invoke(this, EventArgs.Empty);
 
             label1.Hide();
             Registrator.Hide();

@@ -14,11 +14,13 @@ namespace PolyclinicView
 {
     public interface IRegistersView
     {
-        INewDoctorView INewDoctorViewRef { get; set; }
-        INewSpecialization INewSpecializationRef { get; set; }
+        INewDoctorView INewDoctorViewRef { get; }
+        IRegistrationView registrationView { get; }
+        INewSpecialization INewSpecializationRef { get; }
         event EventHandler<RegionsEventHandler> AddNewRegion;
         event EventHandler<StreetsEventHandler> AddNewStreet;
         event EventHandler NewDoctor_Click;
+        event EventHandler Registration_Click;
         event EventHandler NewSpecialization_Click;
         event EventHandler GetEntities;
         event EventHandler DoctorsGet;
@@ -44,8 +46,9 @@ namespace PolyclinicView
         private IEnumerable Specializations;
         private IEnumerable Streets;
 
-        public INewDoctorView INewDoctorViewRef { get; set; }
-        public INewSpecialization INewSpecializationRef { get; set; }
+        public INewDoctorView INewDoctorViewRef { get; private set; }
+        public IRegistrationView registrationView { get; private set; }
+        public INewSpecialization INewSpecializationRef { get; private set; }
         public event EventHandler<RegionsEventHandler> AddNewRegion;
         public event EventHandler<StreetsEventHandler> AddNewStreet;
         public event EventHandler NewDoctor_Click;
@@ -54,6 +57,7 @@ namespace PolyclinicView
         public event EventHandler DoctorsGet;
         public event EventHandler PatientsGet;
         public event EventHandler SpecializationsGet;
+        public event EventHandler Registration_Click;
         public event EventHandler<StreetsEventHandler> FillStreets;
         public event EventHandler<EntityIdEventArgs> DoctorsListGet;
         public event EventHandler<EntityIdEventArgs> PatientsInfoGet;
@@ -124,16 +128,18 @@ namespace PolyclinicView
             if (radioButton5.Checked)
             {
                 RegistrationForm RF = new RegistrationForm(true);
+                registrationView = RF;
                 RF.Owner = this;
+                Registration_Click?.Invoke(this, EventArgs.Empty);
                 RF.Show();
             }
             if (radioButton1.Checked)
             {
                 NewSpecialization NS = new NewSpecialization(false, true);
-                NS.Owner = this;
                 INewSpecializationRef = NS;
-                NS.ShowDialog();
+                NS.Owner = this;
                 NewSpecialization_Click?.Invoke(this, EventArgs.Empty);
+                NS.ShowDialog();
             }
 
             if (radioButton2.Checked)
@@ -219,8 +225,8 @@ namespace PolyclinicView
                 NewDoctor ND = new NewDoctor(true);
                 ND.Owner = this;
                 INewDoctorViewRef = ND;
-                ND.ShowDialog();
                 NewDoctor_Click?.Invoke(this, EventArgs.Empty);
+                ND.ShowDialog();
             }
 
         }
@@ -328,6 +334,8 @@ namespace PolyclinicView
                 default:
                     throw new ArgumentException(String.Format("{0} is not valid. There is only 'd', 'p' and 'c' parametres.", nameof(entity)));
             }
+            radioButton2.Select();
+            radioButton1.Select();
         }
 
         private void RefreshFields()

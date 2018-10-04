@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PolyclinicDBManager
 {
@@ -36,15 +37,18 @@ namespace PolyclinicDBManager
 
         public IEnumerable GetRooms(int specializationId)
         {
-            List<int> Rooms;
+            List<int> Rooms = new List<int>();
 
             using (var context = new PolyclinicDBContext())
             {
                 var query = from r in context.Room.AsNoTracking()
                             where r.SpecId == specializationId
                             select r;
-
-                Rooms = query.ToList<int>();
+                
+                foreach (Room room in query)
+                {
+                    Rooms.Add(room.RoomNumber);
+                }
             }
 
             return Rooms;

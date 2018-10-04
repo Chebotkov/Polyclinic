@@ -5,9 +5,12 @@ D:\Projects\Polyclinic\PolyclinicDBManager\bin\Debug\PolyclinicDBManager.dll
 D:\Projects\Polyclinic\PolyclinicDBManager\bin\Debug\PolyclinicDBManager.pdb
 D:\Projects\Polyclinic\PolyclinicDBManager\bin\Debug\EntityFramework.dll
 D:\Projects\Polyclinic\PolyclinicDBManager\bin\Debug\EntityFramework.SqlServer.dll
+D:\Projects\Polyclinic\PolyclinicDBManager\bin\Debug\EntityFramework.SqlServerCompact.dll
 D:\Projects\Polyclinic\PolyclinicDBManager\bin\Debug\PolyclinicBL.dll
+D:\Projects\Polyclinic\PolyclinicDBManager\bin\Debug\System.Data.SqlServerCe.dll
 D:\Projects\Polyclinic\PolyclinicDBManager\bin\Debug\PolyclinicBL.pdb
 D:\Projects\Polyclinic\PolyclinicDBManager\bin\Debug\EntityFramework.xml
 D:\Projects\Polyclinic\PolyclinicDBManager\bin\Debug\EntityFramework.SqlServer.xml
+D:\Projects\Polyclinic\PolyclinicDBManager\bin\Debug\EntityFramework.SqlServerCompact.xml
 D:\Projects\Polyclinic\PolyclinicDBManager\obj\Debug\PolyclinicDBManager.dll
 D:\Projects\Polyclinic\PolyclinicDBManager\obj\Debug\PolyclinicDBManager.pdb

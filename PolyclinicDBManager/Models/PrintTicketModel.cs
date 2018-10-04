@@ -58,42 +58,7 @@ namespace PolyclinicDBManager.Models
 
         public PrintedTicket GetFullTicket(int ticketId)
         {
-            PrintedTicket printedTicket;
-
-            using (var context = new PolyclinicDBContext())
-            {
-                var tickets = from t in context.Ticket.AsNoTracking()
-                              where t.id == ticketId
-                              join p in context.Patient.AsNoTracking() on t.PatientsId equals p.id
-                              join d in context.Doctor.AsNoTracking() on t.DoctorsId equals d.DocId
-                              join s in context.Specialization.AsNoTracking() on d.Specialization equals s.id
-                              select new
-                              {
-                                  t.VisitingDateAndTime,
-                                  PLN = p.LastName,
-                                  PFN = p.FirstName,
-                                  PP = p.Patronymic,
-                                  DLN = d.LastName,
-                                  DFN = d.FirstName,
-                                  DP = d.Patronymic,
-                                  DocRoom = d.Room,
-                                  DocSpecialization = s.SpecializationName
-                              };
-
-                var ticket = tickets.ToList()[0];
-
-                printedTicket = new PrintedTicket()
-                {
-                    Date = ticket.VisitingDateAndTime.ToShortDateString(),
-                    Time = ticket.VisitingDateAndTime.ToShortTimeString(),
-                    PatientFullName = String.Format("{0} {1} {2}", ticket.PLN, ticket.PFN, ticket.PP),
-                    DocFullName = String.Format("{0} {1} {2}", ticket.DLN, ticket.DFN, ticket.DP),
-                    DocSpecialization = ticket.DocSpecialization,
-                    DocRoom = ticket.DocRoom,
-                };
-            }
-
-            return printedTicket;
+            return iCRUDMethods.GetFullTicket(ticketId);
         }
     }
 }

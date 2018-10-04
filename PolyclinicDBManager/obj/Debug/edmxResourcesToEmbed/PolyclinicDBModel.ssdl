@@ -67,8 +67,9 @@
   </EntityType>
   <EntityType Name="Room">
     <Key>
-      <PropertyRef Name="SpecId" />
+      <PropertyRef Name="RoomId" />
     </Key>
+    <Property Name="RoomId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="SpecId" Type="int" Nullable="false" />
     <Property Name="Room" Type="int" Nullable="false" />
   </EntityType>
@@ -99,8 +100,9 @@
   </EntityType>
   <EntityType Name="VisitorStatistics">
     <Key>
-      <PropertyRef Name="DocId" />
+      <PropertyRef Name="Id" />
     </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="DocId" Type="int" Nullable="false" />
     <Property Name="Date" Type="datetime" Nullable="false" />
     <Property Name="ArrivedPatients" Type="int" Nullable="false" />
@@ -162,20 +164,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Rooms_Specializations">
-    <End Role="Specialization" Type="Self.Specialization" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Role="Room" Type="Self.Room" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="Specialization">
-        <PropertyRef Name="id" />
-      </Principal>
-      <Dependent Role="Room">
-        <PropertyRef Name="SpecId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_Streets_Regions">
     <End Role="Region" Type="Self.Region" Multiplicity="1">
       <OnDelete Action="Cascade" />
@@ -220,7 +208,7 @@
     <End Role="Doctor" Type="Self.Doctor" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
-    <End Role="VisitorStatistics" Type="Self.VisitorStatistics" Multiplicity="0..1" />
+    <End Role="VisitorStatistics" Type="Self.VisitorStatistics" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Doctor">
         <PropertyRef Name="DocId" />
@@ -258,10 +246,6 @@
     <AssociationSet Name="FK_Patients_Regions" Association="Self.FK_Patients_Regions">
       <End Role="Region" EntitySet="Region" />
       <End Role="Patient" EntitySet="Patient" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Rooms_Specializations" Association="Self.FK_Rooms_Specializations">
-      <End Role="Specialization" EntitySet="Specialization" />
-      <End Role="Room" EntitySet="Room" />
     </AssociationSet>
     <AssociationSet Name="FK_Streets_Regions" Association="Self.FK_Streets_Regions">
       <End Role="Region" EntitySet="Region" />
