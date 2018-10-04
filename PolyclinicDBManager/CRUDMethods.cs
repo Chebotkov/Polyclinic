@@ -16,6 +16,7 @@ namespace PolyclinicDBManager
         IEnumerable GetPatientsFullNames();
         IEnumerable GetSpecializationsNames();
         IEnumerable GetSpecializationsNamesOnly();
+        IEnumerable GetDoctorsBySpecializationsId(int specializationId);
         Doctor GetDoctorById(int id);
         IEnumerable<PolyclinicBL.Drug> GetDrugs();
         IEnumerable<PolyclinicBL.Diagnoses> GetDiagnoses();
@@ -130,6 +131,24 @@ namespace PolyclinicDBManager
             {
                 IQueryable<Doctor> query = context.Doctor.AsNoTracking();
                 var docs = query.ToList();
+
+                foreach (var doctor in docs)
+                {
+                    doctors.Add(String.Format("{0}.{1} {2} {3}", doctor.DocId, doctor.LastName, doctor.FirstName, doctor.Patronymic));
+                }
+            }
+
+            return doctors;
+        }
+
+        public IEnumerable GetDoctorsBySpecializationsId(int specializationId)
+        {
+            List<string> doctors = new List<string>();
+            using (var context = new PolyclinicDBContext())
+            {
+                var docs = from d in context.Doctor.AsNoTracking()
+                           where d.Specialization == specializationId
+                           select d;
 
                 foreach (var doctor in docs)
                 {

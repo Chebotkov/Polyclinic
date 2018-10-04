@@ -20,6 +20,16 @@ namespace PolyclinicBL
             return GetWordWithoutSpaces(address.Substring(address.IndexOf(".") + 1, address.IndexOf(',') - 3));
         }
 
+        public static string GetStreetForRegion(string address)
+        {
+            if (address is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(address)));
+            }
+
+            return GetWordWithoutSpaces(address.Substring(address.IndexOf(".") + 1));
+        }
+
         public static string GetWordWithoutSpaces(string word)
         {
             if (word is null)
@@ -28,19 +38,19 @@ namespace PolyclinicBL
             }
 
             int countOfSpacesInFront = 0;
-            int countOfSpacesAfterWord = 0;
+            int countOfSpacesAfterWord = word.Length - 1;
 
             while (word[countOfSpacesInFront] == ' ')
             {
                 countOfSpacesInFront++;
             }
 
-            while (word[word.Length - countOfSpacesAfterWord - 1] == ' ')
+            while (word[countOfSpacesAfterWord] == ' ')
             {
-                countOfSpacesAfterWord++;
+                countOfSpacesAfterWord--;
             }
-
-            return word.Substring(countOfSpacesInFront, word.Length - countOfSpacesAfterWord - 1);
+            
+            return word.Substring(countOfSpacesInFront, countOfSpacesAfterWord - countOfSpacesInFront + 1);
         }
 
         public static int GetId(string victim)
@@ -87,57 +97,84 @@ namespace PolyclinicBL
             return newDate;
         }
 
-        public static string GetRegion(string region)
+        public static bool GetRegion(string region, out string regionName)
         {
+            if (region is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(region)));
+            }
+
             if (!String.IsNullOrEmpty(region.Substring(4)))
             {
-                int num = Convert.ToInt32(region.Substring(1, 2));
+                if (!(Int32.TryParse(region.Substring(1, 2), out int num)))
+                {
+                    throw new ArgumentException("{0} is not valid", nameof(region));
+                }
+
                 region = region.Substring(4);
-                while (region[0] == ' ')
+
+                int startIndex = 0;
+                int lastIndex = region.Length - 1;
+                while (region[startIndex] == ' ')
                 {
-                    region = region.Substring(1, region.Length - 1);
+                    startIndex++;
                 }
-                while (region[region.Length - 1] == ' ')
+                while (region[lastIndex] == ' ')
                 {
-                    region = region.Substring(0, region.Length - 1);
+                    lastIndex--;
                 }
-                return (region);
+                
+                regionName = region.Substring(startIndex, (lastIndex - startIndex + 1));
+                return true;
             }
-            else return "666";
+            else
+            {
+                regionName = region;
+                return false;
+            }
         }
 
-        public static int GetNum(string s)
+        public static int GetNum(string text)
         {
-            try
+            if (text is null)
             {
-                s = s.Substring(1, 2);
-                if (String.IsNullOrEmpty(s)) return -1;
-
-                return Convert.ToInt32(s);
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(text)));
             }
-            catch (Exception)
+
+            if (!(Int32.TryParse(text.Substring(1, 2), out int num)))
             {
                 return -1;
-            };
+            }
+            else return num;            
         }
 
-        public static int IsEnteredRegionCorrect(string Region, IEnumerable Regions)
+        public static bool IsEnteredRegionCorrect(string Region, IEnumerable Regions)
         {
+            if (Region is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(Region)));
+            }
+            if (Regions is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(Regions)));
+            }
+
             int Num = GetNum(Region);
-            string Name = GetRegion(Region);
+            GetRegion(Region, out string Name);
             foreach (var r in Regions)
             {
                 string regionName = r.ToString();
                 if (GetId(regionName) == Num)
                 {
-                    if ((regionName.Substring(regionName.IndexOf("." + 1)).ToLower() == Name.ToLower()))
+                    if ((regionName.Substring(2).ToLower() == Name.ToLower()))
                     {
-                        return 1;
+                        return true;
                     }
-                    else return -1;
+                    break;
                 }
             }
-            return 0;
+
+            return false; 
         }
 
 
@@ -172,6 +209,11 @@ namespace PolyclinicBL
 
         public static string GetTime(string information)
         {
+            if (information is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(information)));
+            }
+
             return information.Substring(information.Length - 6);
         }
     }

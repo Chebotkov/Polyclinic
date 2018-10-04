@@ -61,13 +61,7 @@ namespace PolyclinicView
             InitializeComponent();
             timer1.Start();
         }
-
-        private void RegistratorForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            parentForm.Visible = true;
-            h = m = s = 0;
-        }
-
+        
         #region Actions
         private void ReferenceBookBtn_Click(object sender, EventArgs e)
         {
@@ -126,6 +120,12 @@ namespace PolyclinicView
             IRoomsRegisterViewRef = RR;
             RoomsRegister_Click?.Invoke(this, EventArgs.Empty);
             RR.Show();
+        }
+
+        private void RegistratorForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            parentForm.Visible = true;
+            h = m = s = 0;
         }
         #endregion
 

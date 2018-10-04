@@ -51,7 +51,7 @@ namespace PolyclinicView
         {
             ticketCreator.RemoveTickets(mainFormModel.GetOldPrintedTickets());
             mainFormModel.DeleteOldTickets();
-            mainFormModel.CheckStatistics();
+            mainFormModel.CheckStatistics(31);
         }
 
         private void View_Doctor_Click(object sender, EventArgs e)

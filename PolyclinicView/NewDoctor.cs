@@ -53,6 +53,7 @@ namespace PolyclinicView
             IsOpenedFromRF = b;
         }
 
+        #region Actions 
         private void NewDoctor_Load(object sender, EventArgs e)
         {
             NewDoctorLoad?.Invoke(this, EventArgs.Empty);
@@ -165,6 +166,7 @@ namespace PolyclinicView
                 RF.RefreshComboboxes('d');
             }
         }
+        #endregion
 
         #region Interface implementation
         public void RefreshRooms()

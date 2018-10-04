@@ -41,15 +41,11 @@ namespace PolyclinicView
             InitializeComponent();
         }
 
-        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            Application.Exit();
-        }
-
+        #region
         private void MainForm_Load(object sender, EventArgs e)
         {
-            /*MelodyThread = new Thread(new ThreadStart(MissionImpossible));
-            MelodyThread.Start();*/
+            MelodyThread = new Thread(new ThreadStart(Music.MissionImpossible));
+            MelodyThread.Start();
 
             MainFormLoad?.Invoke(this, EventArgs.Empty);
 
@@ -71,13 +67,13 @@ namespace PolyclinicView
             textBox1.Clear();
         }
 
-        public void Enter_Button_Click(object sender, EventArgs e)
+        private void Enter_Button_Click(object sender, EventArgs e)
         {
             EnteredLogin = textBox1.Text;
             Enter_Click?.Invoke(this, EventArgs.Empty);
         }
 
-        public void Doctor_Form_Button_Click(object sender, EventArgs e)
+        private void Doctor_Form_Button_Click(object sender, EventArgs e)
         {
             DoctorForm doctorForm = new DoctorForm(this);
             IDoctorViewRef = doctorForm;
@@ -88,7 +84,7 @@ namespace PolyclinicView
             Doctor_Click?.Invoke(this, EventArgs.Empty);
         }
 
-        public void Registrator_Form_Button_Click(object sender, EventArgs e)
+        private void Registrator_Form_Button_Click(object sender, EventArgs e)
         {
             RegistratorForm RegistratorFormRef = new RegistratorForm(this);
             IRegistratorViewRef = RegistratorFormRef;
@@ -99,6 +95,13 @@ namespace PolyclinicView
             Registrator_Click?.Invoke(this, EventArgs.Empty);
         }
 
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
+#endregion
+
+        #region Interface implementation
         public void EntityChoice(Entities entity)
         {
             switch (entity)
@@ -146,56 +149,9 @@ namespace PolyclinicView
                         break;
                     }
             }
-        }
 
-        private void MissionImpossible()
-        {
-            Console.Beep(784, 150);
-            Thread.Sleep(300);
-            Console.Beep(784, 150);
-            Thread.Sleep(300);
-            Console.Beep(932, 150);
-            Thread.Sleep(150);
-            Console.Beep(1047, 150);
-            Thread.Sleep(150);
-            Console.Beep(784, 150);
-            Thread.Sleep(300);
-            Console.Beep(784, 150);
-            Thread.Sleep(300);
-            Console.Beep(699, 150);
-            Thread.Sleep(150);
-            Console.Beep(740, 150);
-            Thread.Sleep(150);
-            Console.Beep(784, 150);
-            Thread.Sleep(300);
-            Console.Beep(784, 150);
-            Thread.Sleep(300);
-            Console.Beep(932, 150);
-            Thread.Sleep(150);
-            Console.Beep(1047, 150);
-            Thread.Sleep(150);
-            Console.Beep(784, 150);
-            Thread.Sleep(300);
-            Console.Beep(784, 150);
-            Thread.Sleep(300);
-            Console.Beep(699, 150);
-            Thread.Sleep(150);
-            Console.Beep(740, 150);
-            Thread.Sleep(150);
-            Console.Beep(932, 150);
-            Console.Beep(784, 150);
-            Console.Beep(587, 1200);
-            Thread.Sleep(75);
-            Console.Beep(932, 150);
-            Console.Beep(784, 150);
-            Console.Beep(554, 1200);
-            Thread.Sleep(75);
-            Console.Beep(932, 150);
-            Console.Beep(784, 150);
-            Console.Beep(523, 1200);
-            Thread.Sleep(150);
-            Console.Beep(466, 150);
-            Console.Beep(523, 150);
+            MelodyThread.Suspend();
         }
+        #endregion  
     }
 }

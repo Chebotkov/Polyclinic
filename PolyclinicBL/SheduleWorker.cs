@@ -66,6 +66,11 @@ namespace PolyclinicBL
 
         public static void GetTime(string AT, out int Begin, out int End)
         {
+            if (AT is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(AT)));
+            }
+
             Begin = Convert.ToInt32(AT.Substring(0, 2)) * 60 + Convert.ToInt32(AT.Substring(3, 2));
             End = Convert.ToInt32(AT.Substring(6, 2)) * 60 + Convert.ToInt32(AT.Substring(9, 2));
         }

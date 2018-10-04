@@ -66,36 +66,39 @@ namespace PolyclinicDBManager
             return streets;
         }
 
-        public void AddNewStreet(int regionsId, string street)
+        public void AddNewRegion(int regionId, string regionName, string streetName)
         {
             using (var context = new PolyclinicDBContext())
             {
-                IQueryable<Street> query = context.Street;
+                var regions = from r in context.Region
+                              where r.RegionNumber == regionId
+                              select r;
 
-                Street Street = new Street()
+                if (regions.ToList().Count == 0)
                 {
-                    RegionNumber = regionsId,
-                    StreetName = street
-                };
+                    Region region = new Region
+                    {
+                        RegionNumber = regionId,
+                        RegionName = regionName
+                    };
+                    context.Region.Add(region);
+                }
 
-                context.Street.Add(Street);
-                context.SaveChanges();
-            }
-        }
+                var streets = from s in context.Street
+                              where s.RegionNumber == regionId
+                              where s.StreetName == streetName
+                              select s;
 
-        public void AddNewRegion(int regionId, string regionName)
-        {
-            using (var context = new PolyclinicDBContext())
-            {
-                IQueryable<Region> query = context.Region;
-
-                Region region = new Region
+                if (streets.ToList().Count == 0)
                 {
-                    RegionNumber = regionId,
-                    RegionName = regionName
-                };
-
-                context.Region.Add(region);
+                    Street street = new Street
+                    {
+                        RegionNumber = regionId,
+                        StreetName = streetName,
+                    };
+                    context.Street.Add(street);
+                }
+                
                 context.SaveChanges();
             }
         }

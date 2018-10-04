@@ -15,24 +15,24 @@ namespace PolyclinicView
     public interface INewSpecialization
     {
         event EventHandler NewSpecializationLoad;
-        event EventHandler DoctorsFill;
+        event EventHandler<EntityIdEventArgs> SpecializationSelect;
         event EventHandler<SpecializationEventArgs> AddNewSpecialization;
         event EventHandler<ScheduleEventArgs> AddNewSchedule;
         event EventHandler<DoctorsTimeEventArgs> AddNewDoctorsSchedule;
 
         void SetSpecializations(IEnumerable specializations);
         void SetDoctors(IEnumerable doctors);
+        void SetScheduleAndIntervals(IEnumerable schedules, IEnumerable Intervals);
     }
 
     public partial class NewSpecialization : Form, INewSpecialization
     {
         public event EventHandler NewSpecializationLoad;
-        public event EventHandler DoctorsFill;
+        public event EventHandler<EntityIdEventArgs> SpecializationSelect;
         public event EventHandler<SpecializationEventArgs> AddNewSpecialization;
         public event EventHandler<ScheduleEventArgs> AddNewSchedule;
         public event EventHandler<DoctorsTimeEventArgs> AddNewDoctorsSchedule;
-
-        private IEnumerable Doctors;
+        
         private IEnumerable Specializations;
 
         private bool isOpenedFromTO = false;
@@ -50,6 +50,7 @@ namespace PolyclinicView
             this.IsOpenedFromRF = IsOpenedFromRF;
         }
 
+        #region Actions
         private void NewSpecialization_Load(object sender, EventArgs e)
         {
             NewSpecializationLoad?.Invoke(this, EventArgs.Empty);
@@ -59,7 +60,6 @@ namespace PolyclinicView
             SetEnable(true);
             radioButton1.Select();
         }
-
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
@@ -73,8 +73,7 @@ namespace PolyclinicView
             maskedTextBox2.Enabled = false;
             button2.Enabled = false;
         }
-
-
+        
         private void button1_Click(object sender, EventArgs e)
         {
             bool save = true;
@@ -144,8 +143,7 @@ namespace PolyclinicView
             errorProvider1.Clear();
             SetEnableR3(true);
         }
-
-
+        
         private void SetEnable(bool b)
         {
             textBox1.Clear();
@@ -169,6 +167,7 @@ namespace PolyclinicView
             comboBox5.Enabled = false;
 
         }
+
         private void SetEnableR3(bool b)
         {
             textBox1.Clear();
@@ -197,9 +196,6 @@ namespace PolyclinicView
             SetEnableR3(true);
 
             comboBox2.Enabled = true;
-            comboBox2.Items.Clear();
-            comboBox4.Items.Clear();
-            comboBox5.Items.Clear();
             
             if (comboBox4.Items.Count == 0)
             {
@@ -207,7 +203,7 @@ namespace PolyclinicView
                 comboBox2.Enabled = false;
             }
 
-            DoctorsFill?.Invoke(this, EventArgs.Empty);
+            SpecializationSelect?.Invoke(this, new EntityIdEventArgs(Editor.GetId(comboBox3.SelectedItem.ToString())));
 
             if (comboBox3.Items.Count == 0)
             {
@@ -259,6 +255,7 @@ namespace PolyclinicView
                 RF.RefreshComboboxes('s');
             }
         }
+        #endregion
 
         #region Interface implementation
         public void SetSpecializations(IEnumerable specializations)
@@ -278,7 +275,24 @@ namespace PolyclinicView
                 throw new ArgumentNullException(String.Format("{0} is null", nameof(doctors)));
             }
 
-            Doctors = doctors;
+            comboBox2.DataSource = doctors;
+        }
+
+        public void SetScheduleAndIntervals(IEnumerable schedules, IEnumerable Intervals)
+        {
+            if (schedules is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(schedules)));
+            }
+
+            if (Intervals is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(Intervals)));
+            }
+
+            comboBox4.DataSource = schedules;
+            comboBox5.DataSource = Intervals;
+
         }
         #endregion
     }

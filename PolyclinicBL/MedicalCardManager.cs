@@ -97,6 +97,11 @@ namespace PolyclinicBL
         
         public void WriteToMedicalCard(int patientsId, byte[] medicalCardRecords)
         {
+            if (medicalCardRecords is null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null", nameof(medicalCardRecords)));
+            }
+
             StreamWriter writer = new StreamWriter(GetMedicalCardPath(patientsId), true, System.Text.Encoding.Default);
             writer.Write(Encoding.Default.GetChars(medicalCardRecords));
             writer.Close();

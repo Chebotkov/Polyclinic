@@ -38,6 +38,7 @@ namespace PolyclinicView
             IsOpenedFromRF = b;
         }
 
+        #region Actions
         private void RegistrationForm_Load(object sender, EventArgs e)
         {
             TextBoxes.Add(textBox1);
@@ -127,6 +128,7 @@ namespace PolyclinicView
                 RF.RefreshComboboxes('p');
             }
         }
+        #endregion
 
         #region Interface Implementation
 

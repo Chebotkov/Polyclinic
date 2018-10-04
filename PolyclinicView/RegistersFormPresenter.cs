@@ -34,7 +34,6 @@ namespace PolyclinicView
             iRegistersView.GetEntities += IRegistersView_GetEntities;
             iRegistersView.FillStreets += IRegistersView_FillStreets;
             iRegistersView.AddNewRegion += IRegistersView_AddNewRegion;
-            iRegistersView.AddNewStreet += IRegistersView_AddNewStreet;
             iRegistersView.DoctorsListGet += IRegistersView_DoctorsListGet;
             iRegistersView.PatientsInfoGet += IRegistersView_PatientsInfoGet;
             iRegistersView.DoctorsListGetBySpecialization += IRegistersView_DoctorsListGetBySpecialization;
@@ -84,15 +83,10 @@ namespace PolyclinicView
         {
             iRegistersView.SetData(iRegistersModel.GetDoctorInfo(e.DoctorsId));
         }
-
-        private void IRegistersView_AddNewStreet(object sender, StreetsEventHandler e)
-        {
-            iRegistersModel.AddNewStreet(e.RegionsId, e.StreetName);
-        }
-
         private void IRegistersView_AddNewRegion(object sender, RegionsEventHandler e)
         {
-            iRegistersModel.AddNewRegion(e.RegionNumber, e.RegionName);
+            iRegistersModel.AddNewRegion(e.RegionNumber, e.RegionName, e.StreetName);
+            iRegistersView.SetRegions(iRegistersModel.GetRegions());
         }
 
         private void IRegistersView_FillStreets(object sender, StreetsEventHandler e)

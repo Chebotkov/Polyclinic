@@ -27,7 +27,8 @@ namespace PolyclinicView
             label13.Text = printedTicket.Date;
             label14.Text = printedTicket.Time;
         }
-        
+
+        #region Actions
         private void button1_Click(object sender, EventArgs e)
         {
             PrintTicketForm PT = this.Owner as PrintTicketForm;
@@ -43,5 +44,6 @@ namespace PolyclinicView
             PrintTicketForm PT = this.Owner as PrintTicketForm;
             PT.Visible = true;
         }
+        #endregion
     }
 }

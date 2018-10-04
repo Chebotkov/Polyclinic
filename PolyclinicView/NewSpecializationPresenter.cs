@@ -26,16 +26,17 @@ namespace PolyclinicView
 
             this.iNewSpecialization = iNewSpecialization;
             this.iNewSpecializationModel = iNewSpecializationModel;
-            this.iNewSpecialization.NewSpecializationLoad += INewSpecialization_NewSpecializationLoad;
-            this.iNewSpecialization.AddNewSpecialization += INewSpecialization_AddNewSpecialization;
-            this.iNewSpecialization.AddNewSchedule += INewSpecialization_AddNewSchedule;
-            this.iNewSpecialization.AddNewDoctorsSchedule += INewSpecialization_AddNewDoctorsSchedule;
-            this.iNewSpecialization.DoctorsFill += INewSpecialization_DoctorsFill;
+            iNewSpecialization.NewSpecializationLoad += INewSpecialization_NewSpecializationLoad;
+            iNewSpecialization.AddNewSpecialization += INewSpecialization_AddNewSpecialization;
+            iNewSpecialization.AddNewSchedule += INewSpecialization_AddNewSchedule;
+            iNewSpecialization.AddNewDoctorsSchedule += INewSpecialization_AddNewDoctorsSchedule;
+            iNewSpecialization.SpecializationSelect += INewSpecialization_SpecializationSelect;
         }
 
-        private void INewSpecialization_DoctorsFill(object sender, EventArgs e)
+        private void INewSpecialization_SpecializationSelect(object sender, EntityIdEventArgs e)
         {
-            iNewSpecialization.SetDoctors(iNewSpecializationModel.GetDoctors());
+            iNewSpecialization.SetDoctors(iNewSpecializationModel.GetDoctors(e.DoctorsId));
+            iNewSpecialization.SetScheduleAndIntervals(iNewSpecializationModel.GetDoctorsSchedule(e.DoctorsId), iNewSpecializationModel.GetDoctorsInterval(e.DoctorsId));
         }
 
         private void INewSpecialization_AddNewDoctorsSchedule(object sender, DoctorsTimeEventArgs e)

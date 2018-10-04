@@ -100,11 +100,13 @@ namespace PolyclinicBL
     {
         public int RegionNumber { get; private set; }
         public string RegionName { get; private set; } 
+        public string StreetName { get; private set; }
 
-        public RegionsEventHandler(int regionNumber, string regionName)
+        public RegionsEventHandler(int regionNumber, string regionName, string streetName)
         {
             RegionNumber = regionNumber;
             RegionName = RegionName;
+            StreetName = streetName;
         }
     }
 

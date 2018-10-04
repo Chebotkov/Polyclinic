@@ -81,25 +81,61 @@ namespace PolyclinicDBManager
 
             using (var context = new PolyclinicDBContext())
             {
-                IQueryable<Doctor> query = context.Doctor;
+                var doctors = from d in context.Doctor
+                              where d.DocId == doctorsId
+                              select d;
 
-                foreach (Doctor doctor in query.ToList())
-                {
-                    if (doctor.DocId == doctorsId)
-                    {
-                        doctor.Shedule = schedule;
-                        doctor.Interval = interval;
-                        break;
-                    }
-                }
+                Doctor doctor = doctors.ToList()[0];
 
+                doctor.Shedule = schedule;
+                doctor.Interval = interval;
+                context.Entry(doctor).State = System.Data.Entity.EntityState.Modified;
                 context.SaveChanges();
             }
+
         }
 
-        public IEnumerable GetDoctors()
+        public IEnumerable GetDoctors(int specializationId)
         {
-            return iCRUDMethods.GetDoctors();
+            return iCRUDMethods.GetDoctorsBySpecializationsId(specializationId);
+        }
+
+        public IEnumerable GetDoctorsSchedule(int specializationId)
+        {
+            List<string> Schedules = new List<string>();
+
+            using (var context = new PolyclinicDBContext())
+            {
+                var schedules = from d in context.DoctorsTimeTable.AsNoTracking()
+                                where d.SpecId == specializationId
+                                select d;
+
+                foreach (DoctorsTimeTable docTT in schedules)
+                {
+                    Schedules.Add(docTT.Shedule);
+                }
+            }
+
+            return Schedules;
+        }
+
+        public IEnumerable GetDoctorsInterval(int specializationId)
+        {
+            List<int> Intervals = new List<int>();
+
+            using (var context = new PolyclinicDBContext())
+            {
+                var intervals = from d in context.DoctorsTimeTable.AsNoTracking()
+                                where d.SpecId == specializationId
+                                select d;
+
+                foreach (DoctorsTimeTable docTT in intervals)
+                {
+                    Intervals.Add(docTT.Interval);
+                }
+            }
+
+            return Intervals;
         }
     }
 }

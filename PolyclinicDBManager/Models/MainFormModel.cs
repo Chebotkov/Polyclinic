@@ -50,7 +50,7 @@ namespace PolyclinicDBManager
             }
         }
 
-        public void CheckStatistics(int limitDays = 31)
+        public void CheckStatistics(int limitDays)
         {
             bool exists = false;
 

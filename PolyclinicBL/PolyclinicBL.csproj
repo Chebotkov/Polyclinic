@@ -46,6 +46,7 @@
     <Compile Include="Interfaces.cs" />
     <Compile Include="MedicalCardManager.cs" />
     <Compile Include="MSWordWorker.cs" />
+    <Compile Include="Music.cs" />
     <Compile Include="PolyclinicEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SheduleWorker.cs" />

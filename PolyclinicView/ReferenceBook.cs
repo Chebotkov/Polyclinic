@@ -45,7 +45,8 @@ namespace PolyclinicView
             InitializeComponent();
             this.IsOpenedFromMedicalCardForm = IsOpenedFromMedicalCardForm;
         }
-        
+
+        #region Actions
         private void ReferenceBook_Load(object sender, EventArgs e)
         {
             ReferenceBookLoad?.Invoke(this, EventArgs.Empty);
@@ -182,7 +183,6 @@ namespace PolyclinicView
             textBox1.Text = "";
             textBox2.Text = "";
             textBox1.ReadOnly = true;
-            comboBox1.Items.Clear();
             errorProvider1.Clear();
         }
 
@@ -194,7 +194,9 @@ namespace PolyclinicView
                 MF.RefreshDrugsAndDiagnosis(Drugs, Diagnoses);
             }
         }
+        #endregion
 
+        #region Interface implementation
         public void SetData(IEnumerable<PolyclinicBL.Drug> Drugs, IEnumerable<PolyclinicBL.Diagnoses> Diagnoses)
         {
             if (Drugs is null)
@@ -210,5 +212,6 @@ namespace PolyclinicView
             this.Drugs = Drugs.ToList();
             this.Diagnoses = Diagnoses.ToList();
         }
+        #endregion
     }
 }

@@ -40,8 +40,10 @@ namespace PolyclinicBL
         void AddNewSpecialization(string specializationName);
         void AddNewSchedule(int specializationId, string schedule, int interval);
         void AddNewDoctorsSchedule(int doctorsId, string schedule, int interval);
-        IEnumerable GetDoctors();
+        IEnumerable GetDoctors(int specializationId);
         IEnumerable GetSpecializationsNames();
+        IEnumerable GetDoctorsInterval(int specializationId);
+        IEnumerable GetDoctorsSchedule(int specializationId);
     }
 
     public interface IRegistersModel
@@ -51,8 +53,7 @@ namespace PolyclinicBL
         IEnumerable GetRegions();
         IEnumerable GetSpecializations();
         IEnumerable GetStreetsByRegionsId(int regionsId);
-        void AddNewRegion(int regionId, string regionName);
-        void AddNewStreet(int regionsId, string street);
+        void AddNewRegion(int regionId, string regionName, string streetName);
         List<string> GetDoctorsByCriterion(int doctorSpecialization);
         List<string> GetDoctorsBySpecialization(int specializationId);
         string GetDoctorInfo(int doctorId);

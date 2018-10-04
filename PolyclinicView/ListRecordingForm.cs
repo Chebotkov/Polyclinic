@@ -44,6 +44,7 @@ namespace PolyclinicView
             monthCalendar1.Visible = false;
         }
 
+        #region Actions
         private void button6_Click(object sender, EventArgs e)
         {
             Close();
@@ -97,7 +98,9 @@ namespace PolyclinicView
 
             DateChange?.Invoke(this, new DateSelectedEventArgs(Editor.GetId(comboBox1.SelectedItem.ToString()), ChosenDate));
         }
+        #endregion
 
+        #region Interface implementation
         public void SetDoctors(IEnumerable doctors)
         {
             if (doctors is null)
@@ -119,5 +122,6 @@ namespace PolyclinicView
 
             listBox1.DataSource = patients;
         }
+        #endregion
     }
 }
